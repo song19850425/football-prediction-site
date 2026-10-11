@@ -117,7 +117,9 @@
       </div>
       <div class="fld">
         <label>球队（主/客队名）</label>
-        <input type="search" id="f-team" placeholder="如 Liverpool / 拜仁">
+        <select id="f-team">
+          <option value="">全部球队</option>
+        </select>
       </div>
       <div class="fld">
         <label>排序</label>
@@ -174,14 +176,30 @@ const state = { league: "", season: "", result: "", team: "", order: "desc" };
 
 function fmtDate(iso) { return iso.replace(/-/g, '/'); }
 function pct(n, d) { return d ? (n / d * 100).toFixed(1) + '%' : '—'; }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+/* 球队下拉：与左侧联赛联动，仅列出当前联赛下出现过的球队 */
+function rebuildTeamSelect() {
+  const sel = document.getElementById('f-team');
+  if (!sel) return;
+  const set = new Set();
+  for (const m of DATA.matches) {
+    if (state.league && m.l !== state.league) continue;
+    set.add(m.h); set.add(m.a);
+  }
+  const teams = [...set].sort((a, b) => a.localeCompare(b, 'zh'));
+  sel.innerHTML = '<option value="">全部球队</option>' +
+    teams.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  if (state.team && teams.includes(state.team)) sel.value = state.team;
+  else { sel.value = ''; state.team = ''; }
+}
 
 function applyFilter() {
-  const t = state.team.trim().toLowerCase();
   filtered = DATA.matches.filter(m =>
     (!state.league || m.l === state.league) &&
     (!state.season || m.s === state.season) &&
     (!state.result || m.r === state.result) &&
-    (!t || m.h.toLowerCase().includes(t) || m.a.toLowerCase().includes(t))
+    (!state.team || m.h === state.team || m.a === state.team)
   );
   if (state.order === "asc") filtered = filtered.slice().reverse();
   page = 1;
@@ -244,6 +262,7 @@ function initControls() {
     lg.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
     c.classList.add('on');
     state.league = c.dataset.k;
+    rebuildTeamSelect();
     applyFilter();
   }));
 
@@ -254,11 +273,7 @@ function initControls() {
 
   document.getElementById('f-result').addEventListener('change', e => { state.result = e.target.value; applyFilter(); });
   document.getElementById('f-order').addEventListener('change', e => { state.order = e.target.value; applyFilter(); });
-  let deb;
-  document.getElementById('f-team').addEventListener('input', e => {
-    clearTimeout(deb);
-    deb = setTimeout(() => { state.team = e.target.value; applyFilter(); }, 220);
-  });
+  document.getElementById('f-team').addEventListener('change', e => { state.team = e.target.value; applyFilter(); });
 
   document.getElementById('p-first').onclick = () => { page = 1; renderTable(); scrollTop(); };
   document.getElementById('p-prev').onclick = () => { page--; renderTable(); scrollTop(); };
@@ -278,6 +293,7 @@ fetch('data/history.json')
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     initControls();
+    rebuildTeamSelect();
     applyFilter();
   })
   .catch(err => {
