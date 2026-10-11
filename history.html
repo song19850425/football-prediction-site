@@ -29,6 +29,14 @@
   .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
   .kpi b { display: block; font-size: 22px; letter-spacing: -.5px; }
   .kpi span { font-size: 12px; color: var(--muted); }
+  .trend { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+  .chart-card h4 { margin: 0 0 4px; font-size: 14px; letter-spacing: -.2px; }
+  .chart-card .sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .chart-card svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+  @media (max-width: 900px) { .trend { grid-template-columns: 1fr; } }
   .tablewrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   thead th {
@@ -131,6 +139,7 @@
     </div>
 
     <div class="kpis" id="kpis"></div>
+    <div class="trend" id="trend"></div>
 
     <div class="tablewrap">
       <table>
@@ -204,7 +213,96 @@ function applyFilter() {
   if (state.order === "asc") filtered = filtered.slice().reverse();
   page = 1;
   renderKpis();
+  renderTrend();
   renderTable();
+}
+
+/* ===== 走势可视化：按赛季聚合，受联赛 / 球队 / 赛果筛选影响（不受赛季筛选影响） ===== */
+function seasonSeries() {
+  const map = new Map();
+  for (const m of DATA.matches) {
+    if (state.league && m.l !== state.league) continue;
+    if (state.team && m.h !== state.team && m.a !== state.team) continue;
+    if (state.result && m.r !== state.result) continue;
+    let s = map.get(m.s);
+    if (!s) { s = { n: 0, g: 0, over: 0, h: 0, d: 0, a: 0 }; map.set(m.s, s); }
+    s.n++; const gg = m.hg + m.ag; s.g += gg; if (gg > 2.5) s.over++;
+    if (m.r === "H") s.h++; else if (m.r === "D") s.d++; else s.a++;
+  }
+  return DATA.seasons.map(sn => {
+    const s = map.get(sn);
+    if (!s || !s.n) return { season: sn, n: 0, avg: null, over: null, h: null, d: null, a: null };
+    return { season: sn, n: s.n, avg: s.g / s.n, over: s.over / s.n * 100, h: s.h / s.n * 100, d: s.d / s.n * 100, a: s.a / s.n * 100 };
+  });
+}
+
+function lineChartSVG(opt) {
+  const W = 660, H = 240, pL = 40, pR = 42, pT = 14, pB = 28;
+  const n = opt.labels.length;
+  const xs = i => pL + (n <= 1 ? 0 : i / (n - 1) * (W - pL - pR));
+  const lv = opt.lines.filter(l => l.axis === "L").flatMap(l => l.vals).filter(v => v != null);
+  const rv = opt.lines.filter(l => l.axis === "R").flatMap(l => l.vals).filter(v => v != null);
+  const lMax = lv.length ? Math.max(...lv) * 1.15 : 1;
+  const rMax = rv.length ? Math.min(100, Math.max(...rv) * 1.15) : 100;
+  const ys = (v, axis) => pT + (1 - v / (axis === "L" ? lMax : rMax)) * (H - pT - pB);
+  const path = (vals, axis) => {
+    let d = "", started = false;
+    vals.forEach((v, i) => {
+      if (v == null) { started = false; return; }
+      d += (started ? "L" : "M") + xs(i).toFixed(1) + " " + ys(v, axis).toFixed(1) + " ";
+      started = true;
+    });
+    return d.trim();
+  };
+  let grid = "";
+  for (let k = 0; k <= 4; k++) {
+    const y = pT + k / 4 * (H - pT - pB);
+    const lVal = (lMax * (4 - k) / 4), rVal = (rMax * (4 - k) / 4);
+    grid += `<line x1="${pL}" y1="${y.toFixed(1)}" x2="${W - pR}" y2="${y.toFixed(1)}" stroke="rgba(148,163,184,.14)"/>`;
+    grid += `<text x="${pL - 7}" y="${(y + 3.5).toFixed(1)}" fill="#64748b" font-size="10" text-anchor="end">${lVal.toFixed(1)}</text>`;
+    grid += `<text x="${W - pR + 7}" y="${(y + 3.5).toFixed(1)}" fill="#64748b" font-size="10" text-anchor="start">${rVal.toFixed(0)}%</text>`;
+  }
+  let xlab = "";
+  opt.labels.forEach((lb, i) => {
+    xlab += `<text x="${xs(i).toFixed(1)}" y="${H - 8}" fill="#64748b" font-size="10" text-anchor="middle">${esc(lb.slice(-5))}</text>`;
+  });
+  let body = "";
+  opt.lines.forEach(l => {
+    body += `<path d="${path(l.vals, l.axis)}" fill="none" stroke="${l.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    l.vals.forEach((v, i) => {
+      if (v == null) return;
+      body += `<circle cx="${xs(i).toFixed(1)}" cy="${ys(v, l.axis).toFixed(1)}" r="2.8" fill="#0b1220" stroke="${l.color}" stroke-width="2"><title>${l.name} · ${esc(opt.labels[i])}: ${v.toFixed(2)}</title></circle>`;
+    });
+  });
+  const legend = opt.lines.map(l => `<span><i style="background:${l.color}"></i>${l.name}</span>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || "走势图")}">${grid}${xlab}${body}</svg><div class="legend">${legend}</div>`;
+}
+
+function renderTrend() {
+  const el = document.getElementById("trend");
+  if (!el) return;
+  const s = seasonSeries();
+  const labels = s.map(x => x.season);
+  const hasData = s.some(x => x.n > 0);
+  if (!hasData) { el.innerHTML = ""; return; }
+  el.innerHTML = `
+    <div class="chart-card">
+      <h4>场均进球 · 大 2.5 球占比</h4>
+      <div class="sub">横轴为赛季 · 左轴场均进球 · 右轴大球占比</div>
+      ${lineChartSVG({ aria: "场均进球与大2.5球占比走势", labels, lines: [
+        { name: "场均进球", color: "#22c55e", axis: "L", vals: s.map(x => x.avg) },
+        { name: "大 2.5 球 %", color: "#38bdf8", axis: "R", vals: s.map(x => x.over) }
+      ] })}
+    </div>
+    <div class="chart-card">
+      <h4>主胜 / 平 / 客胜 占比</h4>
+      <div class="sub">横轴为赛季 · 纵轴为各赛果占比（%）</div>
+      ${lineChartSVG({ aria: "胜平负占比走势", labels, lines: [
+        { name: "主胜 %", color: "#22c55e", axis: "R", vals: s.map(x => x.h) },
+        { name: "平 %", color: "#f59e0b", axis: "R", vals: s.map(x => x.d) },
+        { name: "客胜 %", color: "#38bdf8", axis: "R", vals: s.map(x => x.a) }
+      ] })}
+    </div>`;
 }
 
 function renderKpis() {
