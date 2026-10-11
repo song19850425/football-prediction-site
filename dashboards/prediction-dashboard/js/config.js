@@ -16,9 +16,9 @@
 const CONFIG = {
   // ===== API Keys =====
   // 优先从 localStorage 读取，其次使用下方默认值
-  FOOTBALL_API_KEY: localStorage.getItem('pd_football_key') || '',
+  FOOTBALL_API_KEY: localStorage.getItem('pd_football_key') || 'b9bf4e1ea8594605ae422ce46c9b511e',
   SPORTSDB_API_KEY: localStorage.getItem('pd_sportsdb_key') || '3',  // TheSportsDB 免费测试 Key
-  NEWS_API_KEY: localStorage.getItem('pd_news_key') || '',
+  NEWS_API_KEY: localStorage.getItem('pd_news_key') || 'bcfa4a8368ef1adcffade6f9a216b3c9',
 
   // ===== API 端点 =====
   FOOTBALL_API_BASE: 'https://api.football-data.org/v4',
