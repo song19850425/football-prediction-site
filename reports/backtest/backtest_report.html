@@ -273,6 +273,148 @@
   </table>
 </div>
 
+
+<div class="section">
+  <div class="section-title" style="border-left-color:#e74c3c;">💰 ROI 验证 · 投注策略回测</div>
+  <p style="color:#888;font-size:13px;margin-bottom:14px;">初始资金 ¥1000 · 数据来源：value_opportunities 明细（胜平负 2,493 注 / 大小球 1,937 注）</p>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#e74c3c;"></span> 胜平负 · 四种资金管理策略</div>
+    <table><thead><tr><th>策略</th><th>最终资金</th><th>ROI</th><th>下注数</th><th>命中率</th><th>最大回撤</th></tr></thead>
+    <tbody><tr><td style="text-align:left;padding-left:12px;">固定金额¥10</td>
+        <td>¥9</td><td style="color:#e74c3c;font-weight:600;">-99.1%</td>
+        <td>1046</td><td>25.7%</td><td>99.2%</td></tr><tr><td style="text-align:left;padding-left:12px;">固定比例2%</td>
+        <td>¥49</td><td style="color:#e74c3c;font-weight:600;">-95.1%</td>
+        <td>1266</td><td>25.8%</td><td>95.6%</td></tr><tr><td style="text-align:left;padding-left:12px;">1/4凯利</td>
+        <td>¥10</td><td style="color:#e74c3c;font-weight:600;">-99.0%</td>
+        <td>654</td><td>25.1%</td><td>99.3%</td></tr><tr><td style="text-align:left;padding-left:12px;">1/2凯利</td>
+        <td>¥10</td><td style="color:#e74c3c;font-weight:600;">-99.0%</td>
+        <td>304</td><td>25.7%</td><td>99.4%</td></tr><tr><td style="text-align:left;padding-left:12px;">全凯利</td>
+        <td>¥9</td><td style="color:#e74c3c;font-weight:600;">-99.1%</td>
+        <td>240</td><td>25.8%</td><td>99.4%</td></tr><tr><td style="text-align:left;padding-left:12px;">风控+1/4凯利</td>
+        <td>¥951</td><td style="color:#e74c3c;font-weight:600;">-4.9%</td>
+        <td>19</td><td>15.8%</td><td>30.3%</td></tr></tbody></table>
+  </div>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#e74c3c;"></span> 大小球(2.5) · 六种资金管理策略</div>
+    <table><thead><tr><th>策略</th><th>最终资金</th><th>ROI</th><th>下注数</th><th>命中率</th><th>最大回撤</th></tr></thead>
+    <tbody><tr><td style="text-align:left;padding-left:12px;">固定金额¥10</td>
+        <td>¥9</td><td style="color:#e74c3c;font-weight:600;">-99.1%</td>
+        <td>1225</td><td>41.5%</td><td>99.3%</td></tr><tr><td style="text-align:left;padding-left:12px;">固定比例2%</td>
+        <td>¥49</td><td style="color:#e74c3c;font-weight:600;">-95.1%</td>
+        <td>1366</td><td>40.9%</td><td>97.2%</td></tr><tr><td style="text-align:left;padding-left:12px;">1/4凯利</td>
+        <td>¥11</td><td style="color:#e74c3c;font-weight:600;">-98.9%</td>
+        <td>1124</td><td>41.6%</td><td>99.5%</td></tr><tr><td style="text-align:left;padding-left:12px;">1/2凯利</td>
+        <td>¥10</td><td style="color:#e74c3c;font-weight:600;">-99.0%</td>
+        <td>792</td><td>42.9%</td><td>99.7%</td></tr><tr><td style="text-align:left;padding-left:12px;">全凯利</td>
+        <td>¥9</td><td style="color:#e74c3c;font-weight:600;">-99.1%</td>
+        <td>719</td><td>44.2%</td><td>99.8%</td></tr><tr><td style="text-align:left;padding-left:12px;">风控+1/4凯利</td>
+        <td>¥1,049</td><td style="color:#4ecca3;font-weight:600;">4.9%</td>
+        <td>30</td><td>40.0%</td><td>30.1%</td></tr></tbody></table>
+    <p style="color:#4ecca3;font-size:12px;margin-top:8px;">⚠ 唯一正收益："风控+1/4凯利" ROI +4.9%，但仅 30 注，样本太小不具统计意义。</p>
+  </div>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#d4a835;"></span> 资金曲线 · 固定金额 ¥10/注</div>
+    <p style="color:#888;font-size:12px;margin-bottom:6px;">胜平负（644/2493中，25.8%）· 最终 ¥-2,455</p>
+    <svg viewBox="0 0 900 220" style="width:100%;height:auto;background:#111;border-radius:8px;">
+    <line x1="30" y1="39.4" x2="870" y2="39.4" stroke="#555" stroke-dasharray="5,5"/>
+    <text x="810" y="33.4" fill="#888" font-size="11">起始 ¥1000</text>
+    <path d="M30.0,39.4 L34.2,37.8 L38.4,34.6 L42.6,30.0 L46.8,33.6 L51.0,39.3 L55.2,42.6 L59.4,42.2 L63.6,45.1 L67.8,48.3 L72.0,45.1 L76.2,48.4 L80.4,47.0 L84.6,50.8 L88.8,51.0 L93.0,50.5 L97.2,52.6 L101.4,54.1 L105.6,55.5 L109.8,57.3 L114.0,58.9 L118.2,59.6 L122.4,63.1 L126.6,65.6 L130.8,68.9 L135.0,64.4 L139.2,62.0 L143.4,62.1 L147.6,60.9 L151.8,59.8 L156.0,64.1 L160.2,64.8 L164.4,65.2 L168.6,69.6 L172.8,71.8 L177.0,66.2 L181.2,67.2 L185.4,70.8 L189.6,71.0 L193.8,72.5 L198.0,71.2 L202.2,73.8 L206.4,76.9 L210.6,79.2 L214.8,79.1 L219.0,77.4 L223.2,78.1 L227.4,72.9 L231.6,73.7 L235.8,69.4 L240.0,72.4 L244.2,71.3 L248.4,72.3 L252.6,75.1 L256.8,78.4 L261.0,82.1 L265.2,79.2 L269.4,82.4 L273.6,87.4 L277.8,77.1 L282.0,79.6 L286.2,84.8 L290.4,88.5 L294.6,89.9 L298.8,93.6 L303.0,93.1 L307.2,95.3 L311.4,97.3 L315.6,97.3 L319.8,99.9 L324.0,101.1 L328.2,101.5 L332.4,102.1 L336.6,103.9 L340.8,105.5 L345.0,104.6 L349.2,103.8 L353.4,104.4 L357.6,101.8 L361.8,103.3 L366.0,100.5 L370.2,99.6 L374.4,97.0 L378.6,99.5 L382.8,103.8 L387.0,99.9 L391.2,98.8 L395.4,96.1 L399.6,99.1 L403.8,95.2 L408.0,99.8 L412.2,102.3 L416.4,104.7 L420.6,107.0 L424.8,106.0 L429.0,107.5 L433.2,107.6 L437.4,108.6 L441.6,103.2 L445.8,101.7 L450.0,102.3 L454.2,105.2 L458.4,108.2 L462.6,110.8 L466.8,111.9 L471.0,116.3 L475.2,116.8 L479.4,114.9 L483.6,116.9 L487.8,118.0 L492.0,117.1 L496.2,116.0 L500.4,114.4 L504.6,114.6 L508.8,112.4 L513.0,111.2 L517.2,112.4 L521.4,109.1 L525.6,109.2 L529.8,107.0 L534.0,109.5 L538.2,108.7 L542.4,109.0 L546.6,111.1 L550.8,115.9 L555.0,116.7 L559.2,119.3 L563.4,116.7 L567.6,115.9 L571.8,117.8 L576.0,117.5 L580.2,118.4 L584.4,120.3 L588.6,121.8 L592.8,119.2 L597.0,120.9 L601.2,123.6 L605.4,125.7 L609.6,124.0 L613.8,127.0 L618.0,130.7 L622.2,133.1 L626.4,133.2 L630.6,137.9 L634.8,137.7 L639.0,139.9 L643.2,139.8 L647.4,143.6 L651.6,144.0 L655.8,144.5 L660.0,144.6 L664.2,145.4 L668.4,143.4 L672.6,145.1 L676.8,141.6 L681.0,144.2 L685.2,141.9 L689.4,140.6 L693.6,141.1 L697.8,146.3 L702.0,149.3 L706.2,153.2 L710.4,152.2 L714.6,153.8 L718.8,148.7 L723.0,147.1 L727.2,145.8 L731.4,145.2 L735.6,148.7 L739.8,151.3 L744.0,148.8 L748.2,148.0 L752.4,150.1 L756.6,152.8 L760.8,154.9 L765.0,153.1 L769.2,152.6 L773.4,154.0 L777.6,156.1 L781.8,156.8 L786.0,161.3 L790.2,161.0 L794.4,163.0 L798.6,166.2 L802.8,165.1 L807.0,168.3 L811.2,170.4 L815.4,172.0 L819.6,174.4 L823.8,174.7 L828.0,177.0 L832.2,179.0 L836.4,181.3 L840.6,181.6 L844.8,181.3 L849.0,185.2 L853.2,187.1 L857.4,184.3 L861.6,185.6 L865.8,189.1 L870.0,190.0" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <text x="30" y="18" fill="#888" font-size="11">最高 ¥1,215</text>
+    <text x="30" y="212" fill="#888" font-size="11">最低 ¥-2,455</text></svg>
+    <p style="color:#888;font-size:12px;margin:10px 0 6px;">大小球（781/1937中，40.3%）· 最终 ¥-986</p>
+    <svg viewBox="0 0 900 220" style="width:100%;height:auto;background:#111;border-radius:8px;">
+    <line x1="30" y1="43.0" x2="870" y2="43.0" stroke="#555" stroke-dasharray="5,5"/>
+    <text x="810" y="37.0" fill="#888" font-size="11">起始 ¥1000</text>
+    <path d="M30.0,43.0 L34.2,40.8 L38.4,39.6 L42.6,35.8 L46.8,36.2 L51.0,33.4 L55.2,32.6 L59.4,32.8 L63.6,31.6 L67.8,33.9 L72.0,31.9 L76.2,34.6 L80.4,38.4 L84.6,39.2 L88.8,37.9 L93.0,38.0 L97.2,30.3 L101.4,30.0 L105.6,34.1 L109.8,38.4 L114.0,40.1 L118.2,42.3 L122.4,41.5 L126.6,42.6 L130.8,44.9 L135.0,50.3 L139.2,46.8 L143.4,54.2 L147.6,55.9 L151.8,57.8 L156.0,56.2 L160.2,53.4 L164.4,58.6 L168.6,58.5 L172.8,57.9 L177.0,57.4 L181.2,57.4 L185.4,57.6 L189.6,61.8 L193.8,66.8 L198.0,66.9 L202.2,66.2 L206.4,65.9 L210.6,69.4 L214.8,67.6 L219.0,69.4 L223.2,73.5 L227.4,74.3 L231.6,80.1 L235.8,83.5 L240.0,84.8 L244.2,84.5 L248.4,87.7 L252.6,91.9 L256.8,91.7 L261.0,90.8 L265.2,92.8 L269.4,98.0 L273.6,97.0 L277.8,97.6 L282.0,98.8 L286.2,99.0 L290.4,100.0 L294.6,99.9 L298.8,97.8 L303.0,97.6 L307.2,90.3 L311.4,91.0 L315.6,92.7 L319.8,95.1 L324.0,91.2 L328.2,94.6 L332.4,97.2 L336.6,99.7 L340.8,102.3 L345.0,95.8 L349.2,93.0 L353.4,95.2 L357.6,95.6 L361.8,100.0 L366.0,104.1 L370.2,104.0 L374.4,102.6 L378.6,106.8 L382.8,107.4 L387.0,107.7 L391.2,111.8 L395.4,113.2 L399.6,113.5 L403.8,113.4 L408.0,114.9 L412.2,115.2 L416.4,118.2 L420.6,118.0 L424.8,115.1 L429.0,112.2 L433.2,111.6 L437.4,112.3 L441.6,112.3 L445.8,109.4 L450.0,109.8 L454.2,107.1 L458.4,105.8 L462.6,105.3 L466.8,102.8 L471.0,104.7 L475.2,105.9 L479.4,108.1 L483.6,110.0 L487.8,108.5 L492.0,105.9 L496.2,108.1 L500.4,109.4 L504.6,109.7 L508.8,114.3 L513.0,115.7 L517.2,113.2 L521.4,116.9 L525.6,116.2 L529.8,117.5 L534.0,116.1 L538.2,118.3 L542.4,121.1 L546.6,118.3 L550.8,124.1 L555.0,128.3 L559.2,125.8 L563.4,128.5 L567.6,128.9 L571.8,125.7 L576.0,121.6 L580.2,122.7 L584.4,122.3 L588.6,124.5 L592.8,125.7 L597.0,129.2 L601.2,132.7 L605.4,130.6 L609.6,133.0 L613.8,129.9 L618.0,129.1 L622.2,127.2 L626.4,129.1 L630.6,128.6 L634.8,131.2 L639.0,134.9 L643.2,138.0 L647.4,136.6 L651.6,139.1 L655.8,139.3 L660.0,138.3 L664.2,137.2 L668.4,136.9 L672.6,135.9 L676.8,136.9 L681.0,136.7 L685.2,140.7 L689.4,141.0 L693.6,140.1 L697.8,139.1 L702.0,141.9 L706.2,142.1 L710.4,141.6 L714.6,138.6 L718.8,140.9 L723.0,146.2 L727.2,142.6 L731.4,143.6 L735.6,139.5 L739.8,143.8 L744.0,144.5 L748.2,148.2 L752.4,147.7 L756.6,149.9 L760.8,152.6 L765.0,159.2 L769.2,157.5 L773.4,156.0 L777.6,156.1 L781.8,158.8 L786.0,159.6 L790.2,164.7 L794.4,163.3 L798.6,165.9 L802.8,169.6 L807.0,170.3 L811.2,169.4 L815.4,171.8 L819.6,173.6 L823.8,174.3 L828.0,174.1 L832.2,172.1 L836.4,173.0 L840.6,176.9 L844.8,180.6 L849.0,179.8 L853.2,180.2 L857.4,183.9 L861.6,187.1 L865.8,189.0 L870.0,190.0" fill="none" stroke="#e67e22" stroke-width="2"/>
+    <text x="30" y="18" fill="#888" font-size="11">最高 ¥1,176</text>
+    <text x="30" y="212" fill="#888" font-size="11">最低 ¥-986</text></svg>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title" style="border-left-color:#d4a835;">🎯 模型校准分析 · 优势区间 vs 真实收益</div>
+  <p style="color:#888;font-size:13px;margin-bottom:14px;">"优势"= 模型概率 − 赔率隐含概率。理论收益按模型概率计算，真实收益按实际赛果结算。</p>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#d4a835;"></span> 胜平负 · 优势区间分析</div>
+    <table><thead><tr><th>优势区间</th><th>机会数</th><th>平均预测概率</th><th>实际命中率</th><th>理论收益率</th><th>真实收益率</th></tr></thead>
+    <tbody><tr><td>3-5%</td><td>399</td>
+        <td>34.1%</td><td>30.3%</td>
+        <td style="color:#7a9cc6;">+10.1%</td>
+        <td style="color:#e74c3c;font-weight:600;">-8.8%</td></tr><tr><td>5-10%</td><td>1089</td>
+        <td>36.0%</td><td>27.9%</td>
+        <td style="color:#7a9cc6;">+25.3%</td>
+        <td style="color:#e74c3c;font-weight:600;">-12.6%</td></tr><tr><td>10-15%</td><td>594</td>
+        <td>38.0%</td><td>24.4%</td>
+        <td style="color:#7a9cc6;">+52.3%</td>
+        <td style="color:#e74c3c;font-weight:600;">-15.6%</td></tr><tr><td>15-20%</td><td>277</td>
+        <td>40.5%</td><td>18.4%</td>
+        <td style="color:#7a9cc6;">+83.9%</td>
+        <td style="color:#e74c3c;font-weight:600;">-23.2%</td></tr><tr><td>>20%</td><td>134</td>
+        <td>44.7%</td><td>17.2%</td>
+        <td style="color:#7a9cc6;">+143.1%</td>
+        <td style="color:#e74c3c;font-weight:600;">-12.1%</td></tr></tbody></table>
+  </div>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#d4a835;"></span> 大小球 · 优势区间分析</div>
+    <table><thead><tr><th>优势区间</th><th>机会数</th><th>平均预测概率</th><th>实际命中率</th><th>理论收益率</th><th>真实收益率</th></tr></thead>
+    <tbody><tr><td>3-5%</td><td>455</td>
+        <td>50.1%</td><td>42.6%</td>
+        <td style="color:#7a9cc6;">+3.9%</td>
+        <td style="color:#e74c3c;font-weight:600;">-12.0%</td></tr><tr><td>5-10%</td><td>862</td>
+        <td>51.7%</td><td>42.7%</td>
+        <td style="color:#7a9cc6;">+11.3%</td>
+        <td style="color:#e74c3c;font-weight:600;">-8.7%</td></tr><tr><td>10-15%</td><td>393</td>
+        <td>52.5%</td><td>36.9%</td>
+        <td style="color:#7a9cc6;">+24.9%</td>
+        <td style="color:#e74c3c;font-weight:600;">-13.6%</td></tr><tr><td>15-20%</td><td>164</td>
+        <td>53.4%</td><td>31.1%</td>
+        <td style="color:#7a9cc6;">+40.7%</td>
+        <td style="color:#e74c3c;font-weight:600;">-17.1%</td></tr><tr><td>>20%</td><td>63</td>
+        <td>53.6%</td><td>36.5%</td>
+        <td style="color:#7a9cc6;">+71.8%</td>
+        <td style="color:#4ecca3;font-weight:600;">+20.0%</td></tr></tbody></table>
+  </div>
+
+  <div class="task-box" style="border-color:#e74c3c;">
+    <div class="task-title"><span class="dot" style="background:#e74c3c;"></span> 结论</div>
+    <ul style="color:#ccc;font-size:13px;padding-left:18px;line-height:2;">
+      <li>模型存在<strong style="color:#e74c3c;">系统性过度自信</strong>：自认优势越大（>20%），实际命中率反而越低（17.2% vs 预测 44.7%）。</li>
+      <li>所有常规资金管理策略下，<strong style="color:#e74c3c;">长期必亏</strong>（ROI −95% ~ −99%）。50.3% 的胜平负准确率无法覆盖博彩抽水。</li>
+      <li>消融实验显示 <strong style="color:#4ecca3;">+xG特征</strong> 可将收益率从 −5.8% 提升至 +37.4%，是唯一有潜力的改进方向。</li>
+      <li>当前模型定位：<strong>赔率复述器 + 数据展示</strong>，不具备实盘指导价值。需先解决校准问题，再谈 ROI。</li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-title" style="border-left-color:#7a9cc6;">🔬 消融实验 · 特征组合对比</div>
+  <table><thead><tr><th>特征组合</th><th>机会数</th><th>平均优势</th><th>命中率</th><th>收益率</th><th>最大回撤</th></tr></thead>
+  <tbody><tr><td style="text-align:left;padding-left:12px;">基础特征 (85)</td>
+    <td>10300</td><td>11.9%</td>
+    <td>28.9%</td>
+    <td style="color:#e74c3c;font-weight:600;">-5.8%</td>
+    <td>99.2%</td></tr><tr><td style="text-align:left;padding-left:12px;">+ xG特征 (105)</td>
+    <td>10264</td><td>18.5%</td>
+    <td>45.2%</td>
+    <td style="color:#4ecca3;font-weight:600;">+37.4%</td>
+    <td>10.5%</td></tr><tr><td style="text-align:left;padding-left:12px;">+ 市场特征 (145)</td>
+    <td>9990</td><td>10.9%</td>
+    <td>32.3%</td>
+    <td style="color:#4ecca3;font-weight:600;">+4.1%</td>
+    <td>96.3%</td></tr><tr><td style="text-align:left;padding-left:12px;">全部特征 (165)</td>
+    <td>10169</td><td>18.1%</td>
+    <td>47.1%</td>
+    <td style="color:#4ecca3;font-weight:600;">+40.5%</td>
+    <td>5.9%</td></tr></tbody></table>
+  <p style="color:#888;font-size:12px;margin-top:8px;">xG（期望进球）特征是唯一带来质变的信息源：收益率从 −5.8% 跃升至 +37.4%，回撤从 99.2% 降至 10.5%。</p>
+</div>
+
 <div class="section">
   <div class="section-title">数据概览</div>
   <table>
