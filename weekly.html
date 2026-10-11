@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来一周比赛预测 · 足球预测系统</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 8px 0 22px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px;
+  }
+  .toolbar .meta { font-size: 13px; color: var(--muted); }
+  .toolbar .spacer { margin-left: auto; }
+  .btn.sm { padding: 8px 16px; font-size: 13.5px; border-radius: 10px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted); transition: .16s;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip.on { background: var(--accent); color: #04140a; border-color: var(--accent); font-weight: 600; }
+
+  .daygroup { margin-bottom: 26px; }
+  .dayhead {
+    display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .dayhead h3 { margin: 0; font-size: 16px; }
+  .dayhead .cnt { font-size: 12.5px; color: var(--muted); }
+
+  .matches { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+  .match {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; transition: .2s;
+  }
+  .match:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .m-top { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .m-top .lg { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .m-top .time { margin-left: auto; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .teams { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .teams .t { font-size: 15px; font-weight: 600; flex: 1; }
+  .teams .t.a { text-align: right; }
+  .teams .vs { font-size: 11px; color: var(--muted); }
+  .bar { display: flex; height: 26px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .bar .seg { display: grid; place-items: center; font-size: 11.5px; font-weight: 700; color: #04140a; min-width: 34px; }
+  .seg.h { background: #22c55e; }
+  .seg.d { background: #f59e0b; }
+  .seg.a { background: #38bdf8; }
+  .probrow { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .picks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .pick { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .pick b { color: var(--text); }
+  .pick.main { border-color: rgba(34,197,94,.5); color: #22c55e; background: rgba(34,197,94,.08); }
+  .empty { text-align: center; padding: 60px 0; color: var(--muted); }
+  .notice {
+    background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.35); color: #fcd34d;
+    border-radius: var(--radius); padding: 16px 18px; font-size: 13.5px; margin-bottom: 20px;
+  }
+  .notice a { color: var(--accent); text-decoration: underline; }
+  .prog { max-width: 460px; margin: 60px auto; text-align: center; color: var(--muted); }
+  .prog .barwrap { height: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; margin-top: 14px; }
+  .prog .barfill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .4s; }
+  @media (max-width: 900px) { .matches { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo">🔮</span>
+      <span>未来一周比赛预测<small>Next 7 Days Predictions</small></span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">总览</a>
+      <a href="viewer.html">全页面查看器</a>
+      <a href="history.html">历史数据</a>
+      <a class="active" href="weekly.html">未来一周预测</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="padding:44px 0 8px">
+    <span class="eyebrow">● 五大联赛 · 未来 7 天</span>
+    <h1>未来一周比赛预测</h1>
+    <p class="lead">自动抓取英超、西甲、意甲、德甲、法甲未来一周的赛程，结合各队本赛季实力指标（攻防强度）与联赛主客场进球基准，用泊松模型给出胜平负概率、大小球与双方进球预测。</p>
+    <div class="hero-actions">
+      <button class="btn primary sm" id="reload">↻ 重新预测</button>
+      <a class="btn ghost sm" href="history.html">查看历史数据</a>
+    </div>
+  </section>
+
+  <div id="progress" class="prog">
+    <div class="spinner" style="width:34px;height:34px;margin:0 auto 16px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite"></div>
+    <div id="prog-text">正在连接数据源…</div>
+    <div class="barwrap"><div class="barfill" id="prog-fill"></div></div>
+  </div>
+
+  <div id="notice" style="display:none"></div>
+
+  <div id="controls" style="display:none">
+    <div class="toolbar">
+      <div class="chips" id="f-league"></div>
+      <span class="meta spacer" id="meta"></span>
+    </div>
+  </div>
+
+  <div id="result"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>数据来源：football-data.org · 模型：泊松攻防强度 · 仅供研究展示，不构成投注建议</span>
+    <span id="counter-slot"></span>
+  </div>
+</footer>
+
+<script src="assets/counter.js"></script>
+<script src="dashboards/prediction-dashboard-deploy/js/config.js" onerror="window.__noCfg=1"></script>
+<script>
+const API = 'https://api.football-data.org/v4';
+const KEY = (window.__noCfg ? 'b9bf4e1ea8594605ae422ce46c9b511e'
+  : (typeof CONFIG !== 'undefined' && CONFIG.FOOTBALL_API_KEY) || 'b9bf4e1ea8594605ae422ce46c9b511e');
+const CACHE_KEY = 'fp_weekly_cache_v1';
+const RUNS_KEY = 'fp_weekly_runs_v1';
+
+/* 联赛：API code、显示名、历史基准(hg=场均主队进球, ag=场均客队进球) */
+const LEAGUES = [
+  { code: 'PL',  name: '英超', key: 'E0',  hg: 1.555, ag: 1.280 },
+  { code: 'PD',  name: '西甲', key: 'SP1', hg: 1.486, ag: 1.133 },
+  { code: 'SA',  name: '意甲', key: 'I1',  hg: 1.481, ag: 1.262 },
+  { code: 'BL1', name: '德甲', key: 'D1',  hg: 1.722, ag: 1.374 },
+  { code: 'FL1', name: '法甲', key: 'F1',  hg: 1.513, ag: 1.215 }
+];
+const LEAGUE_BY_CODE = Object.fromEntries(LEAGUES.map(l => [l.code, l]));
+
+const state = { league: '', data: null };
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function hdrs() { return { 'X-Auth-Token': KEY }; }
+
+function isoDay(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().slice(0, 10);
+}
+function fmtDayLabel(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  const w = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+  return `${d.getMonth() + 1}月${d.getDate()}日 ${w}`;
+}
+function fmtTime(utc) {
+  const d = new Date(utc);
+  return d.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+/* ---------- 泊松模型 ---------- */
+function poisson(k, lam) {
+  let p = Math.exp(-lam);
+  for (let i = 1; i <= k; i++) p *= lam / i;
+  return p;
+}
+function predict(lg, home, away) {
+  const atkH = home.atk, defH = home.def, atkA = away.atk, defA = away.def;
+  const lamH = Math.max(0.15, lg.hg * atkH * defA);
+  const lamA = Math.max(0.15, lg.ag * atkA * defH);
+  const MAX = 8;
+  let pH = 0, pD = 0, pA = 0, pOver = 0, btts = 0;
+  const ph = [], pa = [];
+  for (let i = 0; i <= MAX; i++) { ph[i] = poisson(i, lamH); pa[i] = poisson(i, lamA); }
+  for (let i = 0; i <= MAX; i++) {
+    for (let j = 0; j <= MAX; j++) {
+      const p = ph[i] * pa[j];
+      if (i > j) pH += p; else if (i === j) pD += p; else pA += p;
+      if (i + j > 2.5) pOver += p;
+      if (i > 0 && j > 0) btts += p;
+    }
+  }
+  const s = pH + pD + pA;
+  pH /= s; pD /= s; pA /= s;
+  return { pH, pD, pA, pOver, btts, lamH, lamA };
+}
+
+/* ---------- 数据抓取 ---------- */
+async function apiGet(path, timeoutMs) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs || 15000);
+  try {
+    const r = await fetch(API + path, { headers: hdrs(), signal: ctrl.signal });
+    if (r.status === 429) { const e = new Error('RATE_LIMIT'); e.code = 'RATE_LIMIT'; throw e; }
+    if (!r.ok) { const e = new Error('HTTP ' + r.status); e.code = 'HTTP'; throw e; }
+    return await r.json();
+  } catch (err) {
+    if (err.name === 'AbortError') { const e = new Error('TIMEOUT'); e.code = 'NET'; throw e; }
+    if (!err.code) err.code = 'NET';
+    throw err;
+  } finally { clearTimeout(t); }
+}
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function norm(s) {
+  return String(s).toLowerCase()
+    .replace(/\b(fc|cf|ac|afc|sc|sv|vfl|vfb|tsg|bsc|rcd|ud|sd|rc|ssc|ss|as|us|sl|cd|ca|club)\b/g, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+/* 赛程：优先单次多联赛请求，失败则逐联赛回退（遇网络中断立即放弃，快速失败） */
+async function getFixtures(progress) {
+  const from = isoDay(0), to = isoDay(7);
+  const codes = LEAGUES.map(l => l.code).join(',');
+  progress('正在获取未来一周赛程…', 0.15);
+  try {
+    const j = await apiGet(`/matches?dateFrom=${from}&dateTo=${to}&competitions=${codes}`);
+    return { from, to, matches: j.matches || [] };
+  } catch (e) {
+    if (e.code === 'RATE_LIMIT') throw e;
+    const all = [];
+    for (let i = 0; i < LEAGUES.length; i++) {
+      progress(`赛程获取回退（${i + 1}/${LEAGUES.length}）`, 0.15 + 0.08 * i);
+      try {
+        const j = await apiGet(`/competitions/${LEAGUES[i].code}/matches?dateFrom=${from}&dateTo=${to}`);
+        all.push.apply(all, j.matches || []);
+      } catch (err) {
+        if (err.code === 'NET') { const e2 = new Error('NET'); e2.code = 'NET'; throw e2; }
+        if (err.code === 'RATE_LIMIT') throw err;
+      }
+      await sleep(6500);
+    }
+    if (!all.length) { const e2 = new Error('EMPTY'); e2.code = 'NET'; throw e2; }
+    return { from, to, matches: all };
+  }
+}
+
+/* 积分榜：仅请求有赛程的联赛，串行间隔以遵守免费版限流；网络中断即停止 */
+async function getStandings(codes, progress) {
+  const map = {};
+  for (let i = 0; i < codes.length; i++) {
+    const lg = LEAGUE_BY_CODE[codes[i]];
+    progress(`正在获取 ${lg.name} 积分榜（${i + 1}/${codes.length}）`, 0.55 + 0.4 * (i / codes.length));
+    try {
+      const j = await apiGet(`/competitions/${lg.code}/standings`);
+      const table = (j.standings || []).find(s => s.type === 'TOTAL');
+      const rows = table ? table.table : [];
+      const gfs = rows.map(r => r.goalsFor / Math.max(1, r.playedGames));
+      const gas = rows.map(r => r.goalsAgainst / Math.max(1, r.playedGames));
+      const avgGF = gfs.length ? gfs.reduce((a, b) => a + b, 0) / gfs.length : 1.35;
+      const avgGA = gas.length ? gas.reduce((a, b) => a + b, 0) / gas.length : 1.35;
+      map[lg.code] = {};
+      rows.forEach(r => {
+        const gpm = r.goalsFor / Math.max(1, r.playedGames);
+        const capm = r.goalsAgainst / Math.max(1, r.playedGames);
+        map[lg.code][norm(r.team.name)] = {
+          atk: clamp(gpm / avgGF, 0.5, 1.7),
+          def: clamp(capm / avgGA, 0.5, 1.7),
+          name: r.team.name
+        };
+      });
+    } catch (e) {
+      map[lg.code] = null; // 该联赛积分榜失败，预测回退到联赛均值
+      if (e.code === 'NET') { for (let k = i + 1; k < codes.length; k++) map[codes[k]] = null; break; }
+    }
+    if (i < codes.length - 1) await sleep(6500); // 免费版：约 10 次/分钟
+  }
+  return map;
+}
+
+/* ---------- 渲染 ---------- */
+function render() {
+  const D = state.data;
+  if (!D) return;
+  let list = D.items.filter(it => !state.league || it.code === state.league);
+  list.sort((a, b) => a.utc.localeCompare(b.utc));
+
+  const root = document.getElementById('result');
+  if (!list.length) {
+    root.innerHTML = `<div class="empty">未来 7 天内${state.league ? '该联赛' : ''}暂无可用赛程。</div>`;
+    return;
+  }
+
+  const byDay = {};
+  list.forEach(it => { const d = it.utc.slice(0, 10); (byDay[d] = byDay[d] || []).push(it); });
+
+  root.innerHTML = Object.keys(byDay).sort().map(day => `
+    <section class="daygroup">
+      <div class="dayhead"><h3>${fmtDayLabel(day)}</h3><span class="cnt">${byDay[day].length} 场</span></div>
+      <div class="matches">
+        ${byDay[day].map(renderMatch).join('')}
+      </div>
+    </section>`).join('');
+}
+
+function renderMatch(it) {
+  const p = it.p;
+  const hPct = Math.round(p.pH * 100), dPct = Math.round(p.pD * 100), aPct = 100 - hPct - dPct;
+  const best = Math.max(p.pH, p.pD, p.pA);
+  const bestLabel = p.pH === best ? '主胜' : (p.pD === best ? '平局' : '客胜');
+  const bestClass = p.pH === best ? 'h' : (p.pD === best ? 'd' : 'a');
+  return `
+    <div class="match">
+      <div class="m-top">
+        <span class="lg">${it.league}</span>
+        <span class="time">${fmtTime(it.utc)}</span>
+      </div>
+      <div class="teams">
+        <span class="t">${it.home}</span>
+        <span class="vs">VS</span>
+        <span class="t a">${it.away}</span>
+      </div>
+      <div class="bar">
+        <div class="seg h" style="flex:${Math.max(hPct, 4)}">${hPct}%</div>
+        <div class="seg d" style="flex:${Math.max(dPct, 4)}">${dPct}%</div>
+        <div class="seg a" style="flex:${Math.max(aPct, 4)}">${aPct}%</div>
+      </div>
+      <div class="probrow"><span>主胜</span><span>平局</span><span>客胜</span></div>
+      <div class="picks">
+        <span class="pick main">推荐 <b>${bestLabel}</b> ${Math.round(best * 100)}%</span>
+        <span class="pick">大2.5 <b>${Math.round(p.pOver * 100)}%</b></span>
+        <span class="pick">双方进球 <b>${Math.round(p.btts * 100)}%</b></span>
+        <span class="pick">预期比分 <b>${p.lamH.toFixed(1)}-${p.lamA.toFixed(1)}</b></span>
+      </div>
+    </div>`;
+}
+
+function buildControls() {
+  const el = document.getElementById('f-league');
+  const present = new Set((state.data.items || []).map(i => i.code));
+  const chips = [{ k: '', t: '全部' }].concat(LEAGUES.filter(l => present.has(l.code)).map(l => ({ k: l.code, t: l.name })));
+  el.innerHTML = chips.map(c => `<span class="chip${c.k === '' ? ' on' : ''}" data-k="${c.k}">${c.t}</span>`).join('');
+  el.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    el.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+    c.classList.add('on');
+    state.league = c.dataset.k;
+    render();
+  }));
+  const n = state.data.items.length;
+  const lgCount = present.size;
+  document.getElementById('meta').textContent =
+    `${state.data.from} ~ ${state.data.to} · 共 ${n} 场 · ${lgCount} 个联赛`;
+  document.getElementById('controls').style.display = 'block';
+}
+
+function showNotice(html) {
+  const n = document.getElementById('notice');
+  n.style.display = 'block';
+  n.innerHTML = `<div class="notice">${html}</div>`;
+}
+
+/* ---------- 主流程 ---------- */
+function prog(text, ratio) {
+  document.getElementById('prog-text').textContent = text;
+  document.getElementById('prog-fill').style.width = Math.round((ratio || 0) * 100) + '%';
+}
+
+async function run(force) {
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('notice').style.display = 'none';
+  document.getElementById('result').innerHTML = '';
+  prog('正在初始化…', 0.02);
+
+  // 缓存：30 分钟内复用，避免频繁触发限流
+  if (!force) {
+    try {
+      const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (c && Date.now() - c.ts < 30 * 60 * 1000) {
+        state.data = c.data;
+        finish();
+        return;
+      }
+    } catch (e) {}
+  }
+
+  try {
+    const fx = await getFixtures(prog);
+
+    const upcoming = fx.matches.filter(m =>
+      ['SCHEDULED', 'TIMED', 'POSTPONED'].includes(m.status) &&
+      m.competition && LEAGUE_BY_CODE[m.competition.code]);
+    const present = [];
+    upcoming.forEach(m => { const c = m.competition.code; if (present.indexOf(c) < 0) present.push(c); });
+
+    let standings = {};
+    if (present.length) standings = await getStandings(present, prog);
+
+    prog('正在计算预测…', 0.98);
+
+    const items = upcoming.map(m => {
+      const code = m.competition.code;
+      const lg = LEAGUE_BY_CODE[code];
+      const tbl = standings[code];
+      const nh = norm(m.homeTeam.name), na = norm(m.awayTeam.name);
+      const H = (tbl && (tbl[nh] || findByAlias(tbl, nh))) || { atk: 1, def: 1 };
+      const A = (tbl && (tbl[na] || findByAlias(tbl, na))) || { atk: 1, def: 1 };
+      return {
+        code, league: lg.name, utc: m.utcDate,
+        home: m.homeTeam.shortName || m.homeTeam.name,
+        away: m.awayTeam.shortName || m.awayTeam.name,
+        p: predict(lg, H, A)
+      };
+    });
+    state.data = { from: fx.from, to: fx.to, items, ts: Date.now() };
+
+    // 记录运行日志（本地）
+    try {
+      const runs = JSON.parse(localStorage.getItem(RUNS_KEY) || '[]');
+      runs.unshift({ ts: Date.now(), n: items.length });
+      localStorage.setItem(RUNS_KEY, JSON.stringify(runs.slice(0, 20)));
+    } catch (e) {}
+
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: state.data })); } catch (e) {}
+    finish();
+  } catch (err) {
+    document.getElementById('progress').style.display = 'none';
+    const rate = err.code === 'RATE_LIMIT' || err.message === 'RATE_LIMIT';
+    const msg = rate
+      ? '数据源请求频率超限（football-data.org 免费版 10 次/分钟）。请稍等约 1 分钟后点击「重新预测」。'
+      : '暂时无法获取实时赛程（网络受限 / API Key 失效 / 数据源不可达）。';
+    showNotice(`${msg}<br><br>你可以：
+      <a href="dashboards/prediction-dashboard-deploy/index.html">打开实时预测看板</a> ·
+      <a href="apps/football-odds-mvp-desktop/pages/weekly-prediction-v2.html">查看本周预测（历史版本）</a> ·
+      <a href="history.html">浏览历史数据</a>`);
+  }
+}
+
+function findByAlias(tbl, key) {
+  for (const k in tbl) {
+    if (!tbl.hasOwnProperty(k)) continue;
+    if (k.includes(key) || key.includes(k)) return tbl[k];
+  }
+  return null;
+}
+
+function finish() {
+  document.getElementById('progress').style.display = 'none';
+  buildControls();
+  render();
+}
+
+document.getElementById('reload').addEventListener('click', () => run(true));
+run(false);
+</script>
+</body>
+</html>

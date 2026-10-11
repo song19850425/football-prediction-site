@@ -16,8 +16,8 @@
     <nav class="topnav">
       <a class="active" href="index.html">总览</a>
       <a href="viewer.html">全页面查看器</a>
-      <a href="#g-核心应用与看板">核心看板</a>
-      <a href="#g-数据%20%2F%20模型%20%2F%20回测">模型与回测</a>
+      <a href="weekly.html">未来一周预测</a>
+      <a href="history.html">历史数据</a>
     </nav>
   </div>
 </header>
@@ -28,16 +28,18 @@
     <h1>一个链接，看遍整套足球预测系统的所有页面</h1>
     <p class="lead">从实时数据看板、桌面与移动端产品原型，到 V3 预测手册、历次预测与验证报告、模型回测与升级方案——全部页面已归集到统一入口，点击即可在线访问。</p>
     <div class="hero-actions">
-      <a class="btn primary" href="viewer.html">进入全页面查看器 →</a>
+      <a class="btn primary" href="weekly.html">未来一周预测 →</a>
+      <a class="btn ghost" href="viewer.html">进入全页面查看器</a>
+      <a class="btn ghost" href="history.html">历史数据浏览</a>
       <a class="btn ghost" href="dashboards/prediction-dashboard-deploy/index.html" target="_blank" rel="noopener">打开实时看板</a>
-      <a class="btn ghost" href="apps/v3-prediction-manual/pages/manual.html" target="_blank" rel="noopener">阅读预测手册</a>
     </div>
 
-    <div class="stats">
+    <div class="stats" style="grid-template-columns:repeat(5,1fr)">
       <div class="stat"><b id="s-pages">—</b><span>在线页面</span></div>
       <div class="stat"><b>3</b><span>交互应用 / 看板</span></div>
-      <div class="stat"><b>7</b><span>功能分区</span></div>
-      <div class="stat"><b>100%</b><span>静态可访问</span></div>
+      <div class="stat"><b>8</b><span>功能分区</span></div>
+      <div class="stat"><b>17,937</b><span>历史比赛数据</span></div>
+      <div class="stat"><b id="s-visits" data-counter="short">—</b><span>本站访问次数</span></div>
     </div>
   </section>
 
@@ -47,10 +49,12 @@
 <footer>
   <div class="wrap">
     <span>足球预测系统 · 所有页面均为静态部署，无需登录即可查看。</span>
+    <span id="counter-slot"></span>
     <span>仅供机器学习与数据研究展示 · 不构成任何投注建议</span>
   </div>
 </footer>
 
+<script src="assets/counter.js"></script>
 <script src="assets/site.js"></script>
 <script>
   renderPortal();

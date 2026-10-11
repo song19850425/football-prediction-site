@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史数据浏览 · 足球预测系统</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .filterbar {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; margin: 8px 0 22px;
+  }
+  .filterbar label { font-size: 12.5px; color: var(--muted); display: block; margin-bottom: 4px; }
+  .filterbar .fld { display: flex; flex-direction: column; }
+  select, input[type="search"] {
+    background: var(--bg-2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 12px; font-size: 13.5px; outline: none; min-width: 130px;
+  }
+  select:focus, input[type="search"]:focus { border-color: var(--accent); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted); transition: .16s;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip.on { background: var(--accent); color: #04140a; border-color: var(--accent); font-weight: 600; }
+  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 22px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .kpi b { display: block; font-size: 22px; letter-spacing: -.5px; }
+  .kpi span { font-size: 12px; color: var(--muted); }
+  .tablewrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    position: sticky; top: 0; background: rgba(11,18,32,.96); backdrop-filter: blur(8px);
+    text-align: left; padding: 12px 14px; font-size: 12px; letter-spacing: .5px;
+    color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,.05); white-space: nowrap; }
+  tbody tr:hover { background: var(--card-hover); }
+  .lg { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .score { font-weight: 700; letter-spacing: 1px; }
+  .res { font-weight: 700; padding: 1px 8px; border-radius: 6px; font-size: 12px; }
+  .res.H { color: #22c55e; background: rgba(34,197,94,.12); }
+  .res.D { color: #f59e0b; background: rgba(245,158,11,.12); }
+  .res.A { color: #38bdf8; background: rgba(56,189,248,.12); }
+  .odds { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pager { display: flex; align-items: center; gap: 10px; justify-content: center; padding: 18px 0 8px; flex-wrap: wrap; }
+  .pager button {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 14px; cursor: pointer; font-size: 13.5px;
+  }
+  .pager button:hover:not(:disabled) { border-color: var(--accent); }
+  .pager button:disabled { opacity: .4; cursor: not-allowed; }
+  .pager .info { font-size: 13px; color: var(--muted); }
+  .loading { text-align: center; padding: 80px 0; color: var(--muted); }
+  .spinner {
+    width: 34px; height: 34px; margin: 0 auto 16px; border-radius: 50%;
+    border: 3px solid var(--border); border-top-color: var(--accent); animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(3, 1fr); }
+    .hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo">📚</span>
+      <span>历史数据浏览<small>Historical Match Data</small></span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">总览</a>
+      <a href="viewer.html">全页面查看器</a>
+      <a class="active" href="history.html">历史数据</a>
+      <a href="weekly.html">未来一周预测</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="padding:44px 0 8px">
+    <span class="eyebrow">● 五大联赛 · 10 个赛季</span>
+    <h1>历史比赛数据浏览</h1>
+    <p class="lead">汇总英超、西甲、意甲、德甲、法甲 2016/17–2025/26 共 10 个赛季的完整比赛结果与欧赔（B365）。支持按联赛、赛季、球队、赛果筛选，并实时统计胜平负分布、场均进球与大小球比例。</p>
+    <div class="stats">
+      <div class="stat"><b id="k-matches">—</b><span>历史比赛</span></div>
+      <div class="stat"><b id="k-seasons">—</b><span>赛季</span></div>
+      <div class="stat"><b>5</b><span>联赛</span></div>
+      <div class="stat"><b id="k-odds">—</b><span>含欧赔场次</span></div>
+    </div>
+  </section>
+
+  <div id="loading" class="loading"><div class="spinner"></div>正在加载历史数据…</div>
+
+  <div id="app" style="display:none">
+    <div class="filterbar">
+      <div class="fld">
+        <label>联赛</label>
+        <div class="chips" id="f-league"></div>
+      </div>
+      <div class="fld">
+        <label>赛季</label>
+        <select id="f-season"></select>
+      </div>
+      <div class="fld">
+        <label>赛果</label>
+        <select id="f-result">
+          <option value="">全部</option>
+          <option value="H">主胜</option>
+          <option value="D">平局</option>
+          <option value="A">客胜</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>球队（主/客队名）</label>
+        <input type="search" id="f-team" placeholder="如 Liverpool / 拜仁">
+      </div>
+      <div class="fld">
+        <label>排序</label>
+        <select id="f-order">
+          <option value="desc">日期（新→旧）</option>
+          <option value="asc">日期（旧→新）</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>联赛</th>
+            <th>主队</th>
+            <th>比分</th>
+            <th>客队</th>
+            <th>结果</th>
+            <th class="hide-sm">欧赔 主/平/客</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <button id="p-first">« 首页</button>
+      <button id="p-prev">上一页</button>
+      <span class="info" id="p-info"></span>
+      <button id="p-next">下一页</button>
+      <button id="p-last">末页 »</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>数据来源：football-data.co.uk（公开数据集）· 仅供机器学习与数据研究展示</span>
+    <span id="counter-slot"></span>
+  </div>
+</footer>
+
+<script src="assets/counter.js"></script>
+<script>
+const PAGE_SIZE = 50;
+let DATA = null;
+let filtered = [];
+let page = 1;
+const state = { league: "", season: "", result: "", team: "", order: "desc" };
+
+function fmtDate(iso) { return iso.replace(/-/g, '/'); }
+function pct(n, d) { return d ? (n / d * 100).toFixed(1) + '%' : '—'; }
+
+function applyFilter() {
+  const t = state.team.trim().toLowerCase();
+  filtered = DATA.matches.filter(m =>
+    (!state.league || m.l === state.league) &&
+    (!state.season || m.s === state.season) &&
+    (!state.result || m.r === state.result) &&
+    (!t || m.h.toLowerCase().includes(t) || m.a.toLowerCase().includes(t))
+  );
+  if (state.order === "asc") filtered = filtered.slice().reverse();
+  page = 1;
+  renderKpis();
+  renderTable();
+}
+
+function renderKpis() {
+  const n = filtered.length;
+  let h = 0, d = 0, a = 0, goals = 0, over25 = 0, btts = 0, withOdds = 0;
+  for (const m of filtered) {
+    if (m.r === 'H') h++; else if (m.r === 'D') d++; else if (m.r === 'A') a++;
+    const g = m.hg + m.ag;
+    goals += g;
+    if (g > 2.5) over25++;
+    if (m.hg > 0 && m.ag > 0) btts++;
+    if (m.oh && m.od && m.oa) withOdds++;
+  }
+  const cards = [
+    ['筛选场次', n.toLocaleString()],
+    ['主胜 / 平 / 客胜', `${pct(h, n)} / ${pct(d, n)} / ${pct(a, n)}`],
+    ['场均进球', n ? (goals / n).toFixed(2) : '—'],
+    ['大 2.5 球', pct(over25, n)],
+    ['双方进球(BTTS)', pct(btts, n)],
+    ['含欧赔场次', withOdds.toLocaleString()]
+  ];
+  document.getElementById('kpis').innerHTML = cards.map(c =>
+    `<div class="kpi"><b>${c[1]}</b><span>${c[0]}</span></div>`).join('');
+}
+
+function renderTable() {
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (page > pages) page = pages;
+  const start = (page - 1) * PAGE_SIZE;
+  const slice = filtered.slice(start, start + PAGE_SIZE);
+  document.getElementById('tbody').innerHTML = slice.map(m => `
+    <tr>
+      <td class="odds">${fmtDate(m.d)}</td>
+      <td><span class="lg">${DATA.leagues[m.l] || m.l}</span></td>
+      <td>${m.h}</td>
+      <td class="score">${m.hg} - ${m.ag}</td>
+      <td>${m.a}</td>
+      <td><span class="res ${m.r}">${m.r === 'H' ? '主胜' : m.r === 'D' ? '平' : '客胜'}</span></td>
+      <td class="odds hide-sm">${m.oh || '—'} / ${m.od || '—'} / ${m.oa || '—'}</td>
+    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:40px">没有符合条件的比赛</td></tr>`;
+  document.getElementById('p-info').textContent =
+    total ? `第 ${page} / ${pages} 页 · 共 ${total.toLocaleString()} 场` : '无数据';
+  document.getElementById('p-first').disabled = page <= 1;
+  document.getElementById('p-prev').disabled = page <= 1;
+  document.getElementById('p-next').disabled = page >= pages;
+  document.getElementById('p-last').disabled = page >= pages;
+}
+
+function initControls() {
+  const lg = document.getElementById('f-league');
+  const opts = [{ k: '', t: '全部' }].concat(Object.entries(DATA.leagues).map(([k, v]) => ({ k, t: v })));
+  lg.innerHTML = opts.map(o => `<span class="chip${o.k === '' ? ' on' : ''}" data-k="${o.k}">${o.t}</span>`).join('');
+  lg.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    lg.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+    c.classList.add('on');
+    state.league = c.dataset.k;
+    applyFilter();
+  }));
+
+  const ss = document.getElementById('f-season');
+  ss.innerHTML = '<option value="">全部赛季</option>' +
+    DATA.seasons.slice().reverse().map(s => `<option value="${s}">${s}</option>`).join('');
+  ss.addEventListener('change', e => { state.season = e.target.value; applyFilter(); });
+
+  document.getElementById('f-result').addEventListener('change', e => { state.result = e.target.value; applyFilter(); });
+  document.getElementById('f-order').addEventListener('change', e => { state.order = e.target.value; applyFilter(); });
+  let deb;
+  document.getElementById('f-team').addEventListener('input', e => {
+    clearTimeout(deb);
+    deb = setTimeout(() => { state.team = e.target.value; applyFilter(); }, 220);
+  });
+
+  document.getElementById('p-first').onclick = () => { page = 1; renderTable(); scrollTop(); };
+  document.getElementById('p-prev').onclick = () => { page--; renderTable(); scrollTop(); };
+  document.getElementById('p-next').onclick = () => { page++; renderTable(); scrollTop(); };
+  document.getElementById('p-last').onclick = () => { page = Math.ceil(filtered.length / PAGE_SIZE); renderTable(); scrollTop(); };
+}
+function scrollTop() { window.scrollTo({ top: 300, behavior: 'smooth' }); }
+
+fetch('data/history.json')
+  .then(r => r.json())
+  .then(d => {
+    DATA = d;
+    document.getElementById('k-matches').textContent = d.count.toLocaleString();
+    document.getElementById('k-seasons').textContent = d.seasons.length;
+    const withOdds = d.matches.filter(m => m.oh && m.od && m.oa).length;
+    document.getElementById('k-odds').textContent = withOdds.toLocaleString();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initControls();
+    applyFilter();
+  })
+  .catch(err => {
+    document.getElementById('loading').innerHTML = '⚠️ 历史数据加载失败：' + err.message;
+  });
+</script>
+</body>
+</html>
