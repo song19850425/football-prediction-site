@@ -1,5 +1,7 @@
 # 足球预测系统 · 在线总览
 
+**语言 / Language：** 中文 | [English](README.en.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+
 > 一个链接，看遍整套足球预测系统的所有页面。
 
 **在线访问：** https://song19850425.github.io/football-prediction-site/

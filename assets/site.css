@@ -156,8 +156,32 @@ footer { padding: 40px 0 60px; color: var(--muted); font-size: 13px; border-top:
 footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
 @media (max-width: 900px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
   .viewer { grid-template-columns: 1fr; }
   .vsidebar { max-height: 42vh; border-right: 0; border-bottom: 1px solid var(--border); }
   .vstage { height: 58vh; }
+}
+
+/* ---------- 语言切换器 ---------- */
+.langsel {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  margin-left: 4px; padding: 7px 28px 7px 13px; font-size: 12.5px; font-family: inherit;
+  color: var(--muted); background: var(--card); border: 1px solid var(--border);
+  border-radius: 999px; cursor: pointer; outline: none; line-height: 1.2;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2393a0b8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; background-size: 9px 6px;
+}
+.langsel:hover { color: var(--text); border-color: var(--border-strong); }
+.langsel:focus { border-color: var(--accent); }
+.langsel option { background: #0b1220; color: var(--text); }
+
+/* 允许较长译文换行，避免撑破卡片 / chips */
+.stat span, .stat b, .kpi span, .kpi b, .chip, .card h3, .card p { overflow-wrap: anywhere; }
+.chip { max-width: 100%; }
+
+@media (max-width: 640px) {
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .kpis { grid-template-columns: repeat(2, 1fr) !important; }
+  .topnav { gap: 6px; }
+  .langsel { padding: 6px 26px 6px 11px; }
 }

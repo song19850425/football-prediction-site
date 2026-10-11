@@ -69,31 +69,32 @@
   <div class="topbar-inner">
     <div class="brand">
       <span class="logo">🔮</span>
-      <span>未来一周比赛预测<small>Next 7 Days Predictions</small></span>
+      <span><span data-i18n="weekly.brand">未来一周比赛预测</span><small data-i18n="weekly.brandSub">Next 7 Days Predictions</small></span>
     </div>
     <nav class="topnav">
-      <a href="index.html">总览</a>
-      <a href="viewer.html">全页面查看器</a>
-      <a href="history.html">历史数据</a>
-      <a class="active" href="weekly.html">未来一周预测</a>
+      <a href="index.html" data-i18n="nav.overview">总览</a>
+      <a href="viewer.html" data-i18n="nav.viewer">全页面查看器</a>
+      <a href="history.html" data-i18n="nav.history">历史数据</a>
+      <a class="active" href="weekly.html" data-i18n="nav.weekly">未来一周预测</a>
+      <select class="langsel" id="langsel" aria-label="Language"></select>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero" style="padding:44px 0 8px">
-    <span class="eyebrow">● 五大联赛 · 未来 7 天</span>
-    <h1>未来一周比赛预测</h1>
-    <p class="lead">自动抓取英超、西甲、意甲、德甲、法甲未来一周的赛程，结合各队本赛季实力指标（攻防强度）与联赛主客场进球基准，用泊松模型给出胜平负概率、大小球与双方进球预测。</p>
+    <span class="eyebrow" data-i18n="weekly.eyebrow">● 五大联赛 · 未来 7 天</span>
+    <h1 data-i18n="weekly.h1">未来一周比赛预测</h1>
+    <p class="lead" data-i18n="weekly.lead">自动抓取英超、西甲、意甲、德甲、法甲未来一周的赛程，结合各队本赛季实力指标（攻防强度）与联赛主客场进球基准，用泊松模型给出胜平负概率、大小球与双方进球预测。</p>
     <div class="hero-actions">
-      <button class="btn primary sm" id="reload">↻ 重新预测</button>
-      <a class="btn ghost sm" href="history.html">查看历史数据</a>
+      <button class="btn primary sm" id="reload" data-i18n="weekly.reload">↻ 重新预测</button>
+      <a class="btn ghost sm" href="history.html" data-i18n="weekly.viewHistory">查看历史数据</a>
     </div>
   </section>
 
   <div id="progress" class="prog">
     <div class="spinner" style="width:34px;height:34px;margin:0 auto 16px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite"></div>
-    <div id="prog-text">正在连接数据源…</div>
+    <div id="prog-text" data-i18n="weekly.progConnect">正在连接数据源…</div>
     <div class="barwrap"><div class="barfill" id="prog-fill"></div></div>
   </div>
 
@@ -111,12 +112,13 @@
 
 <footer>
   <div class="wrap">
-    <span>数据来源：football-data.org · 模型：泊松攻防强度 · 仅供研究展示，不构成投注建议</span>
+    <span data-i18n="weekly.footer1">数据来源：football-data.org · 模型：泊松攻防强度 · 仅供研究展示，不构成投注建议</span>
     <span id="counter-slot"></span>
   </div>
 </footer>
 
 <script src="assets/counter.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="dashboards/prediction-dashboard-deploy/js/config.js" onerror="window.__noCfg=1"></script>
 <script>
 const API = 'https://api.football-data.org/v4';
@@ -137,6 +139,10 @@ const LEAGUE_BY_CODE = Object.fromEntries(LEAGUES.map(l => [l.code, l]));
 
 const state = { league: '', data: null };
 
+function T(k, vars) { return I18N.fmt(I18N.t(k), vars); }
+function lgName(n) { const m = I18N.leagues[I18N.current()] || {}; return m[n] || n; }
+const TIME_LOCALE = { zh: 'zh-CN', en: 'en-US', ja: 'ja-JP', ko: 'ko-KR' };
+
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function hdrs() { return { 'X-Auth-Token': KEY }; }
 
@@ -146,13 +152,18 @@ function isoDay(offset) {
   return d.toISOString().slice(0, 10);
 }
 function fmtDayLabel(iso) {
+  const lang = I18N.current();
   const d = new Date(iso + 'T12:00:00');
-  const w = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
-  return `${d.getMonth() + 1}月${d.getDate()}日 ${w}`;
+  const w = (I18N.ui[lang].weekdays || I18N.ui.zh.weekdays)[d.getDay()];
+  const m = d.getMonth() + 1, day = d.getDate();
+  if (lang === 'en') return `${w} ${(I18N.ui.en.monthsShort || [])[m] || m} ${day}`;
+  if (lang === 'ko') return `${m}월 ${day}일 ${w}`;
+  if (lang === 'ja') return `${m}月${day}日(${w})`;
+  return `${m}月${day}日 ${w}`;
 }
 function fmtTime(utc) {
   const d = new Date(utc);
-  return d.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleString(TIME_LOCALE[I18N.current()] || 'zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
 /* ---------- 泊松模型 ---------- */
@@ -208,7 +219,7 @@ function norm(s) {
 async function getFixtures(progress) {
   const from = isoDay(0), to = isoDay(7);
   const codes = LEAGUES.map(l => l.code).join(',');
-  progress('正在获取未来一周赛程…', 0.15);
+  progress(T('weekly.progFixtures'), 0.15);
   try {
     const j = await apiGet(`/matches?dateFrom=${from}&dateTo=${to}&competitions=${codes}`);
     return { from, to, matches: j.matches || [] };
@@ -216,7 +227,7 @@ async function getFixtures(progress) {
     if (e.code === 'RATE_LIMIT') throw e;
     const all = [];
     for (let i = 0; i < LEAGUES.length; i++) {
-      progress(`赛程获取回退（${i + 1}/${LEAGUES.length}）`, 0.15 + 0.08 * i);
+      progress(T('weekly.progFallback', { i: i + 1, n: LEAGUES.length }), 0.15 + 0.08 * i);
       try {
         const j = await apiGet(`/competitions/${LEAGUES[i].code}/matches?dateFrom=${from}&dateTo=${to}`);
         all.push.apply(all, j.matches || []);
@@ -236,7 +247,7 @@ async function getStandings(codes, progress) {
   const map = {};
   for (let i = 0; i < codes.length; i++) {
     const lg = LEAGUE_BY_CODE[codes[i]];
-    progress(`正在获取 ${lg.name} 积分榜（${i + 1}/${codes.length}）`, 0.55 + 0.4 * (i / codes.length));
+    progress(T('weekly.progStandings', { name: lgName(lg.name), i: i + 1, n: codes.length }), 0.55 + 0.4 * (i / codes.length));
     try {
       const j = await apiGet(`/competitions/${lg.code}/standings`);
       const table = (j.standings || []).find(s => s.type === 'TOTAL');
@@ -273,7 +284,7 @@ function render() {
 
   const root = document.getElementById('result');
   if (!list.length) {
-    root.innerHTML = `<div class="empty">未来 7 天内${state.league ? '该联赛' : ''}暂无可用赛程。</div>`;
+    root.innerHTML = `<div class="empty">${T('weekly.emptyFmt', { league: state.league ? I18N.t('weekly.thisLeague') : '' })}</div>`;
     return;
   }
 
@@ -282,7 +293,7 @@ function render() {
 
   root.innerHTML = Object.keys(byDay).sort().map(day => `
     <section class="daygroup">
-      <div class="dayhead"><h3>${fmtDayLabel(day)}</h3><span class="cnt">${byDay[day].length} 场</span></div>
+      <div class="dayhead"><h3>${fmtDayLabel(day)}</h3><span class="cnt">${byDay[day].length} ${I18N.t('weekly.matchUnit')}</span></div>
       <div class="matches">
         ${byDay[day].map(renderMatch).join('')}
       </div>
@@ -293,12 +304,12 @@ function renderMatch(it) {
   const p = it.p;
   const hPct = Math.round(p.pH * 100), dPct = Math.round(p.pD * 100), aPct = 100 - hPct - dPct;
   const best = Math.max(p.pH, p.pD, p.pA);
-  const bestLabel = p.pH === best ? '主胜' : (p.pD === best ? '平局' : '客胜');
+  const bestLabel = p.pH === best ? I18N.t('prob.H') : (p.pD === best ? I18N.t('prob.D') : I18N.t('prob.A'));
   const bestClass = p.pH === best ? 'h' : (p.pD === best ? 'd' : 'a');
   return `
     <div class="match">
       <div class="m-top">
-        <span class="lg">${it.league}</span>
+        <span class="lg">${lgName(it.league)}</span>
         <span class="time">${fmtTime(it.utc)}</span>
       </div>
       <div class="teams">
@@ -311,12 +322,12 @@ function renderMatch(it) {
         <div class="seg d" style="flex:${Math.max(dPct, 4)}">${dPct}%</div>
         <div class="seg a" style="flex:${Math.max(aPct, 4)}">${aPct}%</div>
       </div>
-      <div class="probrow"><span>主胜</span><span>平局</span><span>客胜</span></div>
+      <div class="probrow"><span>${I18N.t('prob.H')}</span><span>${I18N.t('prob.D')}</span><span>${I18N.t('prob.A')}</span></div>
       <div class="picks">
-        <span class="pick main">推荐 <b>${bestLabel}</b> ${Math.round(best * 100)}%</span>
-        <span class="pick">大2.5 <b>${Math.round(p.pOver * 100)}%</b></span>
-        <span class="pick">双方进球 <b>${Math.round(p.btts * 100)}%</b></span>
-        <span class="pick">预期比分 <b>${p.lamH.toFixed(1)}-${p.lamA.toFixed(1)}</b></span>
+        <span class="pick main">${I18N.t('pick.recommend')} <b>${bestLabel}</b> ${Math.round(best * 100)}%</span>
+        <span class="pick">${I18N.t('pick.over')} <b>${Math.round(p.pOver * 100)}%</b></span>
+        <span class="pick">${I18N.t('pick.btts')} <b>${Math.round(p.btts * 100)}%</b></span>
+        <span class="pick">${I18N.t('pick.score')} <b>${p.lamH.toFixed(1)}-${p.lamA.toFixed(1)}</b></span>
       </div>
     </div>`;
 }
@@ -324,8 +335,8 @@ function renderMatch(it) {
 function buildControls() {
   const el = document.getElementById('f-league');
   const present = new Set((state.data.items || []).map(i => i.code));
-  const chips = [{ k: '', t: '全部' }].concat(LEAGUES.filter(l => present.has(l.code)).map(l => ({ k: l.code, t: l.name })));
-  el.innerHTML = chips.map(c => `<span class="chip${c.k === '' ? ' on' : ''}" data-k="${c.k}">${c.t}</span>`).join('');
+  const chips = [{ k: '', t: I18N.t('weekly.controlsAll') }].concat(LEAGUES.filter(l => present.has(l.code)).map(l => ({ k: l.code, t: lgName(l.name) })));
+  el.innerHTML = chips.map(c => `<span class="chip${c.k === state.league ? ' on' : ''}" data-k="${c.k}">${c.t}</span>`).join('');
   el.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
     el.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
     c.classList.add('on');
@@ -335,7 +346,7 @@ function buildControls() {
   const n = state.data.items.length;
   const lgCount = present.size;
   document.getElementById('meta').textContent =
-    `${state.data.from} ~ ${state.data.to} · 共 ${n} 场 · ${lgCount} 个联赛`;
+    T('weekly.metaFmt', { from: state.data.from, to: state.data.to, n: n, lg: lgCount });
   document.getElementById('controls').style.display = 'block';
 }
 
@@ -356,7 +367,7 @@ async function run(force) {
   document.getElementById('controls').style.display = 'none';
   document.getElementById('notice').style.display = 'none';
   document.getElementById('result').innerHTML = '';
-  prog('正在初始化…', 0.02);
+  prog(T('weekly.progInit'), 0.02);
 
   // 缓存：30 分钟内复用，避免频繁触发限流
   if (!force) {
@@ -382,7 +393,7 @@ async function run(force) {
     let standings = {};
     if (present.length) standings = await getStandings(present, prog);
 
-    prog('正在计算预测…', 0.98);
+    prog(T('weekly.progCalc'), 0.98);
 
     const items = upcoming.map(m => {
       const code = m.competition.code;
@@ -412,13 +423,11 @@ async function run(force) {
   } catch (err) {
     document.getElementById('progress').style.display = 'none';
     const rate = err.code === 'RATE_LIMIT' || err.message === 'RATE_LIMIT';
-    const msg = rate
-      ? '数据源请求频率超限（football-data.org 免费版 10 次/分钟）。请稍等约 1 分钟后点击「重新预测」。'
-      : '暂时无法获取实时赛程（网络受限 / API Key 失效 / 数据源不可达）。';
-    showNotice(`${msg}<br><br>你可以：
-      <a href="dashboards/prediction-dashboard-deploy/index.html">打开实时预测看板</a> ·
-      <a href="apps/football-odds-mvp-desktop/pages/weekly-prediction-v2.html">查看本周预测（历史版本）</a> ·
-      <a href="history.html">浏览历史数据</a>`);
+    const msg = rate ? I18N.t('weekly.errRate') : I18N.t('weekly.errGeneric');
+    showNotice(`${msg}<br><br>${I18N.t('weekly.errYouCan')}
+      <a href="dashboards/prediction-dashboard-deploy/index.html">${I18N.t('notice.dashboard')}</a> ·
+      <a href="apps/football-odds-mvp-desktop/pages/weekly-prediction-v2.html">${I18N.t('notice.weeklyHist')}</a> ·
+      <a href="history.html">${I18N.t('notice.history')}</a>`);
   }
 }
 
@@ -437,6 +446,16 @@ function finish() {
 }
 
 document.getElementById('reload').addEventListener('click', () => run(true));
+
+/* 语言切换：重渲染受语言影响的动态区块 */
+document.addEventListener('i18n:change', () => {
+  if (state.data) { buildControls(); render(); }
+  else {
+    const pt = document.getElementById('prog-text');
+    if (pt && document.getElementById('progress').style.display !== 'none') pt.textContent = I18N.t('weekly.progConnect');
+  }
+});
+
 run(false);
 </script>
 </body>

@@ -15,10 +15,11 @@
   <div class="topbar-inner">
     <div class="brand">
       <span class="logo">⚽</span>
-      <span>全页面查看器<small>点击左侧任意页面即可内嵌预览</small></span>
+      <span><span data-i18n="viewer.brand">全页面查看器</span><small data-i18n="viewer.brandSub">点击左侧任意页面即可内嵌预览</small></span>
     </div>
     <nav class="topnav">
-      <a href="index.html">← 返回总览</a>
+      <a href="index.html" data-i18n="nav.back">← 返回总览</a>
+      <select class="langsel" id="langsel" aria-label="Language"></select>
     </nav>
   </div>
 </header>
@@ -26,21 +27,22 @@
 <div class="viewer">
   <aside class="vsidebar">
     <div class="vhead">
-      <h2>页面目录（<span id="vcount"></span>）</h2>
-      <input class="vsearch" id="vsearch" type="search" placeholder="搜索页面…">
+      <h2><span data-i18n="viewer.toc">页面目录</span>（<span id="vcount"></span>）</h2>
+      <input class="vsearch" id="vsearch" type="search" placeholder="搜索页面…" data-i18n="viewer.search" data-i18n-attr="placeholder">
     </div>
     <div id="vsidebar-list"></div>
   </aside>
 
   <section class="vstage">
     <div class="vbar">
-      <span class="path" id="vpath">正在加载…</span>
-      <a class="open-ext" id="vext" href="#" target="_blank" rel="noopener">在新标签打开 ↗</a>
+      <span class="path" id="vpath" data-i18n="viewer.loading">正在加载…</span>
+      <a class="open-ext" id="vext" href="#" target="_blank" rel="noopener" data-i18n="viewer.openExt">在新标签打开 ↗</a>
     </div>
     <iframe id="vframe" title="页面预览" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
   </section>
 </div>
 
+<script src="assets/i18n.js"></script>
 <script src="assets/site.js"></script>
 <script>
   renderViewer();

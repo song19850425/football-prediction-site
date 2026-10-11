@@ -95,21 +95,31 @@ function countAll() { return PAGES.reduce((n, g) => n + g.items.length, 0); }
 function renderPortal() {
   const root = document.getElementById("portal-root");
   if (!root) return;
+  const lang = (typeof I18N !== "undefined") ? I18N.current() : "zh";
+  const gmap = (I18N.groups[lang] || {});
+  const imap = (I18N.items[lang] || {});
+  const countLabel = I18N.t("portal.count");
+  const openLabel = I18N.t("portal.open");
   root.innerHTML = PAGES.map(g => `
     <section class="section" id="g-${encodeURIComponent(g.group)}">
       <div class="section-head">
-        <h2>${g.icon} ${g.group}</h2>
-        <span class="count">${g.items.length} 个页面</span>
+        <h2>${g.icon} ${gmap[g.group] || g.group}</h2>
+        <span class="count">${g.items.length} ${countLabel}</span>
       </div>
       <div class="grid">
-        ${g.items.map(it => `
+        ${g.items.map(it => {
+          const ov = imap[it.href];
+          const title = (ov && ov.t) || it.title;
+          const desc = (ov && ov.d) || it.desc;
+          return `
           <a class="card" href="${it.href}" target="_blank" rel="noopener">
             <span class="ico">${it.icon}</span>
-            <h3>${it.title}</h3>
-            <p>${it.desc}</p>
+            <h3>${title}</h3>
+            <p>${desc}</p>
             <span class="tag">${it.tag}</span>
-            <span class="open">打开页面 →</span>
-          </a>`).join("")}
+            <span class="open">${openLabel}</span>
+          </a>`;
+        }).join("")}
       </div>
     </section>`).join("");
 }
@@ -121,21 +131,26 @@ function renderViewer() {
   const ext = document.getElementById("vext");
   if (!side) return;
 
-  let active = null;
+  const lang = (typeof I18N !== "undefined") ? I18N.current() : "zh";
+  const gmap = (I18N.groups[lang] || {});
+  const imap = (I18N.items[lang] || {});
+  const titleOf = it => (lang === "zh" || !imap[it.href]) ? it.title : imap[it.href].t;
+  const descOf = it => (lang === "zh" || !imap[it.href]) ? it.desc : imap[it.href].d;
+
   const flat = [];
   PAGES.forEach(g => g.items.forEach(it => flat.push(it)));
 
   function build(filter) {
     const f = (filter || "").trim().toLowerCase();
     side.innerHTML = PAGES.map(g => {
-      const items = g.items.filter(it => !f || (it.title + it.desc + it.tag).toLowerCase().includes(f));
+      const items = g.items.filter(it => !f || (titleOf(it) + descOf(it) + it.tag).toLowerCase().includes(f));
       if (!items.length) return "";
-      return `<div class="vgroup">${g.icon} ${g.group}</div>` +
+      return `<div class="vgroup">${g.icon} ${gmap[g.group] || g.group}</div>` +
         items.map(it => {
           const idx = flat.indexOf(it);
-          return `<a class="vitem" data-idx="${idx}">${it.icon} ${it.title}</a>`;
+          return `<a class="vitem" data-idx="${idx}">${it.icon} ${titleOf(it)}</a>`;
         }).join("");
-    }).join("") || `<div class="vgroup">没有匹配的页面</div>`;
+    }).join("") || `<div class="vgroup">${I18N.t("viewer.noMatch")}</div>`;
     bind();
   }
 
@@ -143,7 +158,7 @@ function renderViewer() {
     const it = flat[idx];
     if (!it) return;
     frame.src = it.href;
-    bar.textContent = it.title + "  ·  " + it.href;
+    bar.textContent = titleOf(it) + "  ·  " + it.href;
     ext.href = it.href;
     document.querySelectorAll(".vitem").forEach(e => e.classList.toggle("active", Number(e.dataset.idx) === idx));
   }

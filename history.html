@@ -78,62 +78,63 @@
   <div class="topbar-inner">
     <div class="brand">
       <span class="logo">📚</span>
-      <span>历史数据浏览<small>Historical Match Data</small></span>
+      <span><span data-i18n="history.brand">历史数据浏览</span><small data-i18n="history.brandSub">Historical Match Data</small></span>
     </div>
     <nav class="topnav">
-      <a href="index.html">总览</a>
-      <a href="viewer.html">全页面查看器</a>
-      <a class="active" href="history.html">历史数据</a>
-      <a href="weekly.html">未来一周预测</a>
+      <a href="index.html" data-i18n="nav.overview">总览</a>
+      <a href="viewer.html" data-i18n="nav.viewer">全页面查看器</a>
+      <a class="active" href="history.html" data-i18n="nav.history">历史数据</a>
+      <a href="weekly.html" data-i18n="nav.weekly">未来一周预测</a>
+      <select class="langsel" id="langsel" aria-label="Language"></select>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero" style="padding:44px 0 8px">
-    <span class="eyebrow">● 五大联赛 · 10 个赛季</span>
-    <h1>历史比赛数据浏览</h1>
-    <p class="lead">汇总英超、西甲、意甲、德甲、法甲 2016/17–2025/26 共 10 个赛季的完整比赛结果与欧赔（B365）。支持按联赛、赛季、球队、赛果筛选，并实时统计胜平负分布、场均进球与大小球比例。</p>
+    <span class="eyebrow" data-i18n="history.eyebrow">● 五大联赛 · 10 个赛季</span>
+    <h1 data-i18n="history.h1">历史比赛数据浏览</h1>
+    <p class="lead" data-i18n="history.lead">汇总英超、西甲、意甲、德甲、法甲 2016/17–2025/26 共 10 个赛季的完整比赛结果与欧赔（B365）。支持按联赛、赛季、球队、赛果筛选，并实时统计胜平负分布、场均进球与大小球比例。</p>
     <div class="stats">
-      <div class="stat"><b id="k-matches">—</b><span>历史比赛</span></div>
-      <div class="stat"><b id="k-seasons">—</b><span>赛季</span></div>
-      <div class="stat"><b>5</b><span>联赛</span></div>
-      <div class="stat"><b id="k-odds">—</b><span>含欧赔场次</span></div>
+      <div class="stat"><b id="k-matches">—</b><span data-i18n="history.stat.matches">历史比赛</span></div>
+      <div class="stat"><b id="k-seasons">—</b><span data-i18n="history.stat.seasons">赛季</span></div>
+      <div class="stat"><b>5</b><span data-i18n="history.stat.leagues">联赛</span></div>
+      <div class="stat"><b id="k-odds">—</b><span data-i18n="history.stat.odds">含欧赔场次</span></div>
     </div>
   </section>
 
-  <div id="loading" class="loading"><div class="spinner"></div>正在加载历史数据…</div>
+  <div id="loading" class="loading"><div class="spinner"></div><span data-i18n="history.loading">正在加载历史数据…</span></div>
 
   <div id="app" style="display:none">
     <div class="filterbar">
       <div class="fld">
-        <label>联赛</label>
+        <label data-i18n="filter.league">联赛</label>
         <div class="chips" id="f-league"></div>
       </div>
       <div class="fld">
-        <label>赛季</label>
+        <label data-i18n="filter.season">赛季</label>
         <select id="f-season"></select>
       </div>
       <div class="fld">
-        <label>赛果</label>
+        <label data-i18n="filter.result">赛果</label>
         <select id="f-result">
-          <option value="">全部</option>
-          <option value="H">主胜</option>
-          <option value="D">平局</option>
-          <option value="A">客胜</option>
+          <option value="" data-i18n="filter.all">全部</option>
+          <option value="H" data-i18n="res.H">主胜</option>
+          <option value="D" data-i18n="res.D">平局</option>
+          <option value="A" data-i18n="res.A">客胜</option>
         </select>
       </div>
       <div class="fld">
-        <label>球队（主/客队名）</label>
+        <label data-i18n="filter.team">球队（主/客队名）</label>
         <select id="f-team">
-          <option value="">全部球队</option>
+          <option value="" data-i18n="filter.allTeams">全部球队</option>
         </select>
       </div>
       <div class="fld">
-        <label>排序</label>
+        <label data-i18n="filter.order">排序</label>
         <select id="f-order">
-          <option value="desc">日期（新→旧）</option>
-          <option value="asc">日期（旧→新）</option>
+          <option value="desc" data-i18n="order.desc">日期（新→旧）</option>
+          <option value="asc" data-i18n="order.asc">日期（旧→新）</option>
         </select>
       </div>
     </div>
@@ -145,13 +146,13 @@
       <table>
         <thead>
           <tr>
-            <th>日期</th>
-            <th>联赛</th>
-            <th>主队</th>
-            <th>比分</th>
-            <th>客队</th>
-            <th>结果</th>
-            <th class="hide-sm">欧赔 主/平/客</th>
+            <th data-i18n="th.date">日期</th>
+            <th data-i18n="th.league">联赛</th>
+            <th data-i18n="th.home">主队</th>
+            <th data-i18n="th.score">比分</th>
+            <th data-i18n="th.away">客队</th>
+            <th data-i18n="th.result">结果</th>
+            <th class="hide-sm" data-i18n="th.odds">欧赔 主/平/客</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -159,29 +160,33 @@
     </div>
 
     <div class="pager">
-      <button id="p-first">« 首页</button>
-      <button id="p-prev">上一页</button>
+      <button id="p-first" data-i18n="page.first">« 首页</button>
+      <button id="p-prev" data-i18n="page.prev">上一页</button>
       <span class="info" id="p-info"></span>
-      <button id="p-next">下一页</button>
-      <button id="p-last">末页 »</button>
+      <button id="p-next" data-i18n="page.next">下一页</button>
+      <button id="p-last" data-i18n="page.last">末页 »</button>
     </div>
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>数据来源：football-data.co.uk（公开数据集）· 仅供机器学习与数据研究展示</span>
+    <span data-i18n="history.footer1">数据来源：football-data.co.uk（公开数据集）· 仅供机器学习与数据研究展示</span>
     <span id="counter-slot"></span>
   </div>
 </footer>
 
 <script src="assets/counter.js"></script>
+<script src="assets/i18n.js"></script>
 <script>
 const PAGE_SIZE = 50;
 let DATA = null;
 let filtered = [];
 let page = 1;
 const state = { league: "", season: "", result: "", team: "", order: "desc" };
+
+function T(k, vars) { return I18N.fmt(I18N.t(k), vars); }
+function lgName(n) { const m = I18N.leagues[I18N.current()] || {}; return m[n] || n; }
 
 function fmtDate(iso) { return iso.replace(/-/g, '/'); }
 function pct(n, d) { return d ? (n / d * 100).toFixed(1) + '%' : '—'; }
@@ -197,7 +202,7 @@ function rebuildTeamSelect() {
     set.add(m.h); set.add(m.a);
   }
   const teams = [...set].sort((a, b) => a.localeCompare(b, 'zh'));
-  sel.innerHTML = '<option value="">全部球队</option>' +
+  sel.innerHTML = '<option value="">' + I18N.t('filter.allTeams') + '</option>' +
     teams.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
   if (state.team && teams.includes(state.team)) sel.value = state.team;
   else { sel.value = ''; state.team = ''; }
@@ -275,7 +280,7 @@ function lineChartSVG(opt) {
     });
   });
   const legend = opt.lines.map(l => `<span><i style="background:${l.color}"></i>${l.name}</span>`).join("");
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || "走势图")}">${grid}${xlab}${body}</svg><div class="legend">${legend}</div>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || I18N.t("chart.aria"))}">${grid}${xlab}${body}</svg><div class="legend">${legend}</div>`;
 }
 
 function renderTrend() {
@@ -287,20 +292,20 @@ function renderTrend() {
   if (!hasData) { el.innerHTML = ""; return; }
   el.innerHTML = `
     <div class="chart-card">
-      <h4>场均进球 · 大 2.5 球占比</h4>
-      <div class="sub">横轴为赛季 · 左轴场均进球 · 右轴大球占比</div>
-      ${lineChartSVG({ aria: "场均进球与大2.5球占比走势", labels, lines: [
-        { name: "场均进球", color: "#22c55e", axis: "L", vals: s.map(x => x.avg) },
-        { name: "大 2.5 球 %", color: "#38bdf8", axis: "R", vals: s.map(x => x.over) }
+      <h4>${I18N.t("chart1.title")}</h4>
+      <div class="sub">${I18N.t("chart1.sub")}</div>
+      ${lineChartSVG({ aria: I18N.t("chart1.aria"), labels, lines: [
+        { name: I18N.t("legend.avgGoals"), color: "#22c55e", axis: "L", vals: s.map(x => x.avg) },
+        { name: I18N.t("legend.over25pct"), color: "#38bdf8", axis: "R", vals: s.map(x => x.over) }
       ] })}
     </div>
     <div class="chart-card">
-      <h4>主胜 / 平 / 客胜 占比</h4>
-      <div class="sub">横轴为赛季 · 纵轴为各赛果占比（%）</div>
-      ${lineChartSVG({ aria: "胜平负占比走势", labels, lines: [
-        { name: "主胜 %", color: "#22c55e", axis: "R", vals: s.map(x => x.h) },
-        { name: "平 %", color: "#f59e0b", axis: "R", vals: s.map(x => x.d) },
-        { name: "客胜 %", color: "#38bdf8", axis: "R", vals: s.map(x => x.a) }
+      <h4>${I18N.t("chart2.title")}</h4>
+      <div class="sub">${I18N.t("chart2.sub")}</div>
+      ${lineChartSVG({ aria: I18N.t("chart2.aria"), labels, lines: [
+        { name: I18N.t("legend.hPct"), color: "#22c55e", axis: "R", vals: s.map(x => x.h) },
+        { name: I18N.t("legend.dPct"), color: "#f59e0b", axis: "R", vals: s.map(x => x.d) },
+        { name: I18N.t("legend.aPct"), color: "#38bdf8", axis: "R", vals: s.map(x => x.a) }
       ] })}
     </div>`;
 }
@@ -317,12 +322,12 @@ function renderKpis() {
     if (m.oh && m.od && m.oa) withOdds++;
   }
   const cards = [
-    ['筛选场次', n.toLocaleString()],
-    ['主胜 / 平 / 客胜', `${pct(h, n)} / ${pct(d, n)} / ${pct(a, n)}`],
-    ['场均进球', n ? (goals / n).toFixed(2) : '—'],
-    ['大 2.5 球', pct(over25, n)],
-    ['双方进球(BTTS)', pct(btts, n)],
-    ['含欧赔场次', withOdds.toLocaleString()]
+    [I18N.t('kpi.filtered'), n.toLocaleString()],
+    [I18N.t('kpi.wdl'), `${pct(h, n)} / ${pct(d, n)} / ${pct(a, n)}`],
+    [I18N.t('kpi.avgGoals'), n ? (goals / n).toFixed(2) : '—'],
+    [I18N.t('kpi.over25'), pct(over25, n)],
+    [I18N.t('kpi.btts'), pct(btts, n)],
+    [I18N.t('kpi.withOdds'), withOdds.toLocaleString()]
   ];
   document.getElementById('kpis').innerHTML = cards.map(c =>
     `<div class="kpi"><b>${c[1]}</b><span>${c[0]}</span></div>`).join('');
@@ -337,25 +342,25 @@ function renderTable() {
   document.getElementById('tbody').innerHTML = slice.map(m => `
     <tr>
       <td class="odds">${fmtDate(m.d)}</td>
-      <td><span class="lg">${DATA.leagues[m.l] || m.l}</span></td>
+      <td><span class="lg">${lgName(DATA.leagues[m.l] || m.l)}</span></td>
       <td>${m.h}</td>
       <td class="score">${m.hg} - ${m.ag}</td>
       <td>${m.a}</td>
-      <td><span class="res ${m.r}">${m.r === 'H' ? '主胜' : m.r === 'D' ? '平' : '客胜'}</span></td>
+      <td><span class="res ${m.r}">${m.r === 'H' ? I18N.t('res.H') : m.r === 'D' ? I18N.t('res.Dshort') : I18N.t('res.A')}</span></td>
       <td class="odds hide-sm">${m.oh || '—'} / ${m.od || '—'} / ${m.oa || '—'}</td>
-    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:40px">没有符合条件的比赛</td></tr>`;
+    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:40px">${I18N.t('table.empty')}</td></tr>`;
   document.getElementById('p-info').textContent =
-    total ? `第 ${page} / ${pages} 页 · 共 ${total.toLocaleString()} 场` : '无数据';
+    total ? T('page.infoFmt', { p: page, n: pages, t: total.toLocaleString() }) : I18N.t('page.noData');
   document.getElementById('p-first').disabled = page <= 1;
   document.getElementById('p-prev').disabled = page <= 1;
   document.getElementById('p-next').disabled = page >= pages;
   document.getElementById('p-last').disabled = page >= pages;
 }
 
-function initControls() {
+function buildLeagueChips() {
   const lg = document.getElementById('f-league');
-  const opts = [{ k: '', t: '全部' }].concat(Object.entries(DATA.leagues).map(([k, v]) => ({ k, t: v })));
-  lg.innerHTML = opts.map(o => `<span class="chip${o.k === '' ? ' on' : ''}" data-k="${o.k}">${o.t}</span>`).join('');
+  const opts = [{ k: '', t: I18N.t('filter.all') }].concat(Object.entries(DATA.leagues).map(([k, v]) => ({ k, t: lgName(v) })));
+  lg.innerHTML = opts.map(o => `<span class="chip${o.k === state.league ? ' on' : ''}" data-k="${o.k}">${o.t}</span>`).join('');
   lg.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
     lg.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
     c.classList.add('on');
@@ -363,12 +368,20 @@ function initControls() {
     rebuildTeamSelect();
     applyFilter();
   }));
+}
 
+function buildSeasonSelect() {
   const ss = document.getElementById('f-season');
-  ss.innerHTML = '<option value="">全部赛季</option>' +
+  ss.innerHTML = '<option value="">' + I18N.t('filter.allSeasons') + '</option>' +
     DATA.seasons.slice().reverse().map(s => `<option value="${s}">${s}</option>`).join('');
-  ss.addEventListener('change', e => { state.season = e.target.value; applyFilter(); });
+  if (state.season) ss.value = state.season;
+}
 
+function initControls() {
+  buildLeagueChips();
+  buildSeasonSelect();
+
+  document.getElementById('f-season').addEventListener('change', e => { state.season = e.target.value; applyFilter(); });
   document.getElementById('f-result').addEventListener('change', e => { state.result = e.target.value; applyFilter(); });
   document.getElementById('f-order').addEventListener('change', e => { state.order = e.target.value; applyFilter(); });
   document.getElementById('f-team').addEventListener('change', e => { state.team = e.target.value; applyFilter(); });
@@ -395,8 +408,19 @@ fetch('data/history.json')
     applyFilter();
   })
   .catch(err => {
-    document.getElementById('loading').innerHTML = '⚠️ 历史数据加载失败：' + err.message;
+    document.getElementById('loading').innerHTML = I18N.t('history.loadFail') + err.message;
   });
+
+/* 语言切换：重渲染受语言影响的动态区块（保留当前筛选与分页） */
+document.addEventListener('i18n:change', () => {
+  if (!DATA) return;
+  buildLeagueChips();
+  buildSeasonSelect();
+  rebuildTeamSelect();
+  renderKpis();
+  renderTrend();
+  renderTable();
+});
 </script>
 </body>
 </html>
