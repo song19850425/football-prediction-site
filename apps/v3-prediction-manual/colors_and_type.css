@@ -1,0 +1,93 @@
+/* V3.0 预测系统 - 产品说明书 Brand CSS */
+/* 专业科技文档风格 · 深色主题 */
+
+:root {
+  /* --- Brand Primary --- */
+  --v3-brand: #059669;
+  --v3-brand-50: #ecfdf5;
+  --v3-brand-100: #d1fae5;
+  --v3-brand-200: #a7f3d0;
+  --v3-brand-300: #6ee7b7;
+  --v3-brand-400: #34d399;
+  --v3-brand-500: #10b981;
+  --v3-brand-600: #059669;
+  --v3-brand-700: #047857;
+  --v3-brand-800: #065f46;
+  --v3-brand-900: #064e3b;
+  --v3-brand-ink: #ffffff;
+
+  /* --- Surface / Background --- */
+  --v3-bg: #0a0a0f;
+  --v3-surface: #111118;
+  --v3-surface-2: #18181f;
+  --v3-surface-3: #1f1f28;
+
+  /* --- Ink --- */
+  --v3-ink: #e8e8ed;
+  --v3-ink-2: #9ca3af;
+  --v3-ink-3: #6b7280;
+
+  /* --- Line / Border --- */
+  --v3-line: #27272a;
+  --v3-line-2: #3f3f46;
+
+  /* --- Radius --- */
+  --v3-radius-sm: 4px;
+  --v3-radius-md: 8px;
+  --v3-radius-lg: 16px;
+  --v3-radius-full: 9999px;
+
+  /* --- Shadow --- */
+  --v3-shadow-1: 0 1px 2px rgba(0,0,0,.3);
+  --v3-shadow-2: 0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* --- State --- */
+  --v3-state-success: #10b981;
+  --v3-state-warning: #f59e0b;
+  --v3-state-error: #ef4444;
+  --v3-state-info: #3b82f6;
+
+  /* --- Semantic Aliases --- */
+  --v3-background: var(--v3-bg);
+  --v3-foreground: var(--v3-ink);
+  --v3-card: var(--v3-surface);
+  --v3-card-foreground: var(--v3-ink);
+  --v3-popover: var(--v3-surface-2);
+  --v3-popover-foreground: var(--v3-ink);
+  --v3-primary: var(--v3-brand-500);
+  --v3-primary-foreground: var(--v3-brand-ink);
+  --v3-muted: var(--v3-surface-2);
+  --v3-muted-foreground: var(--v3-ink-2);
+  --v3-border: var(--v3-line);
+  --v3-input: var(--v3-surface-2);
+  --v3-ring: var(--v3-brand-500);
+  --v3-radius: var(--v3-radius-md);
+}
+
+/* --- Typography --- */
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v3-ink);
+  background: var(--v3-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: clamp(28px, 3.5vw, 48px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+
+.caption { font-size: 13px; line-height: 1.5; color: var(--v3-ink-3); }
+.mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+
+/* --- Layout --- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 768px) { .container { padding: 0 16px; } }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--v3-bg); }
+::-webkit-scrollbar-thumb { background: var(--v3-line-2); border-radius: 3px; }

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赔率系统预测 | V3.0</title>
+    <style id="theme-vars">
+/* V3.0 预测系统 - 产品说明书 Brand CSS */
+/* 专业科技文档风格 · 深色主题 */
+
+:root {
+  /* --- Brand Primary --- */
+  --v3-brand: #059669;
+  --v3-brand-50: #ecfdf5;
+  --v3-brand-100: #d1fae5;
+  --v3-brand-200: #a7f3d0;
+  --v3-brand-300: #6ee7b7;
+  --v3-brand-400: #34d399;
+  --v3-brand-500: #10b981;
+  --v3-brand-600: #059669;
+  --v3-brand-700: #047857;
+  --v3-brand-800: #065f46;
+  --v3-brand-900: #064e3b;
+  --v3-brand-ink: #ffffff;
+
+  /* --- Surface / Background --- */
+  --v3-bg: #0a0a0f;
+  --v3-surface: #111118;
+  --v3-surface-2: #18181f;
+  --v3-surface-3: #1f1f28;
+
+  /* --- Ink --- */
+  --v3-ink: #e8e8ed;
+  --v3-ink-2: #9ca3af;
+  --v3-ink-3: #6b7280;
+
+  /* --- Line / Border --- */
+  --v3-line: #27272a;
+  --v3-line-2: #3f3f46;
+
+  /* --- Radius --- */
+  --v3-radius-sm: 4px;
+  --v3-radius-md: 8px;
+  --v3-radius-lg: 16px;
+  --v3-radius-full: 9999px;
+
+  /* --- Shadow --- */
+  --v3-shadow-1: 0 1px 2px rgba(0,0,0,.3);
+  --v3-shadow-2: 0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* --- State --- */
+  --v3-state-success: #10b981;
+  --v3-state-warning: #f59e0b;
+  --v3-state-error: #ef4444;
+  --v3-state-info: #3b82f6;
+
+  /* --- Semantic Aliases --- */
+  --v3-background: var(--v3-bg);
+  --v3-foreground: var(--v3-ink);
+  --v3-card: var(--v3-surface);
+  --v3-card-foreground: var(--v3-ink);
+  --v3-popover: var(--v3-surface-2);
+  --v3-popover-foreground: var(--v3-ink);
+  --v3-primary: var(--v3-brand-500);
+  --v3-primary-foreground: var(--v3-brand-ink);
+  --v3-muted: var(--v3-surface-2);
+  --v3-muted-foreground: var(--v3-ink-2);
+  --v3-border: var(--v3-line);
+  --v3-input: var(--v3-surface-2);
+  --v3-ring: var(--v3-brand-500);
+  --v3-radius: var(--v3-radius-md);
+}
+
+/* --- Typography --- */
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v3-ink);
+  background: var(--v3-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: clamp(28px, 3.5vw, 48px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+
+.caption { font-size: 13px; line-height: 1.5; color: var(--v3-ink-3); }
+.mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+
+/* --- Layout --- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 768px) { .container { padding: 0 16px; } }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--v3-bg); }
+::-webkit-scrollbar-thumb { background: var(--v3-line-2); border-radius: 3px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--v3-background);
+    --color-foreground: var(--v3-foreground);
+    --color-card: var(--v3-card);
+    --color-card-foreground: var(--v3-card-foreground);
+    --color-popover: var(--v3-popover);
+    --color-popover-foreground: var(--v3-popover-foreground);
+    --color-primary: var(--v3-primary);
+    --color-primary-foreground: var(--v3-primary-foreground);
+    --color-muted: var(--v3-muted);
+    --color-muted-foreground: var(--v3-muted-foreground);
+    --color-border: var(--v3-border);
+    --color-input: var(--v3-input);
+    --color-ring: var(--v3-ring);
+    --radius-sm: var(--v3-radius-sm);
+    --radius-md: var(--v3-radius-md);
+    --radius-lg: var(--v3-radius-lg);
+  }
+  @layer base {
+    body { background: var(--v3-background); color: var(--v3-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--v3-background); }
+      .text-background { color: var(--v3-background); }
+      .border-background { border-color: var(--v3-background); }
+      .ring-background { --tw-ring-color: var(--v3-background); }
+      .bg-foreground { background-color: var(--v3-foreground); }
+      .text-foreground { color: var(--v3-foreground); }
+      .border-foreground { border-color: var(--v3-foreground); }
+      .ring-foreground { --tw-ring-color: var(--v3-foreground); }
+      .bg-card { background-color: var(--v3-card); }
+      .text-card { color: var(--v3-card); }
+      .border-card { border-color: var(--v3-card); }
+      .ring-card { --tw-ring-color: var(--v3-card); }
+      .bg-card-foreground { background-color: var(--v3-card-foreground); }
+      .text-card-foreground { color: var(--v3-card-foreground); }
+      .border-card-foreground { border-color: var(--v3-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--v3-card-foreground); }
+      .bg-popover { background-color: var(--v3-popover); }
+      .text-popover { color: var(--v3-popover); }
+      .border-popover { border-color: var(--v3-popover); }
+      .ring-popover { --tw-ring-color: var(--v3-popover); }
+      .bg-popover-foreground { background-color: var(--v3-popover-foreground); }
+      .text-popover-foreground { color: var(--v3-popover-foreground); }
+      .border-popover-foreground { border-color: var(--v3-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--v3-popover-foreground); }
+      .bg-primary { background-color: var(--v3-primary); }
+      .text-primary { color: var(--v3-primary); }
+      .border-primary { border-color: var(--v3-primary); }
+      .ring-primary { --tw-ring-color: var(--v3-primary); }
+      .bg-primary-foreground { background-color: var(--v3-primary-foreground); }
+      .text-primary-foreground { color: var(--v3-primary-foreground); }
+      .border-primary-foreground { border-color: var(--v3-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--v3-primary-foreground); }
+      .bg-muted { background-color: var(--v3-muted); }
+      .text-muted { color: var(--v3-muted); }
+      .border-muted { border-color: var(--v3-muted); }
+      .ring-muted { --tw-ring-color: var(--v3-muted); }
+      .bg-muted-foreground { background-color: var(--v3-muted-foreground); }
+      .text-muted-foreground { color: var(--v3-muted-foreground); }
+      .border-muted-foreground { border-color: var(--v3-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--v3-muted-foreground); }
+      .bg-border { background-color: var(--v3-border); }
+      .text-border { color: var(--v3-border); }
+      .border-border { border-color: var(--v3-border); }
+      .ring-border { --tw-ring-color: var(--v3-border); }
+      .bg-input { background-color: var(--v3-input); }
+      .text-input { color: var(--v3-input); }
+      .border-input { border-color: var(--v3-input); }
+      .ring-input { --tw-ring-color: var(--v3-input); }
+      .bg-ring { background-color: var(--v3-ring); }
+      .text-ring { color: var(--v3-ring); }
+      .border-ring { border-color: var(--v3-ring); }
+      .ring-ring { --tw-ring-color: var(--v3-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

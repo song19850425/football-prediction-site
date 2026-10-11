@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本周末预测验证结果</title>
+    <style id="theme-vars">
+/* ==========================================================================
+   五大联赛原始数据分析报告 · 设计令牌
+   品牌前缀: rpt   |   单一品牌色相: 深青绿（球场语义）
+   ========================================================================== */
+
+:root {
+  /* ---- 品牌语义色（浅色模式）---- */
+  --rpt-background: #F5F7F6;
+  --rpt-foreground: #0F1A17;
+  --rpt-card: #FFFFFF;
+  --rpt-card-foreground: #0F1A17;
+  --rpt-popover: #FFFFFF;
+  --rpt-popover-foreground: #0F1A17;
+  --rpt-primary: #0E7C66;
+  --rpt-primary-foreground: #FFFFFF;
+  --rpt-muted: #EBF0EE;
+  --rpt-muted-foreground: #5B6B66;
+  --rpt-border: #DEE5E2;
+  --rpt-input: #DEE5E2;
+  --rpt-ring: #0E7C66;
+
+  /* ---- 表面层级（浅色模式）---- */
+  --rpt-surface: #FFFFFF;
+  --rpt-surface-2: #EDF2F0;
+  --rpt-ink-2: #4C5B56;
+  --rpt-ink-3: #87948F;
+  --rpt-line: #E4EAE7;
+
+  /* ---- 状态色（仅用于真实状态）---- */
+  --rpt-state-success: #157347;
+  --rpt-state-warning: #A9690A;
+  --rpt-state-error: #B2352B;
+  --rpt-state-info: #1E6BA8;
+
+  /* ---- 数据可视化（单一品牌色相派生 + 中性）---- */
+  --rpt-chart-1: #0E7C66;
+  --rpt-chart-2: #479582;
+  --rpt-chart-3: #7FB5A6;
+  --rpt-chart-4: #B4D2C9;
+  --rpt-chart-5: #7C8B86;
+
+  /* ---- 圆角 ---- */
+  --rpt-radius-sm: 4px;
+  --rpt-radius-md: 8px;
+  --rpt-radius-lg: 16px;
+
+  /* ---- 阴影（静态表面极轻）---- */
+  --rpt-shadow-1: 0 1px 2px rgba(15, 26, 23, 0.04), 0 1px 1px rgba(15, 26, 23, 0.03);
+
+  /* ---- 字体 ---- */
+  --rpt-font-sans: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --rpt-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--rpt-background);
+    --color-foreground: var(--rpt-foreground);
+    --color-card: var(--rpt-card);
+    --color-card-foreground: var(--rpt-card-foreground);
+    --color-popover: var(--rpt-popover);
+    --color-popover-foreground: var(--rpt-popover-foreground);
+    --color-primary: var(--rpt-primary);
+    --color-primary-foreground: var(--rpt-primary-foreground);
+    --color-muted: var(--rpt-muted);
+    --color-muted-foreground: var(--rpt-muted-foreground);
+    --color-border: var(--rpt-border);
+    --color-input: var(--rpt-input);
+    --color-ring: var(--rpt-ring);
+    --color-chart-1: var(--rpt-chart-1);
+    --color-chart-2: var(--rpt-chart-2);
+    --color-chart-3: var(--rpt-chart-3);
+    --color-chart-4: var(--rpt-chart-4);
+    --color-chart-5: var(--rpt-chart-5);
+    --radius-sm: var(--rpt-radius-sm);
+    --radius-md: var(--rpt-radius-md);
+    --radius-lg: var(--rpt-radius-lg);
+  }
+  @layer base {
+    body { background: var(--rpt-background); color: var(--rpt-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--rpt-background); }
+      .text-background { color: var(--rpt-background); }
+      .border-background { border-color: var(--rpt-background); }
+      .ring-background { --tw-ring-color: var(--rpt-background); }
+      .bg-foreground { background-color: var(--rpt-foreground); }
+      .text-foreground { color: var(--rpt-foreground); }
+      .border-foreground { border-color: var(--rpt-foreground); }
+      .ring-foreground { --tw-ring-color: var(--rpt-foreground); }
+      .bg-card { background-color: var(--rpt-card); }
+      .text-card { color: var(--rpt-card); }
+      .border-card { border-color: var(--rpt-card); }
+      .ring-card { --tw-ring-color: var(--rpt-card); }
+      .bg-card-foreground { background-color: var(--rpt-card-foreground); }
+      .text-card-foreground { color: var(--rpt-card-foreground); }
+      .border-card-foreground { border-color: var(--rpt-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--rpt-card-foreground); }
+      .bg-popover { background-color: var(--rpt-popover); }
+      .text-popover { color: var(--rpt-popover); }
+      .border-popover { border-color: var(--rpt-popover); }
+      .ring-popover { --tw-ring-color: var(--rpt-popover); }
+      .bg-popover-foreground { background-color: var(--rpt-popover-foreground); }
+      .text-popover-foreground { color: var(--rpt-popover-foreground); }
+      .border-popover-foreground { border-color: var(--rpt-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--rpt-popover-foreground); }
+      .bg-primary { background-color: var(--rpt-primary); }
+      .text-primary { color: var(--rpt-primary); }
+      .border-primary { border-color: var(--rpt-primary); }
+      .ring-primary { --tw-ring-color: var(--rpt-primary); }
+      .bg-primary-foreground { background-color: var(--rpt-primary-foreground); }
+      .text-primary-foreground { color: var(--rpt-primary-foreground); }
+      .border-primary-foreground { border-color: var(--rpt-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--rpt-primary-foreground); }
+      .bg-muted { background-color: var(--rpt-muted); }
+      .text-muted { color: var(--rpt-muted); }
+      .border-muted { border-color: var(--rpt-muted); }
+      .ring-muted { --tw-ring-color: var(--rpt-muted); }
+      .bg-muted-foreground { background-color: var(--rpt-muted-foreground); }
+      .text-muted-foreground { color: var(--rpt-muted-foreground); }
+      .border-muted-foreground { border-color: var(--rpt-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--rpt-muted-foreground); }
+      .bg-border { background-color: var(--rpt-border); }
+      .text-border { color: var(--rpt-border); }
+      .border-border { border-color: var(--rpt-border); }
+      .ring-border { --tw-ring-color: var(--rpt-border); }
+      .bg-input { background-color: var(--rpt-input); }
+      .text-input { color: var(--rpt-input); }
+      .border-input { border-color: var(--rpt-input); }
+      .ring-input { --tw-ring-color: var(--rpt-input); }
+      .bg-ring { background-color: var(--rpt-ring); }
+      .text-ring { color: var(--rpt-ring); }
+      .border-ring { border-color: var(--rpt-ring); }
+      .ring-ring { --tw-ring-color: var(--rpt-ring); }
+      .bg-chart-1 { background-color: var(--rpt-chart-1); }
+      .text-chart-1 { color: var(--rpt-chart-1); }
+      .border-chart-1 { border-color: var(--rpt-chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--rpt-chart-1); }
+      .bg-chart-2 { background-color: var(--rpt-chart-2); }
+      .text-chart-2 { color: var(--rpt-chart-2); }
+      .border-chart-2 { border-color: var(--rpt-chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--rpt-chart-2); }
+      .bg-chart-3 { background-color: var(--rpt-chart-3); }
+      .text-chart-3 { color: var(--rpt-chart-3); }
+      .border-chart-3 { border-color: var(--rpt-chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--rpt-chart-3); }
+      .bg-chart-4 { background-color: var(--rpt-chart-4); }
+      .text-chart-4 { color: var(--rpt-chart-4); }
+      .border-chart-4 { border-color: var(--rpt-chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--rpt-chart-4); }
+      .bg-chart-5 { background-color: var(--rpt-chart-5); }
+      .text-chart-5 { color: var(--rpt-chart-5); }
+      .border-chart-5 { border-color: var(--rpt-chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--rpt-chart-5); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <div class="rpt-frame">
+
+        <!-- 1 · 验证总览 -->
+        <section id="vf-overview" class="rpt-sec rpt-sec--lead">
+          <header>
+            <h1 class="rpt-h1">本周末预测验证</h1>
+            <p class="rpt-body rpt-mt-6" style="max-width:76ch">本次验证核对「本周末五大联赛 48 场预测」与真实赛果。截至 <strong>2026-09-15（北京时间）</strong>，<strong>48 场全部验证完毕</strong>；下方命中率基于全部 48 场。</p>
+          </header>
+
+          <div class="rpt-kpi-band rpt-mt-10">
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">预测总量</div>
+              <div class="rpt-kpi-value"><span data-countup="48" data-decimals="0">48</span><span class="rpt-kpi-unit">场</span></div>
+              <div class="rpt-kpi-note">英超 10 · 德甲 9 · 西甲 10 · 意甲 10 · 法甲 9</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">已验证</div>
+              <div class="rpt-kpi-value"><span data-countup="48" data-decimals="0">48</span><span class="rpt-kpi-unit">场</span></div>
+              <div class="rpt-kpi-note">占 48 场 100%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">胜平负命中</div>
+              <div class="rpt-kpi-value"><span data-countup="41.7" data-decimals="1">41.7</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">20/48 · 多数类基线 33.3%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">总角球 9.5 命中</div>
+              <div class="rpt-kpi-value"><span data-countup="56.3" data-decimals="1">56.3</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">27/48 · 多数类基线 52.1%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">总牌数 4.5 命中</div>
+              <div class="rpt-kpi-value"><span data-countup="74.5" data-decimals="1">74.5</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">35/47 · 多数类基线 74.5%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">待赛</div>
+              <div class="rpt-kpi-value"><span data-countup="0" data-decimals="0">0</span><span class="rpt-kpi-unit">场</span></div>
+              <div class="rpt-kpi-note">全部验证完毕</div>
+            </div>
+          </div>
+
+          <p class="rpt-note-text rpt-mt-6">赛果来自各联赛官网、俱乐部官网与主流媒体多源交叉核验（源站 football-data.co.uk 本轮尚未发布）。本轮新增赛果均来自各联赛官网与俱乐部官网，角球与牌数为多源汇总值，个别场次存在 ±1 差异。</p>
+        </section>
+
+        <!-- 2 · 五大市场命中率总表 -->
+        <section id="vf-scoreboard" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">五大市场命中率</h2>
+            <p class="rpt-meta">48 场全部验证 · 对比全局多数类基线</p>
+          </div>
+
+          <div class="rpt-chart-wrap rpt-mt-8">
+            <canvas id="chart-vf-market" role="img" aria-label="五大市场命中率与全局多数类基线对比：胜平负 41.7% 对 33.3%、大小球 35.4% 对 58.3%、单双 50.0% 对 50.0%、角球 56.3% 对 52.1%、牌数 74.5% 对 74.5%"></canvas>
+          </div>
+
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">五大市场命中率总表：胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的验证场次、命中数、命中率、全局多数类基线、差异与模型 2025/26 赛季时间外测试准确率</caption>
+              <thead>
+                <tr>
+                  <th>市场</th>
+                  <th class="rpt-num">验证场次</th>
+                  <th class="rpt-num">命中</th>
+                  <th class="rpt-num">命中率</th>
+                  <th>48 场多数类基线</th>
+                  <th class="rpt-num">差异</th>
+                  <th class="rpt-num">模型时间外测试 (2025/26)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead">胜平负</th><td class="rpt-num">48</td><td class="rpt-num">20</td><td class="rpt-num">41.7%</td><td>三类均 33.3%</td><td class="rpt-num">+8.4pp</td><td class="rpt-num">50.39%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">大小球 2.5</th><td class="rpt-num">48</td><td class="rpt-num">17</td><td class="rpt-num">35.4%</td><td>大 2.5 58.3%</td><td class="rpt-num">-22.9pp</td><td class="rpt-num">57.58%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">单双</th><td class="rpt-num">48</td><td class="rpt-num">24</td><td class="rpt-num">50.0%</td><td>双 50.0%</td><td class="rpt-num">±0.0pp</td><td class="rpt-num">48.70%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">总角球 9.5</th><td class="rpt-num">48</td><td class="rpt-num">27</td><td class="rpt-num">56.3%</td><td>大 9.5 52.1%</td><td class="rpt-num">+4.2pp</td><td class="rpt-num">51.94%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">总牌数 4.5</th><td class="rpt-num">47</td><td class="rpt-num">35</td><td class="rpt-num">74.5%</td><td>小 4.5 74.5%</td><td class="rpt-num">±0.0pp</td><td class="rpt-num">60.10%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">总牌数分母为 47 场 —— 热那亚 vs 弗罗西诺内 的来源牌数存在 4 张与 5 张两说，恰好跨越 4.5 线，故不计入牌数分母。「多数类基线」指在该 48 场样本内始终押注出现次数最多的那一类所得到准确率。</p>
+        </section>
+
+        <!-- 3 · 分联赛命中率对比 -->
+        <section id="vf-league-hit" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">分联赛命中率</h2>
+            <p class="rpt-meta">48 场全部验证 · 五大市场</p>
+          </div>
+
+          <div class="rpt-chart-wrap rpt-chart-wrap--tall rpt-mt-8">
+            <canvas id="chart-vf-league" role="img" aria-label="分联赛五市场命中率分组条形图：英超 胜平负 40.0%、大小球 20.0%、单双 80.0%、角球 60.0%、牌数 50.0%；德甲 33.3%、33.3%、33.3%、55.6%、100%；西甲 30.0%、40.0%、50.0%、70.0%、60.0%；意甲 70.0%、30.0%、50.0%、60.0%、88.9%；法甲 33.3%、55.6%、33.3%、33.3%、77.8%"></canvas>
+          </div>
+
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">分联赛命中率对比：英超、德甲、西甲、意甲、法甲各自已赛与总场次，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的命中数与命中率，末行为五行合计</caption>
+              <thead>
+                <tr>
+                  <th>联赛</th>
+                  <th class="rpt-num">已赛 · 总</th>
+                  <th class="rpt-num">胜平负</th>
+                  <th class="rpt-num">大小球 2.5</th>
+                  <th class="rpt-num">单双</th>
+                  <th class="rpt-num">总角球 9.5</th>
+                  <th class="rpt-num">总牌数 4.5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead">英超</th><td class="rpt-num">10 · 10</td><td class="rpt-num">4/10 (40.0%)</td><td class="rpt-num">2/10 (20.0%)</td><td class="rpt-num">8/10 (80.0%)</td><td class="rpt-num">6/10 (60.0%)</td><td class="rpt-num">5/10 (50.0%)</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">德甲</th><td class="rpt-num">9 · 9</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">5/9 (55.6%)</td><td class="rpt-num">9/9 (100%)</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">西甲</th><td class="rpt-num">10 · 10</td><td class="rpt-num">3/10 (30.0%)</td><td class="rpt-num">4/10 (40.0%)</td><td class="rpt-num">5/10 (50.0%)</td><td class="rpt-num">7/10 (70.0%)</td><td class="rpt-num">6/10 (60.0%)</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">意甲</th><td class="rpt-num">10 · 10</td><td class="rpt-num">7/10 (70.0%)</td><td class="rpt-num">3/10 (30.0%)</td><td class="rpt-num">5/10 (50.0%)</td><td class="rpt-num">6/10 (60.0%)</td><td class="rpt-num">8/9 (88.9%)</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">法甲</th><td class="rpt-num">9 · 9</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">5/9 (55.6%)</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">3/9 (33.3%)</td><td class="rpt-num">7/9 (77.8%)</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" class="rpt-rowhead">合计</th><td class="rpt-num">48 · 48</td><td class="rpt-num">20/48 (41.7%)</td><td class="rpt-num">17/48 (35.4%)</td><td class="rpt-num">24/48 (50.0%)</td><td class="rpt-num">27/48 (56.3%)</td><td class="rpt-num">35/47 (74.5%)</td></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">德甲牌数 9/9 全中，牌数为分联赛最稳项；英超大小球 2/10 为最弱组合，意甲方向 7/10 为分联赛最好。</p>
+        </section>
+
+        <!-- 4 · 预测方向与实际方向结构对比 -->
+        <section id="vf-direction-gap" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">方向结构偏差</h2>
+            <p class="rpt-meta">模型预测 48 场 · 实际赛果 48 场</p>
+          </div>
+
+          <div class="rpt-grid rpt-grid--chart-wide rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-vf-direction" role="img" aria-label="预测与实际赛果方向分布对比：模型预测 主胜 24 场、平局 19 场、客胜 5 场；实际 主胜 16 场、平局 16 场、客胜 16 场"></canvas>
+            </div>
+            <div class="rpt-tablewrap">
+              <table class="rpt-tbl">
+                <caption class="rpt-sr">预测方向与实际赛果方向结构对比：主胜、平局、客胜三类在模型预测与实际赛果中的场次、占比与偏差</caption>
+                <thead>
+                  <tr>
+                    <th>方向</th>
+                    <th class="rpt-num">模型预测</th>
+                    <th class="rpt-num">实际赛果</th>
+                    <th class="rpt-num">偏差</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row" class="rpt-rowhead">主胜</th><td class="rpt-num">24 (50.0%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">-8</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead">平局</th><td class="rpt-num">19 (39.6%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">-3</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead">客胜</th><td class="rpt-num">5 (10.4%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">+11</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="rpt-note rpt-mt-12 rpt-pt-6">
+            <div class="rpt-note-title">偏差要点</div>
+            <p>本轮实际赛果呈现罕见的三等分布局——主胜、平局、客胜各 16 场（各 33.3%）。模型倾向主胜/平局，仅预测 5 场客胜（命中 3 场），漏判 11 场客胜。英超本轮 10 场仅 1 场主胜，法甲 9 场多达 5 场平局，两端分化显著。48 场样本仍有限，属单轮波动，不足以推翻模型在 2025/26 赛季 1,544 场时间外测试中的表现。</p>
+          </div>
+        </section>
+
+        <!-- 5 · 已完赛逐场验证明细 -->
+        <section id="vf-league-detail" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">逐场验证明细</h2>
+            <p class="rpt-meta">48 场全部验证 · 按联赛分表</p>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">每场标注预测值、实际值与判定；<span class="rpt-hit">✓</span> 表示命中，<span class="rpt-miss">✗</span> 表示未命中，<span class="rpt-flag">*</span> 表示来源存在统计分歧或样本不足。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">英超</h3>
+          <p class="rpt-meta rpt-mt-4">10 场 · 09-12 ~ 09-14</p>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl rpt-tbl--vf">
+              <caption class="rpt-sr">英超 10 场逐场验证：日期、主队、客队、比分、实际结果，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的预测、实际与判定</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2">日期</th><th rowspan="2">主队</th><th rowspan="2">客队</th><th rowspan="2" class="rpt-num">比分</th><th rowspan="2">结果</th>
+                  <th colspan="3">胜平负</th><th colspan="3">大小球 2.5</th><th colspan="3">单双</th><th colspan="3">总角球 9.5</th><th colspan="3">总牌数 4.5</th>
+                </tr>
+                <tr>
+                  <th>预测</th><th class="rpt-num">置信度</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th>实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>阿斯顿维拉</td><td>诺丁汉森林</td><td class="rpt-num">1-2</td><td>客胜</td><td>客胜</td><td class="rpt-num">44.2%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">7</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>伯恩茅斯</td><td>布伦特福德</td><td class="rpt-num">2-2</td><td>平局</td><td>主胜</td><td class="rpt-num">39.9%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">6</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>切尔西</td><td>赫尔城</td><td class="rpt-num">2-2</td><td>平局</td><td>主胜</td><td class="rpt-num">56.1%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">15</td><td class="rpt-hit">✓</td><td>大4.5</td><td class="rpt-num">6</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>利物浦</td><td>富勒姆</td><td class="rpt-num">0-0</td><td>平局</td><td>主胜</td><td class="rpt-num">48.1%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">0</td><td class="rpt-hit">✓</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">13</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>水晶宫</td><td>伊普斯维奇</td><td class="rpt-num">2-3</td><td>客胜</td><td>主胜</td><td class="rpt-num">53.7%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">9</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>托特纳姆热刺</td><td>埃弗顿</td><td class="rpt-num">0-0</td><td>平局</td><td>平局</td><td class="rpt-num">43.3%</td><td class="rpt-hit">✓</td><td>大2.5</td><td class="rpt-num">0</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">11</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>桑德兰</td><td>阿森纳</td><td class="rpt-num">0-2</td><td>客胜</td><td>客胜</td><td class="rpt-num">62.0%</td><td class="rpt-hit">✓</td><td>大2.5</td><td class="rpt-num">2</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">7</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>考文垂</td><td>布莱顿</td><td class="rpt-num">0-5</td><td>客胜</td><td>平局</td><td class="rpt-num rpt-flag">38.4%*</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">8</td><td class="rpt-miss">✗</td><td>大4.5</td><td class="rpt-num">1</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>曼联</td><td>曼城</td><td class="rpt-num">0-1</td><td>客胜</td><td>主胜</td><td class="rpt-num">59.0%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">13</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">4</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>利兹联</td><td>纽卡斯尔联</td><td class="rpt-num">4-1</td><td>主胜</td><td>主胜</td><td class="rpt-num">48.3%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" colspan="20">英超合计 · 方向 4/10 · 大小球 2/10 · 单双 8/10 · 角球 6/10 · 牌数 5/10</th></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">英超本轮 10 场仅 1 场主胜（4 平 5 客胜），大小球 2/10 为本轮最弱项。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">德甲</h3>
+          <p class="rpt-meta rpt-mt-4">9 场 · 09-11 ~ 09-13</p>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl rpt-tbl--vf">
+              <caption class="rpt-sr">德甲 9 场已完赛逐场验证：日期、主队、客队、比分、实际结果，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的预测、实际与判定</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2">日期</th><th rowspan="2">主队</th><th rowspan="2">客队</th><th rowspan="2" class="rpt-num">比分</th><th rowspan="2">结果</th>
+                  <th colspan="3">胜平负</th><th colspan="3">大小球 2.5</th><th colspan="3">单双</th><th colspan="3">总角球 9.5</th><th colspan="3">总牌数 4.5</th>
+                </tr>
+                <tr>
+                  <th>预测</th><th class="rpt-num">置信度</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th>实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-11</th><td>柏林联合</td><td>沙尔克04</td><td class="rpt-num">1-3</td><td>客胜</td><td>平局</td><td class="rpt-num">50.2%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">9</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">4</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>多特蒙德</td><td>帕德博恩</td><td class="rpt-num">3-0</td><td>主胜</td><td>平局</td><td class="rpt-num">55.8%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>弗赖堡</td><td>门兴格拉德巴赫</td><td class="rpt-num">5-0</td><td>主胜</td><td>平局</td><td class="rpt-num">37.6%</td><td class="rpt-miss">✗</td><td>大2.5</td><td class="rpt-num">5</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">8</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">4</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>霍芬海姆</td><td>斯图加特</td><td class="rpt-num">2-1</td><td>主胜</td><td>平局</td><td class="rpt-num">49.5%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">12</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>奥格斯堡</td><td>勒沃库森</td><td class="rpt-num">2-2</td><td>平局</td><td>平局</td><td class="rpt-num">42.9%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">16</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>美因茨</td><td>法兰克福</td><td class="rpt-num">1-3</td><td>客胜</td><td>主胜</td><td class="rpt-num">56.5%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">9</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>科隆</td><td>云达不来梅</td><td class="rpt-num">1-1</td><td>平局</td><td>平局</td><td class="rpt-num">36.5%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">13</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>莱比锡红牛</td><td>汉堡</td><td class="rpt-num">5-0</td><td>主胜</td><td>主胜</td><td class="rpt-num">46.8%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">14</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>埃尔弗斯贝格</td><td>拜仁慕尼黑</td><td class="rpt-num">1-2</td><td>客胜</td><td>平局</td><td class="rpt-num rpt-flag">71.9%*</td><td class="rpt-miss">✗</td><td>大2.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">12</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" colspan="20">德甲合计 · 方向 3/9 · 大小球 3/9 · 单双 3/9 · 角球 5/9 · 牌数 9/9</th></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">牌数 9/9 全中，为本轮单联赛最佳市场；奥格斯堡 vs 勒沃库森 的 2-2 已按六源一致结果裁定。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">西甲</h3>
+          <p class="rpt-meta rpt-mt-4">10 场 · 09-11 ~ 09-14</p>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl rpt-tbl--vf">
+              <caption class="rpt-sr">西甲 10 场逐场验证：日期、主队、客队、比分、实际结果，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的预测、实际与判定</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2">日期</th><th rowspan="2">主队</th><th rowspan="2">客队</th><th rowspan="2" class="rpt-num">比分</th><th rowspan="2">结果</th>
+                  <th colspan="3">胜平负</th><th colspan="3">大小球 2.5</th><th colspan="3">单双</th><th colspan="3">总角球 9.5</th><th colspan="3">总牌数 4.5</th>
+                </tr>
+                <tr>
+                  <th>预测</th><th class="rpt-num">置信度</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th>实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-11</th><td>塞维利亚</td><td>瓦伦西亚</td><td class="rpt-num">1-0</td><td>主胜</td><td>平局</td><td class="rpt-num">42.5%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>大4.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>桑坦德竞技</td><td>阿拉维斯</td><td class="rpt-num">2-1</td><td>主胜</td><td>平局</td><td class="rpt-num rpt-flag">63.3%*</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">10</td><td class="rpt-hit">✓</td><td>大4.5</td><td class="rpt-num">6</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>奥萨苏纳</td><td>西班牙人</td><td class="rpt-num">0-2</td><td>客胜</td><td>平局</td><td class="rpt-num">38.6%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>大4.5</td><td class="rpt-num">5</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>毕尔巴鄂竞技</td><td>埃尔切</td><td class="rpt-num">1-1</td><td>平局</td><td>平局</td><td class="rpt-num">52.1%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">8</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num rpt-flag">5*</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>皇家马德里</td><td>巴列卡诺</td><td class="rpt-num">4-1</td><td>主胜</td><td>主胜</td><td class="rpt-num">54.7%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">16</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>塞尔塔</td><td>马拉加</td><td class="rpt-num">1-1</td><td>平局</td><td>主胜</td><td class="rpt-num">63.0%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">8</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>莱万特</td><td>巴塞罗那</td><td class="rpt-num">2-4</td><td>客胜</td><td>客胜</td><td class="rpt-num">51.3%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">6</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">10</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>赫塔费</td><td>拉科鲁尼亚</td><td class="rpt-num">1-1</td><td>平局</td><td>主胜</td><td class="rpt-num">48.5%</td><td class="rpt-miss">✗</td><td>大2.5</td><td class="rpt-num">2</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">8</td><td class="rpt-hit">✓</td><td>大4.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>皇家社会</td><td>马德里竞技</td><td class="rpt-num">0-3</td><td>客胜</td><td>平局</td><td class="rpt-num">44.4%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">9</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>比利亚雷亚尔</td><td>皇家贝蒂斯</td><td class="rpt-num">1-2</td><td>客胜</td><td>主胜</td><td class="rpt-num">37.5%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">11</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" colspan="20">西甲合计 · 方向 3/10 · 大小球 4/10 · 单双 5/10 · 角球 7/10 · 牌数 6/10</th></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">除方向 3/10 外其余四项分布较均匀。桑坦德竞技为升班马、历史样本不足，其置信度以 <span class="rpt-flag">*</span> 标注；毕尔巴鄂竞技 vs 埃尔切 的牌数来源存 5 张与 6 张两说，均为大 4.5，不影响判定。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">意甲</h3>
+          <p class="rpt-meta rpt-mt-4">10 场 · 09-11 ~ 09-14</p>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl rpt-tbl--vf">
+              <caption class="rpt-sr">意甲 10 场逐场验证：日期、主队、客队、比分、实际结果，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的预测、实际与判定</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2">日期</th><th rowspan="2">主队</th><th rowspan="2">客队</th><th rowspan="2" class="rpt-num">比分</th><th rowspan="2">结果</th>
+                  <th colspan="3">胜平负</th><th colspan="3">大小球 2.5</th><th colspan="3">单双</th><th colspan="3">总角球 9.5</th><th colspan="3">总牌数 4.5</th>
+                </tr>
+                <tr>
+                  <th>预测</th><th class="rpt-num">置信度</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th>实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-11</th><td>威尼斯</td><td>佛罗伦萨</td><td class="rpt-num">2-4</td><td>客胜</td><td>平局</td><td class="rpt-num">52.3%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">6</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">6</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>热那亚</td><td>弗罗西诺内</td><td class="rpt-num">1-1</td><td>平局</td><td>主胜</td><td class="rpt-num">49.0%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">17</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num rpt-flag">4 / 5*</td><td class="rpt-flag">存疑</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>拉齐奥</td><td>AC米兰</td><td class="rpt-num">2-2</td><td>平局</td><td>平局</td><td class="rpt-num">39.6%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>亚特兰大</td><td>卡利亚里</td><td class="rpt-num">1-2</td><td>客胜</td><td>主胜</td><td class="rpt-num">61.2%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">0</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>莱切</td><td>蒙扎</td><td class="rpt-num">3-2</td><td>主胜</td><td>主胜</td><td class="rpt-num">60.8%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">4</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>那不勒斯</td><td>博洛尼亚</td><td class="rpt-num">1-0</td><td>主胜</td><td>主胜</td><td class="rpt-num">53.5%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">10</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>萨索洛</td><td>尤文图斯</td><td class="rpt-num">3-2</td><td>主胜</td><td>主胜</td><td class="rpt-num">40.5%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">4</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>科莫</td><td>帕尔马</td><td class="rpt-num">2-1</td><td>主胜</td><td>主胜</td><td class="rpt-num">49.4%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">3</td><td class="rpt-miss">✗</td><td>单</td><td>单</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">10</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>都灵</td><td>罗马</td><td class="rpt-num">0-2</td><td>客胜</td><td>客胜</td><td class="rpt-num">54.6%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">9</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>国际米兰</td><td>乌迪内斯</td><td class="rpt-num">5-3</td><td>主胜</td><td>主胜</td><td class="rpt-num">69.9%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">8</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">11</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" colspan="20">意甲合计 · 方向 7/10 · 大小球 3/10 · 单双 5/10 · 角球 6/10 · 牌数 8/9</th></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">意甲方向 7/10 为分联赛最好表现；牌数分母为 9 —— 热那亚 vs 弗罗西诺内 牌数来源存在 4 张与 5 张两说，恰好跨越 4.5 线，判定记为存疑且不计入分母。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">法甲</h3>
+          <p class="rpt-meta rpt-mt-4">9 场 · 09-11 ~ 09-14</p>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl rpt-tbl--vf">
+              <caption class="rpt-sr">法甲 9 场逐场验证：日期、主队、客队、比分、实际结果，以及胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的预测、实际与判定</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2">日期</th><th rowspan="2">主队</th><th rowspan="2">客队</th><th rowspan="2" class="rpt-num">比分</th><th rowspan="2">结果</th>
+                  <th colspan="3">胜平负</th><th colspan="3">大小球 2.5</th><th colspan="3">单双</th><th colspan="3">总角球 9.5</th><th colspan="3">总牌数 4.5</th>
+                </tr>
+                <tr>
+                  <th>预测</th><th class="rpt-num">置信度</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th>实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                  <th>预测</th><th class="rpt-num">实际</th><th>判定</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>斯特拉斯堡</td><td>摩纳哥</td><td class="rpt-num">1-1</td><td>平局</td><td>主胜</td><td class="rpt-num">40.5%</td><td class="rpt-miss">✗</td><td>大2.5</td><td class="rpt-num">2</td><td class="rpt-miss">✗</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">9</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>欧塞尔</td><td>尼斯</td><td class="rpt-num">1-0</td><td>主胜</td><td>主胜</td><td class="rpt-num">42.6%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">11</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>勒阿弗尔</td><td>昂热</td><td class="rpt-num">0-0</td><td>平局</td><td>主胜</td><td class="rpt-num">47.7%</td><td class="rpt-miss">✗</td><td>大2.5</td><td class="rpt-num">0</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>大9.5</td><td class="rpt-num">10</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>洛里昂</td><td>图卢兹</td><td class="rpt-num">2-2</td><td>平局</td><td>主胜</td><td class="rpt-num">58.9%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">7</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-12</th><td>巴黎FC</td><td>里昂</td><td class="rpt-num">0-0</td><td>平局</td><td>主胜</td><td class="rpt-num">43.0%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">0</td><td class="rpt-hit">✓</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">7</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-11</th><td>雷恩</td><td>马赛</td><td class="rpt-num">1-0</td><td>主胜</td><td>平局</td><td class="rpt-num">44.6%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">8</td><td class="rpt-hit">✓</td><td>小4.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>里尔</td><td>特鲁瓦</td><td class="rpt-num">2-0</td><td>主胜</td><td>主胜</td><td class="rpt-num">70.0%</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td><td>单</td><td>双</td><td class="rpt-miss">✗</td><td>大9.5</td><td class="rpt-num">8</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">2</td><td class="rpt-hit">✓</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-13</th><td>勒芒</td><td>朗斯</td><td class="rpt-num">2-2</td><td>平局</td><td>平局</td><td class="rpt-num rpt-flag">72.3%*</td><td class="rpt-hit">✓</td><td>小2.5</td><td class="rpt-num">4</td><td class="rpt-miss">✗</td><td>双</td><td>双</td><td class="rpt-hit">✓</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">5</td><td class="rpt-miss">✗</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">09-14</th><td>布雷斯特</td><td>巴黎圣日耳曼</td><td class="rpt-num">0-1</td><td>客胜</td><td>平局</td><td class="rpt-num">45.4%</td><td class="rpt-miss">✗</td><td>小2.5</td><td class="rpt-num">1</td><td class="rpt-hit">✓</td><td>双</td><td>单</td><td class="rpt-miss">✗</td><td>小9.5</td><td class="rpt-num">10</td><td class="rpt-miss">✗</td><td>小4.5</td><td class="rpt-num">3</td><td class="rpt-hit">✓</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" colspan="20">法甲合计 · 方向 3/9 · 大小球 5/9 · 单双 3/9 · 角球 3/9 · 牌数 7/9</th></tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">牌数 7/9 表现最好；方向 3/9 与德甲持平。勒芒为升班马样本不足，置信度以 <span class="rpt-flag">*</span> 标注；雷恩 vs 马赛 实际开赛日为 09-11，与原始预测页标注相差 1 天，不影响判定。</p>
+        </section>
+
+        <!-- 6 · 高置信场次复盘 -->
+        <section id="vf-confidence-review" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">高置信复盘</h2>
+            <p class="rpt-meta">7 场 · 置信度 ≥ 60%</p>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">原预测页列出的高置信推荐场次已全部验证完毕，7 场中命中 5 场。</p>
+
+          <div class="rpt-grid rpt-grid--chart-wide rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-vf-confidence" role="img" aria-label="置信度分箱与方向命中率：置信度 60% 以上 5/9 命中率 55.6%；50% 至 60% 5/11 命中率 45.5%；45% 至 50% 2/7 命中率 28.6%；45% 以下 10/21 命中率 47.6%"></canvas>
+            </div>
+            <div class="rpt-tablewrap">
+              <table class="rpt-tbl">
+                <caption class="rpt-sr">高置信推荐复盘：场次、联赛、推荐方向、置信度、比分与判定</caption>
+                <thead>
+                  <tr>
+                    <th>场次</th>
+                    <th>联赛</th>
+                    <th>推荐</th>
+                    <th class="rpt-num">置信度</th>
+                    <th class="rpt-num">比分</th>
+                    <th>判定</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">桑德兰 vs 阿森纳</th><td>英超</td><td>客胜</td><td class="rpt-num">62.0%</td><td class="rpt-num">0-2</td><td class="rpt-hit">✓ 命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">亚特兰大 vs 卡利亚里</th><td>意甲</td><td>主胜</td><td class="rpt-num">61.2%</td><td class="rpt-num">1-2</td><td class="rpt-miss">✗ 未命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">里尔 vs 特鲁瓦</th><td>法甲</td><td>主胜</td><td class="rpt-num">70.0%</td><td class="rpt-num">2-0</td><td class="rpt-hit">✓ 命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">勒芒 vs 朗斯</th><td>法甲</td><td>平局</td><td class="rpt-num rpt-flag">72.3%*</td><td class="rpt-num">2-2</td><td class="rpt-hit">✓ 命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">国际米兰 vs 乌迪内斯</th><td>意甲</td><td>主胜</td><td class="rpt-num">69.9%</td><td class="rpt-num">5-3</td><td class="rpt-hit">✓ 命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">塞尔塔 vs 马拉加</th><td>西甲</td><td>主胜</td><td class="rpt-num">63.0%</td><td class="rpt-num">1-1</td><td class="rpt-miss">✗ 未命中</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">莱切 vs 蒙扎</th><td>意甲</td><td>主胜</td><td class="rpt-num">60.8%</td><td class="rpt-num">3-2</td><td class="rpt-hit">✓ 命中</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3 class="rpt-h3 rpt-mt-12">置信度分箱命中率</h3>
+          <div class="rpt-tablewrap rpt-mt-6">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">48 场按置信度分箱的方向命中率：分箱、场次、命中数与命中率</caption>
+              <thead>
+                <tr>
+                  <th>置信度分箱</th>
+                  <th class="rpt-num">场次</th>
+                  <th class="rpt-num">命中</th>
+                  <th class="rpt-num">命中率</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead">60% 以上</th><td class="rpt-num">9</td><td class="rpt-num">5</td><td class="rpt-num">55.6%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">50–60%</th><td class="rpt-num">11</td><td class="rpt-num">5</td><td class="rpt-num">45.5%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">45–50%</th><td class="rpt-num">7</td><td class="rpt-num">2</td><td class="rpt-num">28.6%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">45% 以下</th><td class="rpt-num">21</td><td class="rpt-num">10</td><td class="rpt-num">47.6%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">高置信分箱（60% 以上）命中率 55.6% 为各分箱最高，但 45–50% 分箱仅 28.6%，整体未呈现严格单调正相关。48 场样本下分箱样本量偏小，属单轮波动。</p>
+        </section>
+
+        <!-- 7 · 结论与偏差归因 -->
+        <section id="vf-findings" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">结论与归因</h2>
+            <p class="rpt-meta">8 条 · 基于 48 场全量验证</p>
+          </div>
+          <ol class="rpt-issues rpt-mt-8">
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">01</div>
+              <div>
+                <h3 class="rpt-h3">方向预测高于多数类基线</h3>
+                <p class="rpt-issue-body">48 场共 20 场方向正确（<span class="rpt-mono">41.7%</span>），高于该样本内多数类基线 <span class="rpt-mono">33.3%</span>（<span class="rpt-mono">+8.4pp</span>），低于模型 2025/26 赛季时间外测试的 <span class="rpt-mono">50.39%</span>。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">02</div>
+              <div>
+                <h3 class="rpt-h3">客胜被系统性低估</h3>
+                <p class="rpt-issue-body">模型 48 场仅给出 5 次客胜预测（<span class="rpt-mono">10.4%</span>），实际客胜 16 场（<span class="rpt-mono">33.3%</span>），漏判 11 场客胜；英超 10 场仅 1 场主胜、法甲 9 场多达 5 场平局，两端分化显著。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">03</div>
+              <div>
+                <h3 class="rpt-h3">大小球为最弱市场</h3>
+                <p class="rpt-issue-body">模型押小占多数，实际大 2.5 球 <span class="rpt-mono">28/48</span>，命中 <span class="rpt-mono">35.4%</span>，比「全押大」基线低 <span class="rpt-mono">22.9pp</span>；这是本轮表现最差的市场。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">04</div>
+              <div>
+                <h3 class="rpt-h3">两项偏差指向同一成因</h3>
+                <p class="rpt-issue-body">客胜偏低与大小球偏低共同指向同一件事：模型对强弱差与进球量的估计在本轮偏保守，而模型训练数据本身就以主场优势与低进球为多数类。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">05</div>
+              <div>
+                <h3 class="rpt-h3">牌数无超额收益</h3>
+                <p class="rpt-issue-body"><span class="rpt-mono">35/47</span> 命中（<span class="rpt-mono">74.5%</span>），与「全押小 4.5」基线 <span class="rpt-mono">74.5%</span> 完全持平，无超额收益；但仍远高于时间外测试的 <span class="rpt-mono">60.10%</span>。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">06</div>
+              <div>
+                <h3 class="rpt-h3">角球有正超额收益</h3>
+                <p class="rpt-issue-body"><span class="rpt-mono">27/48</span>（<span class="rpt-mono">56.3%</span>），高于同一多数类基线 <span class="rpt-mono">4.2pp</span>，也高于时间外测试的 <span class="rpt-mono">51.94%</span>。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">07</div>
+              <div>
+                <h3 class="rpt-h3">意甲表现最好</h3>
+                <p class="rpt-issue-body">意甲方向 <span class="rpt-mono">7/10（70.0%）</span>，是唯一分联赛方向命中率超 50% 的联赛；德甲与法甲 <span class="rpt-mono">3/9（33.3%）</span> 并列最差，西甲 <span class="rpt-mono">3/10（30.0%）</span> 最低。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">08</div>
+              <div>
+                <h3 class="rpt-h3">样本量限制</h3>
+                <p class="rpt-issue-body">48 场单轮样本的 95% 置信区间约 <span class="rpt-mono">±14pp</span>（以 50% 为中心），除大小球与牌数外，其余差异多数无法与噪声区分；本页结论只描述本轮，不作为模型优劣的定论。</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- 8 · 全部验证完成 -->
+        <section id="vf-completion" class="rpt-sec rpt-sec--highlight">
+          <h2 class="rpt-h2">全部 48 场验证完成</h2>
+          <p class="rpt-note-text rpt-mt-6">本周末五大联赛 48 场预测已全部验证完毕。验证覆盖英超 10 场、德甲 9 场、西甲 10 场、意甲 10 场、法甲 9 场。</p>
+        </section>
+
+        <!-- 9 · 数据来源与核验口径 -->
+        <section id="vf-notes" class="rpt-sec">
+          <h2 class="rpt-h2">数据来源与口径</h2>
+          <dl class="rpt-dl rpt-mt-8">
+            <div class="rpt-dl-row"><dt>验证时点</dt><dd>2026-09-15（北京时间）</dd></div>
+            <div class="rpt-dl-row"><dt>赛果来源</dt><dd>各联赛官网（premierleague.com / bundesliga.com / laliga.com / legaseriea.it / ligue1.com）、俱乐部官网与主流媒体多源交叉核验</dd></div>
+            <div class="rpt-dl-row"><dt>未采用的数据源</dt><dd>football-data.co.uk 本轮尚未发布（已完赛数据最新停在 2026-09-06）；openligadb 该轮 matchIsFinished 仍为 false，无 Endergebnis</dd></div>
+            <div class="rpt-dl-row"><dt>角球与牌数</dt><dd>多源汇总值，个别场次存在 ±1 统计差异，属最佳可得口径而非官方终值</dd></div>
+            <div class="rpt-dl-row"><dt>牌数定义</dt><dd>黄牌 + 红牌合计（球员），不含教练</dd></div>
+            <div class="rpt-dl-row"><dt>比分冲突裁决 1</dt><dd>奥格斯堡 vs 勒沃库森 判定 2-2（bundesliga.com、bayer04.de、Sky、tag24、Deutschlandfunk、FotMob 六源一致；未检索到支持 2-1 的可靠来源）</dd></div>
+            <div class="rpt-dl-row"><dt>比分冲突裁决 2</dt><dd>弗赖堡 vs 门兴格拉德巴赫 判定 5-0（bundesliga.com、scfreiburg.com、Transfermarkt、ZDF、Deutschlandfunk 一致；未检索到支持 4-0 的可靠来源）</dd></div>
+            <div class="rpt-dl-row"><dt>待复核项</dt><dd>热那亚 vs 弗罗西诺内 牌数存在 4 张 / 5 张两说，恰好跨越 4.5 线；毕尔巴鄂竞技 vs 埃尔切 牌数存在 5 张 / 6 张两说（均为大 4.5，不影响判定）</dd></div>
+            <div class="rpt-dl-row"><dt>日期标注偏差</dt><dd>原始预测页法甲部分场次日期与实际开赛日相差 1 天（雷恩 vs 马赛 实际 09-11；里尔 vs 特鲁瓦、勒芒 vs 朗斯 实际 09-13），不影响预测内容与本次验证结论</dd></div>
+          </dl>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="rpt-foot">
+      <div class="rpt-frame">
+        <div class="rpt-grid rpt-grid--footer">
+          <div>
+            <div class="rpt-foot-title">本周末预测验证结果</div>
+            <p class="rpt-note-text rpt-mt-4">数据来源 football-data.co.uk / openligadb / 各联赛官网与主流媒体多源交叉核验 · 生成于 2026-09-15</p>
+            <p class="rpt-note-text rpt-mt-2">仅供观赛参考，不构成投注建议</p>
+          </div>
+          <div>
+            <div class="rpt-foot-label">数据范围</div>
+            <ul class="rpt-foot-list">
+              <li>2026/27 赛季 第 3–5 轮 · 48 场</li>
+              <li>全部 48 场已验证完毕</li>
+              <li>五大市场：胜平负 · 大小球 · 单双 · 角球 · 牌数</li>
+            </ul>
+          </div>
+          <div>
+            <div class="rpt-foot-label">核验口径</div>
+            <ul class="rpt-foot-list">
+              <li>命中率基于全部 48 场</li>
+              <li>牌数分母 47 场（1 场来源冲突不计入）</li>
+              <li>角球与牌数为多源汇总值，非官方终值</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rpt-rule rpt-mt-10 rpt-pt-6 rpt-foot-bottom">
+          <p class="rpt-meta">仅供观赛参考，不构成投注建议</p>
+          <p class="rpt-meta rpt-mono">48 场全量验证 · 2026-09-15</p>
+        </div>
+      </div>
+    </footer>
+
+    <style id="critical-layout">
+/* ==========================================================================
+   页面关键布局：静态 CSS，不依赖运行时 Tailwind 编译
+   ========================================================================== */
+html, body { background: var(--rpt-background); color: var(--rpt-foreground); }
+body { font-family: var(--rpt-font-sans); }
+
+/* 根框架 */
+.rpt-frame { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
+
+/* 分区节奏：细线分隔 + 大间距 */
+.rpt-sec { border-top: 1px solid var(--rpt-line); padding-top: 4rem; padding-bottom: 4rem; }
+.rpt-sec--lead { border-top: 0; padding-top: 5rem; padding-bottom: 4rem; }
+.rpt-rule { border-top: 1px solid var(--rpt-line); }
+
+/* 栅格：桌面双列，窄屏单列 */
+.rpt-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 768px) {
+  .rpt-grid--footer { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); }
+  .rpt-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .rpt-grid--halves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rpt-grid--narrow-left { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); }
+  .rpt-grid--wide-left { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .rpt-grid--chart-wide { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+}
+
+/* 排版 */
+.rpt-h1 { font-size: 30px; font-weight: 600; line-height: 1.24; letter-spacing: -0.01em; color: var(--rpt-foreground); text-wrap: balance; overflow-wrap: break-word; word-break: normal; }
+.rpt-h2 { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+.rpt-h3 { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+@media (min-width: 768px) {
+  .rpt-h1 { font-size: 44px; }
+  .rpt-h2 { font-size: 26px; }
+}
+.rpt-body { font-size: 15px; line-height: 1.85; color: var(--rpt-ink-2); }
+.rpt-body + .rpt-body { margin-top: 1rem; }
+.rpt-meta { font-size: 12.5px; line-height: 1.7; color: var(--rpt-ink-3); }
+.rpt-note-text { font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-mono { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-lead { font-weight: 600; color: var(--rpt-primary); }
+.text-ink-2 { color: var(--rpt-ink-2); }
+.text-ink-3 { color: var(--rpt-ink-3); }
+
+/* 间距工具 */
+.rpt-mt-2 { margin-top: 0.5rem; }
+.rpt-mt-4 { margin-top: 1rem; }
+.rpt-mt-6 { margin-top: 1.5rem; }
+.rpt-mt-8 { margin-top: 2rem; }
+.rpt-mt-10 { margin-top: 2.5rem; }
+.rpt-mt-12 { margin-top: 3rem; }
+.rpt-pt-6 { padding-top: 1.5rem; }
+.rpt-pt-8 { padding-top: 2rem; }
+
+/* 微型布局工具 */
+.rpt-flex-between { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-flex-center { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.rpt-flex-baseline { display: inline-flex; align-items: baseline; gap: 14px; flex: none; }
+.rpt-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* 指标带 */
+.rpt-kpi-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--rpt-line); border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-md); overflow: hidden; }
+.rpt-kpi { background: var(--rpt-card); padding: 22px 20px; }
+.rpt-kpi-label { font-size: 12px; color: var(--rpt-ink-3); }
+.rpt-kpi-value { margin-top: 10px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 32px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-kpi-unit { font-size: 18px; color: var(--rpt-ink-3); margin-left: 2px; }
+.rpt-kpi-note { margin-top: 10px; font-size: 12px; line-height: 1.6; color: var(--rpt-ink-3); }
+
+/* 图表容器：固定响应式高度，绝不塌陷 */
+.rpt-chart-wrap { position: relative; width: 100%; height: 280px; }
+.rpt-chart-wrap--tall { height: 340px; }
+.rpt-chart-wrap > canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+
+/* 数据表 */
+.rpt-tablewrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rpt-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.rpt-tbl thead th { background: var(--rpt-surface-2); color: var(--rpt-ink-2); font-size: 12.5px; font-weight: 500; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); white-space: nowrap; }
+.rpt-tbl tbody th, .rpt-tbl tbody td { padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); color: var(--rpt-foreground); }
+.rpt-tbl tbody tr { transition: background-color 0.15s ease; }
+.rpt-tbl tbody tr:hover { background: var(--rpt-surface-2); }
+.rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 11px 14px; background: var(--rpt-surface-2); border-top: 1px solid var(--rpt-border); color: var(--rpt-foreground); }
+.rpt-tbl thead th.rpt-num,
+.rpt-tbl tbody td.rpt-num,
+.rpt-tbl tbody th.rpt-num,
+.rpt-tbl tfoot th.rpt-num,
+.rpt-tbl tfoot td.rpt-num { text-align: right; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-rowhead { font-weight: 500; text-align: left; white-space: nowrap; color: var(--rpt-foreground); }
+.rpt-total th, .rpt-total td { font-weight: 600; }
+.rpt-zero { color: var(--rpt-ink-3); }
+
+/* 定义列表 */
+.rpt-dl { border-top: 1px solid var(--rpt-line); margin: 0; }
+.rpt-dl-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-dl-row dt { font-size: 12.5px; color: var(--rpt-ink-3); flex: none; }
+.rpt-dl-row dd { margin: 0; font-size: 13.5px; color: var(--rpt-foreground); text-align: right; }
+
+/* 统计块 */
+.rpt-metric { padding: 18px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-metric:first-child { border-top: 1px solid var(--rpt-line); }
+.rpt-metric-label { font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-metric-value { margin-top: 8px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 34px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-metric-sub { margin-top: 8px; font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-rows { border-top: 1px solid var(--rpt-line); }
+.rpt-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-row-label { font-size: 14px; color: var(--rpt-ink-2); }
+.rpt-row-value { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; color: var(--rpt-foreground); }
+
+/* 字段名标签 */
+.rpt-codes { display: flex; flex-wrap: wrap; gap: 8px; }
+.rpt-code { display: inline-flex; align-items: center; justify-content: center; font-family: var(--rpt-font-mono); font-size: 12px; line-height: 1; padding: 6px 9px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-ink-2); white-space: nowrap; }
+.rpt-code-inline { display: inline-block; font-family: var(--rpt-font-mono); font-size: 12.5px; line-height: 1.5; padding: 1px 6px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-foreground); }
+
+/* 数据质量问题列表 */
+.rpt-issues { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rpt-line); }
+.rpt-issue { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-issue-idx { font-family: var(--rpt-font-mono); font-size: 13px; color: var(--rpt-ink-3); padding-top: 2px; }
+.rpt-issue-body { margin-top: 6px; font-size: 14px; line-height: 1.8; color: var(--rpt-ink-2); }
+
+/* 说明块 */
+.rpt-note { padding-top: 16px; border-top: 1px solid var(--rpt-line); }
+.rpt-note-title { font-size: 14px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-note p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-vig { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rpt-line); font-size: 14px; color: var(--rpt-foreground); }
+
+/* 页脚 */
+.rpt-foot { border-top: 1px solid var(--rpt-line); padding-top: 3.5rem; padding-bottom: 3.5rem; background: var(--rpt-background); }
+.rpt-foot-title { font-size: 15px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-foot-label { font-size: 13px; font-weight: 500; color: var(--rpt-foreground); }
+.rpt-foot-list { list-style: none; margin: 12px 0 0; padding: 0; font-size: 13px; line-height: 1.9; color: var(--rpt-ink-2); }
+.rpt-foot-bottom { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-foot-bottom p { margin: 0; }
+
+/* 验证页新增：判定标记与明细表 */
+.rpt-hit { color: var(--rpt-state-success); font-weight: 600; }
+.rpt-miss { color: var(--rpt-state-error); font-weight: 600; }
+.rpt-flag { color: var(--rpt-state-warning); font-weight: 600; }
+.rpt-tbl tbody td.rpt-hit, .rpt-tbl tbody th.rpt-hit { color: var(--rpt-state-success); }
+.rpt-tbl tbody td.rpt-miss, .rpt-tbl tbody th.rpt-miss { color: var(--rpt-state-error); }
+.rpt-tbl tbody td.rpt-flag, .rpt-tbl tbody th.rpt-flag { color: var(--rpt-state-warning); }
+.rpt-tbl--vf { min-width: 1080px; font-size: 12.5px; }
+.rpt-tbl--vf thead th { padding: 8px 10px; font-size: 12px; }
+.rpt-tbl--vf tbody th, .rpt-tbl--vf tbody td,
+.rpt-tbl--vf tfoot th, .rpt-tbl--vf tfoot td { padding: 8px 10px; }
+
+@media (max-width: 1024px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+}
+@media (max-width: 640px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+  .rpt-sec { padding-top: 3rem; padding-bottom: 3rem; }
+  .rpt-sec--lead { padding-top: 3.5rem; padding-bottom: 3rem; }
+  .rpt-kpi-band { grid-template-columns: 1fr; }
+  .rpt-grid { gap: 2rem; }
+  .rpt-grid--footer, .rpt-grid--two, .rpt-grid--halves, .rpt-grid--narrow-left, .rpt-grid--wide-left, .rpt-grid--chart-wide { grid-template-columns: 1fr; }
+  .rpt-chart-wrap { height: 240px; }
+  .rpt-chart-wrap--tall { height: 300px; }
+  .rpt-kpi-value { font-size: 28px; }
+  .rpt-metric-value { font-size: 30px; }
+  .rpt-issue { grid-template-columns: 1fr; gap: 6px; }
+  .rpt-dl-row { flex-direction: column; gap: 4px; }
+  .rpt-dl-row dd { text-align: left; }
+  .rpt-tbl { font-size: 12.5px; min-width: 520px; }
+  .rpt-tbl--vf { min-width: 1000px; }
+  .rpt-tbl thead th, .rpt-tbl tbody th, .rpt-tbl tbody td, .rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 9px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rpt-tbl tbody tr { transition: none; }
+}
+    </style>
+
+    <script>
+(function () {
+  var root = document.documentElement;
+  var cs = getComputedStyle(root);
+  var tok = function (name) { return (cs.getPropertyValue(name) || '').trim(); };
+
+  var c1 = tok('--rpt-chart-1'), c2 = tok('--rpt-chart-2'), c3 = tok('--rpt-chart-3');
+  var c4 = tok('--rpt-chart-4'), c5 = tok('--rpt-chart-5');
+  var lineColor = tok('--rpt-line') || tok('--rpt-border');
+  var ink2 = tok('--rpt-ink-2'), ink3 = tok('--rpt-ink-3');
+  var fontSans = tok('--rpt-font-sans');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* KPI 数字滚动（尊重 prefers-reduced-motion，无 JS 时保留静态终值） */
+  var counters = document.querySelectorAll('[data-countup]');
+  Array.prototype.forEach.call(counters, function (el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var render = function (v) {
+      return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    };
+    if (isNaN(target)) { return; }
+    if (reduce) { el.textContent = render(target); return; }
+    var duration = 900, start = null;
+    var step = function (ts) {
+      if (start === null) { start = ts; }
+      var p = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = render(target * eased);
+      if (p < 1) { requestAnimationFrame(step); }
+    };
+    requestAnimationFrame(step);
+  });
+
+  if (!window.Chart) { return; }
+  Chart.defaults.font.family = fontSans;
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = ink2;
+
+  var legendLabels = { color: ink2, boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle' };
+  var pctTick = function (v) { return Number(v).toFixed(0) + '%'; };
+
+  /* 1 · 五大市场命中率 vs 全局多数类基线（分组横向条形） */
+  var marketEl = document.getElementById('chart-vf-market');
+  if (marketEl) {
+    new Chart(marketEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['胜平负', '大小球 2.5', '单双', '总角球 9.5', '总牌数 4.5'],
+        datasets: [
+          { label: '模型命中率', data: [41.7, 35.4, 50.0, 56.3, 74.5], backgroundColor: c1, hoverBackgroundColor: c2, borderRadius: 2 },
+          { label: '全局多数类基线', data: [33.3, 58.3, 50.0, 52.1, 74.5], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2 }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ' ' + ctx.parsed.x.toFixed(1) + '%'; } } }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 80,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: pctTick }
+          },
+          y: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } }
+        }
+      }
+    });
+  }
+
+  /* 2 · 分联赛五市场命中率（分组纵向条形） */
+  var leagueEl = document.getElementById('chart-vf-league');
+  if (leagueEl) {
+    new Chart(leagueEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['英超', '德甲', '西甲', '意甲', '法甲'],
+        datasets: [
+          { label: '胜平负', data: [40.0, 33.3, 30.0, 70.0, 33.3], backgroundColor: c1, hoverBackgroundColor: c1, borderRadius: 2 },
+          { label: '大小球 2.5', data: [20.0, 33.3, 40.0, 30.0, 55.6], backgroundColor: c2, hoverBackgroundColor: c2, borderRadius: 2 },
+          { label: '单双', data: [80.0, 33.3, 50.0, 50.0, 33.3], backgroundColor: c3, hoverBackgroundColor: c3, borderRadius: 2 },
+          { label: '总角球 9.5', data: [60.0, 55.6, 70.0, 60.0, 33.3], backgroundColor: c4, hoverBackgroundColor: c4, borderRadius: 2 },
+          { label: '总牌数 4.5', data: [50.0, 100, 60.0, 88.9, 77.8], backgroundColor: c5, hoverBackgroundColor: c5, borderRadius: 2 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ' ' + ctx.parsed.y.toFixed(1) + '%'; } } }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            beginAtZero: true,
+            max: 100,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: pctTick }
+          }
+        }
+      }
+    });
+  }
+
+  /* 3 · 预测方向 vs 实际赛果（分组纵向条形） */
+  var directionEl = document.getElementById('chart-vf-direction');
+  if (directionEl) {
+    new Chart(directionEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['主胜', '平局', '客胜'],
+        datasets: [
+          { label: '模型预测', data: [24, 19, 5], backgroundColor: c1, hoverBackgroundColor: c1, borderRadius: 2, barThickness: 34 },
+          { label: '实际赛果', data: [16, 16, 16], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2, barThickness: 34 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ' ' + ctx.parsed.y.toLocaleString('en-US') + ' 场'; } } }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            beginAtZero: true,
+            max: 24,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0); } }
+          }
+        }
+      }
+    });
+  }
+
+  /* 4 · 置信度分箱方向命中率（条形，tooltip 附命中数/场次） */
+  var confEl = document.getElementById('chart-vf-confidence');
+  if (confEl) {
+    var confHits = ['5/9', '5/11', '2/7', '10/21'];
+    new Chart(confEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['60% 以上', '50–60%', '45–50%', '45% 以下'],
+        datasets: [{
+          label: '方向命中率',
+          data: [55.6, 45.5, 28.6, 47.6],
+          backgroundColor: [c1, c2, c3, c5],
+          hoverBackgroundColor: c2,
+          borderRadius: 2,
+          barThickness: 40
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function (ctx) { return '命中率 ' + ctx.parsed.y.toFixed(1) + '% · 命中 ' + confHits[ctx.dataIndex] + ' 场'; } } }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            beginAtZero: true,
+            max: 60,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: pctTick }
+          }
+        }
+      }
+    });
+  }
+})();
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

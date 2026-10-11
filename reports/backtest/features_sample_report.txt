@@ -1,0 +1,232 @@
+==========================================================================================
+  features_v2.csv 结构概览
+==========================================================================================
+总样本数: 16475
+总列数:   173
+内存占用: 25.26 MB
+
+【列分组】
+  元数据列:   5
+  标签列:     3
+  赔率原始列: 46
+  特征列:     165
+
+==========================================================================================
+  标签列分布
+==========================================================================================
+result  (0=客胜, 1=平局, 2=主胜):
+result
+0    7266
+1    4131
+2    5078
+
+over_25 (0=小球, 1=大球):  {0: 7731, 1: 8744}
+odd_even(0=偶数, 1=奇数):  {0: 8339, 1: 8136}
+
+==========================================================================================
+  联赛 & 赛季分布
+==========================================================================================
+league_code
+I1     3501
+SP1    3500
+E0     3499
+F1     3185
+D1     2790
+
+赛季范围: [np.int64(1617), np.int64(1718), np.int64(1819), np.int64(1920), np.int64(2021), np.int64(2122), np.int64(2223), np.int64(2324), np.int64(2425), np.int64(2526)]
+
+==========================================================================================
+  缺失率最高的 15 列
+==========================================================================================
+  b365_home_odds                              0.0%
+  b365_draw_odds                              0.0%
+  b365_away_odds                              0.0%
+  pinnacle_home_odds                          0.0%
+  pinnacle_draw_odds                          0.0%
+  pinnacle_away_odds                          0.0%
+  pinnacle_closing_home_odds                  0.0%
+  pinnacle_closing_draw_odds                  0.0%
+  pinnacle_closing_away_odds                  0.0%
+  bw_home_odds                                0.0%
+  bw_draw_odds                                0.0%
+  bw_away_odds                                0.0%
+  home_odds_std                               0.0%
+  home_odds_mean                              0.0%
+  home_odds_cv                                0.0%
+
+==========================================================================================
+  样例行（第 5000 行）完整字段
+==========================================================================================
+  b365_home_odds                           1.6500
+  b365_draw_odds                           4.2000
+  b365_away_odds                           4.7500
+  pinnacle_home_odds                       1.6700
+  pinnacle_draw_odds                       4.3500
+  pinnacle_away_odds                       5.1500
+  pinnacle_closing_home_odds               1.6500
+  pinnacle_closing_draw_odds               4.4200
+  pinnacle_closing_away_odds               5.2400
+  bw_home_odds                             1.6100
+  bw_draw_odds                             4.2000
+  bw_away_odds                             5.0000
+  home_odds_std                            0.0261
+  home_odds_mean                           1.6300
+  home_odds_cv                             0.0160
+  home_odds_range                          0.0429
+  away_odds_std                            0.1329
+  away_odds_mean                           4.9667
+  away_odds_cv                             0.0268
+  away_odds_range                          0.0805
+  draw_odds_cv                             0.0266
+  overall_odds_cv                          0.0231
+  pinnacle_overround                       0.0229
+  b365_overround                           0.0547
+  pinnacle_home_implied_move               0.0073
+  pinnacle_away_implied_move               -0.0033
+  pinnacle_market_move                     0.0053
+  home_shot_accuracy                       0.5714
+  away_shot_accuracy                       0.4167
+  corner_diff                              7.0000
+  home_season_gf                           27.0000
+  home_season_ga                           18.0000
+  home_season_wins                         8.0000
+  home_season_draws                        2.0000
+  home_season_losses                       4.0000
+  home_season_matches                      14.0000
+  home_season_points                       26.0000
+  away_season_gf                           19.0000
+  away_season_ga                           22.0000
+  away_season_wins                         4.0000
+  away_season_draws                        3.0000
+  away_season_losses                       6.0000
+  away_season_matches                      13.0000
+  away_season_points                       15.0000
+  home_home_gf                             17.0000
+  home_home_ga                             8.0000
+  home_home_wins                           5.0000
+  home_home_matches                        7.0000
+  away_away_gf                             7.0000
+  away_away_ga                             13.0000
+  away_away_wins                           1.0000
+  away_away_matches                        6.0000
+  home_season_gf_per_game                  1.9286
+  home_season_ga_per_game                  1.2857
+  home_season_win_rate                     0.5714
+  home_season_points_per_game              1.8571
+  away_season_gf_per_game                  1.4615
+  away_season_ga_per_game                  1.6923
+  away_season_win_rate                     0.3077
+  away_season_points_per_game              1.1538
+  home_home_gf_per_game                    2.4286
+  home_home_ga_per_game                    1.1429
+  home_home_win_rate                       0.7143
+  away_away_gf_per_game                    1.1667
+  away_away_ga_per_game                    2.1667
+  away_away_win_rate                       0.1667
+  home_last5_gf                            1.4000
+  home_last5_ga                            1.6000
+  home_last5_win_rate                      0.4000
+  home_last5_points                        1.2000
+  away_last5_gf                            1.6000
+  away_last5_ga                            2.0000
+  away_last5_win_rate                      0.4000
+  away_last5_points                        1.2000
+  home_last10_gf                           1.8000
+  home_last10_ga                           1.5000
+  home_last10_win_rate                     0.5000
+  home_last10_points                       1.6000
+  away_last10_gf                           1.2000
+  away_last10_ga                           1.9000
+  away_last10_win_rate                     0.2000
+  away_last10_points                       0.8000
+  home_last20_gf                           2.0000
+  home_last20_ga                           1.0000
+  home_last20_win_rate                     0.6000
+  home_last20_points                       2.0000
+  away_last20_gf                           1.3000
+  away_last20_ga                           1.6500
+  away_last20_win_rate                     0.3000
+  away_last20_points                       1.1500
+  home_attack_vs_away_defense              0.2619
+  away_attack_vs_home_defense              0.0238
+  home_away_win_diff                       0.5476
+  h2h_matches                              4
+  b365_home_implied                        0.6061
+  b365_draw_implied                        0.2381
+  b365_away_implied                        0.2105
+  b365_margin                              0.0547
+  b365_home_fair_prob                      0.5746
+  b365_draw_fair_prob                      0.2258
+  b365_away_fair_prob                      0.1996
+  home_last5_xg_for                        2.4000
+  home_last5_xg_against                    2.1400
+  home_last5_xg_diff                       0.2600
+  home_last5_goals_above_xg                -1.0000
+  away_last5_xg_for                        2.0200
+  away_last5_xg_against                    2.1200
+  away_last5_xg_diff                       -0.1000
+  away_last5_goals_above_xg                -0.4200
+  home_last10_xg_for                       2.4650
+  home_last10_xg_against                   2.2700
+  home_last10_xg_diff                      0.1950
+  home_last10_goals_above_xg               -0.6650
+  away_last10_xg_for                       1.8500
+  away_last10_xg_against                   2.1700
+  away_last10_xg_diff                      -0.3200
+  away_last10_goals_above_xg               -0.6500
+  home_last20_xg_for                       2.5050
+  home_last20_xg_against                   1.7775
+  home_last20_xg_diff                      0.7275
+  home_last20_goals_above_xg               -0.5050
+  away_last20_xg_for                       1.7400
+  away_last20_xg_against                   2.2325
+  away_last20_xg_diff                      -0.4925
+  away_last20_goals_above_xg               -0.4400
+  diff_last5_xg                            0.3600
+  diff_last10_xg                           0.5150
+  diff_last20_xg                           1.2200
+  home_odds_dispersion                     0.0160
+  away_odds_dispersion                     0.0268
+  draw_odds_dispersion                     0.0266
+  overall_odds_dispersion                  0.0231
+  pinnacle_margin                          0.0229
+  pinnacle_home_fair_prob                  0.5854
+  pinnacle_draw_fair_prob                  0.2247
+  pinnacle_away_fair_prob                  0.1898
+  pinnacle_implied_diff                    0.3956
+  b365_vs_pinnacle_home                    -0.0120
+  b365_vs_pinnacle_away                    -0.0777
+  pinnacle_home_market_move                0.0073
+  pinnacle_away_market_move                -0.0033
+  pinnacle_market_activity                 0.0053
+  diff_season_points                       11.0000
+  diff_season_gf                           0.4670
+  diff_season_ga                           -0.4066
+  diff_season_win_rate                     0.2637
+  diff_last5_gf                            -0.2000
+  diff_last5_ga                            -0.4000
+  diff_last5_win_rate                      0.0000
+  diff_last5_points                        0.0000
+  diff_last10_gf                           0.6000
+  diff_last10_ga                           -0.4000
+  diff_b365_implied                        0.3955
+  result                                   0
+  over_25                                  1
+  odd_even                                 1
+  date                                     2022-11-12
+  league_code                              E0
+  home_team                                Tottenham
+  away_team                                Leeds
+  season                                   2223
+  pinnacle_over_25_odds                    1.6300
+  pinnacle_under_25_odds                   2.4000
+  max_home_odds                            1.6800
+  max_draw_odds                            4.4900
+  max_away_odds                            5.5500
+  max_over_25_odds                         1.6600
+  max_under_25_odds                        2.4100
+  avg_home_odds                            1.6400
+  avg_draw_odds                            4.2600
+  avg_away_odds                            5.0400
+  b365_over_25_odds                        1.6100
+  b365_under_25_odds                       2.3000

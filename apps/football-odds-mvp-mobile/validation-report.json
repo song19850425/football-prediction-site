@@ -1,0 +1,185 @@
+{
+  "success": true,
+  "outcome": "passed",
+  "repairable": true,
+  "terminalViolations": [],
+  "terminalBlockingSummary": null,
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.07.22.00.00.00",
+    "version_source": "skill-release-manifest.json",
+    "runtime_skill_dir": "c:\\Users\\jingh\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+    "recorded_at": null,
+    "expected_version": "2026.07.22.00.00.00",
+    "status": "manifest_fallback",
+    "read_status": "ok",
+    "reason": "runtime-orchestration-summary.json missing skillProvenance; used skill-release-manifest.json"
+  },
+  "operatingMode": "free-explore",
+  "renderBlockingErrorCount": 0,
+  "softWarningCount": 17,
+  "renderBlockingErrors": [],
+  "errorSignatures": [],
+  "softWarnings": [
+    "[orchestration-summary] runtime-orchestration-summary.json is missing skillProvenance.name/version/version_source. Version provenance will be reported as observed_unknown by external evaluators.",
+    "[repair-ledger] validationRepairLedger[0].repairActions[] is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationReportPath is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationReportHash is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationSuccess should be a boolean",
+    "[mobile-bottom-overlay] pages/schedule.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"absolute right-4 bottom-3 w-4 h-4 text-neutral-300\"",
+    "[mobile-bottom-overlay] pages/match-detail.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40\"",
+    "[mobile-bottom-overlay] pages/odds-input.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40\"",
+    "[mobile-bottom-overlay] pages/ai-analysis.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-[56px] left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white/95 backdrop-blur-sm border-t border-neutral-100 z-40\"",
+    "[html-quality] ai-analysis.html: Tailwind named color utilities are forbidden (border-neutral-200, bg-neutral-100, bg-neutral-200, text-neutral-900, border-neutral-100, text-neutral-400, text-neutral-600, bg-neutral-50). Use brand CSS variables instead.",
+    "[html-quality] ai-analysis.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] match-detail.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-700, text-neutral-600, bg-purple-500, text-neutral-500, bg-red-600). Use brand CSS variables instead.",
+    "[html-quality] match-detail.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] odds-input.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-700, text-neutral-500, bg-neutral-50, text-neutral-800, text-neutral-400). Use brand CSS variables instead.",
+    "[html-quality] odds-input.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] schedule.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-600, text-neutral-500, bg-amber-50, text-amber-700, border-neutral-100). Use brand CSS variables instead.",
+    "[html-quality] schedule.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference."
+  ],
+  "repairPlanHints": [
+    {
+      "errorClass": "hardcoded-color-in-body",
+      "owner": "sub-agent",
+      "repairScope": "targeted-token-replace",
+      "strategy": "targeted_token_replace_once",
+      "affectedFiles": [
+        "ai-analysis.html"
+      ],
+      "repairReportPath": null,
+      "repairAlreadyAttempted": false,
+      "allowSourceRead": "no-full-html-read",
+      "maxValidationRuns": 2
+    },
+    {
+      "errorClass": "hardcoded-color-in-body",
+      "owner": "sub-agent",
+      "repairScope": "targeted-token-replace",
+      "strategy": "targeted_token_replace_once",
+      "affectedFiles": [
+        "match-detail.html"
+      ],
+      "repairReportPath": null,
+      "repairAlreadyAttempted": false,
+      "allowSourceRead": "no-full-html-read",
+      "maxValidationRuns": 2
+    },
+    {
+      "errorClass": "hardcoded-color-in-body",
+      "owner": "sub-agent",
+      "repairScope": "targeted-token-replace",
+      "strategy": "targeted_token_replace_once",
+      "affectedFiles": [
+        "odds-input.html"
+      ],
+      "repairReportPath": null,
+      "repairAlreadyAttempted": false,
+      "allowSourceRead": "no-full-html-read",
+      "maxValidationRuns": 2
+    },
+    {
+      "errorClass": "hardcoded-color-in-body",
+      "owner": "sub-agent",
+      "repairScope": "targeted-token-replace",
+      "strategy": "targeted_token_replace_once",
+      "affectedFiles": [
+        "schedule.html"
+      ],
+      "repairReportPath": null,
+      "repairAlreadyAttempted": false,
+      "allowSourceRead": "no-full-html-read",
+      "maxValidationRuns": 2
+    }
+  ],
+  "repairActionTable": [],
+  "errorCount": 0,
+  "warningCount": 17,
+  "errors": [],
+  "warnings": [
+    "[orchestration-summary] runtime-orchestration-summary.json is missing skillProvenance.name/version/version_source. Version provenance will be reported as observed_unknown by external evaluators.",
+    "[repair-ledger] validationRepairLedger[0].repairActions[] is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationReportPath is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationReportHash is missing",
+    "[repair-ledger] validationRepairLedger[0].revalidationSuccess should be a boolean",
+    "[mobile-bottom-overlay] pages/schedule.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"absolute right-4 bottom-3 w-4 h-4 text-neutral-300\"",
+    "[mobile-bottom-overlay] pages/match-detail.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40\"",
+    "[mobile-bottom-overlay] pages/odds-input.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40\"",
+    "[mobile-bottom-overlay] pages/ai-analysis.html: bottom fixed/absolute CTA or navigation found. Ensure it has safe-area spacing and does not cover content. Evidence: class=\"fixed bottom-[56px] left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white/95 backdrop-blur-sm border-t border-neutral-100 z-40\"",
+    "[html-quality] ai-analysis.html: Tailwind named color utilities are forbidden (border-neutral-200, bg-neutral-100, bg-neutral-200, text-neutral-900, border-neutral-100, text-neutral-400, text-neutral-600, bg-neutral-50). Use brand CSS variables instead.",
+    "[html-quality] ai-analysis.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] match-detail.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-700, text-neutral-600, bg-purple-500, text-neutral-500, bg-red-600). Use brand CSS variables instead.",
+    "[html-quality] match-detail.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] odds-input.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-700, text-neutral-500, bg-neutral-50, text-neutral-800, text-neutral-400). Use brand CSS variables instead.",
+    "[html-quality] odds-input.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference.",
+    "[html-quality] schedule.html: Tailwind named color utilities are forbidden (bg-neutral-100, text-neutral-900, border-neutral-200, text-neutral-600, text-neutral-500, bg-amber-50, text-amber-700, border-neutral-100). Use brand CSS variables instead.",
+    "[html-quality] schedule.html: hardcoded colors are forbidden outside <style id=\"theme-vars\">. Use brand CSS variables from the token reference."
+  ],
+  "validationRunDisciplineStatus": {
+    "declared": true,
+    "restoreMode": false,
+    "maxFullValidationRuns": null,
+    "validationHistoryCount": 1,
+    "repairLedgerCount": 1,
+    "softWarningsTriggerRepair": null,
+    "terminalState": null,
+    "nextAction": null,
+    "violations": [],
+    "success": true
+  },
+  "terminalState": null,
+  "nextCheck": {
+    "type": "finish-readiness",
+    "command": "node \"c:\\Users\\jingh\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs\" \"d:\\文件\\TREA 目录\\6a64786b5f5ef16ff6d945f5\\football-odds-mvp-mobile\" --check=all",
+    "fullValidationAllowed": false,
+    "reason": "workspace validation passed; run complete finish readiness before final delivery"
+  },
+  "repairBatch": [],
+  "repairContextPacket": {
+    "schema_version": "1.0",
+    "purpose": "small-context repair packet; read this before full validation-report.json",
+    "success": true,
+    "terminalState": null,
+    "skillProvenance": {
+      "name": "solo-design",
+      "version": "2026.07.22.00.00.00",
+      "version_source": "skill-release-manifest.json",
+      "runtime_skill_dir": "c:\\Users\\jingh\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+      "recorded_at": null,
+      "expected_version": "2026.07.22.00.00.00",
+      "status": "manifest_fallback",
+      "read_status": "ok",
+      "reason": "runtime-orchestration-summary.json missing skillProvenance; used skill-release-manifest.json"
+    },
+    "renderBlockingErrorCount": 0,
+    "softWarningCount": 17,
+    "renderBlockingErrors": [],
+    "repairActionTable": [],
+    "nextCheck": {
+      "type": "finish-readiness",
+      "command": "node \"c:\\Users\\jingh\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs\" \"d:\\文件\\TREA 目录\\6a64786b5f5ef16ff6d945f5\\football-odds-mvp-mobile\" --check=all",
+      "fullValidationAllowed": false,
+      "reason": "workspace validation passed; run complete finish readiness before final delivery"
+    },
+    "forbidden": [
+      "do not read validator source",
+      "do not rerun full validation when nextCheck.fullValidationAllowed=false",
+      "do not start preview/browser unless user explicitly asks",
+      "do not hand-edit repair ledger fields"
+    ]
+  },
+  "projectFileHashes": {
+    "football-odds-mvp-mobile.design": "e48d1b73ab4807e66de76a3c5b79da97e0ea0919288aafa92e2386136b318d55",
+    "colors_and_type.css": "707d83f5dc259fbda00850b6286b809eed1ec0f7d74c5ccc31536f0d1c67775a",
+    "runtime-orchestration-summary.json": "8581a7688b465844a3ef97116372f46b5dff1b243f0a3de3e4d6eb5c5e27228f",
+    "pages/ai-analysis.html": "92e35ecd2f2171b6d78140f3ab261bad0f1712e0948a2d1d19ef6baa79ff6018",
+    "pages/match-detail.html": "aba979c99dd4fe8a4fb3b72a4675c2cd7bb9a81f074393b790cdcd705a128da2",
+    "pages/odds-input.html": "6a3317072e75d5fa8c720ac6692c5e27b75baeebd22480cfcb7383be85f359c2",
+    "pages/schedule.html": "e2cede6f0f83ce41545f15b7e05155293ecc09157be49e5c879cbc0a8bcbfb76"
+  },
+  "designDir": "d:\\文件\\TREA 目录\\6a64786b5f5ef16ff6d945f5\\football-odds-mvp-mobile",
+  "expectedPages": null,
+  "requireInteractions": null,
+  "checkedAt": "2026-07-25T10:20:20.508Z"
+}

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>韩K联第28轮 验证报告 - 2026年9月9日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.6; padding: 20px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  .header { text-align: center; padding: 30px 20px 24px; border-bottom: 1px solid #1f2e26; margin-bottom: 28px; }
+  .header h1 { font-size: 1.8rem; color: #4ecca3; font-weight: 700; margin-bottom: 8px; }
+  .header .subtitle { font-size: 0.9rem; color: #888; margin-bottom: 16px; }
+
+  .header-stats { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 12px; }
+  .header-stat .num { font-size: 1.6rem; font-weight: 700; }
+  .header-stat .label { font-size: 0.78rem; color: #888; margin-top: 2px; }
+  .num.green { color: #4ecca3; }
+  .num.yellow { color: #d4a835; }
+  .num.red { color: #cc6666; }
+  .num.blue { color: #7a9cc6; }
+
+  .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .card { background: #141414; border: 1px solid #1e2a24; border-radius: 8px; padding: 18px 14px; text-align: center; }
+  .card .card-num { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+  .card .card-label { font-size: 0.78rem; color: #888; }
+  .card-green .card-num { color: #4ecca3; }
+  .card-yellow .card-num { color: #d4a835; }
+  .card-red .card-num { color: #cc6666; }
+  .card-blue .card-num { color: #7a9cc6; }
+
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 1.1rem; font-weight: 600; color: #fff; padding: 10px 14px; background: #1a1a1a; border-left: 3px solid #4ecca3; border-radius: 4px; margin-bottom: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #161616; color: #999; font-weight: 500; padding: 9px 6px; text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2a2a2a; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #1e1e1e; transition: background 0.15s; }
+  tbody tr:hover { background: #1a1a1a; }
+  tbody td { padding: 9px 6px; text-align: center; color: #ccc; }
+  tbody td.match { text-align: left; padding-left: 10px; color: #e0e0e0; font-weight: 500; }
+  tbody td.score { font-weight: 700; color: #fff; font-size: 14px; }
+  td.correct { color: #4ecca3; font-weight: 600; }
+  td.wrong { color: #cc6666; font-weight: 600; }
+  td .actual { color: #e0c34e; font-weight: 600; }
+
+  .verdict-box { background: #111; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+  .verdict-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+  .verdict-header .title { font-size: 15px; font-weight: 600; color: #fff; }
+  .verdict-header .badge { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .badge-perfect { background: rgba(78,204,163,0.15); color: #4ecca3; border: 1px solid #2a5a3a; }
+  .badge-good { background: rgba(122,156,198,0.15); color: #7a9cc6; border: 1px solid #2a4a6a; }
+  .badge-partial { background: rgba(212,168,53,0.15); color: #d4a835; border: 1px solid #5a5a2a; }
+  .badge-poor { background: rgba(204,102,102,0.15); color: #cc6666; border: 1px solid #4a2a2a; }
+  .verdict-body { padding: 16px; }
+  .verdict-row { display: flex; margin-bottom: 6px; gap: 12px; }
+  .verdict-label { width: 100px; color: #666; font-size: 12px; flex-shrink: 0; }
+  .verdict-value { color: #e0e0e0; font-size: 13px; }
+  .verdict-value .green { color: #4ecca3; font-weight: 600; }
+  .verdict-value .yellow { color: #d4a835; font-weight: 600; }
+  .verdict-value .red { color: #cc6666; font-weight: 600; }
+  .verdict-value .blue { color: #7a9cc6; font-weight: 600; }
+
+  .analysis-box { margin-top: 10px; padding: 12px; background: #0d0d0d; border-left: 3px solid #4ecca3; border-radius: 4px; }
+  .analysis-box p { color: #aaa; font-size: 12px; line-height: 1.7; }
+  .analysis-box .key { color: #4ecca3; font-weight: 600; }
+  .analysis-box .miss { color: #cc6666; font-weight: 600; }
+
+  .compare-table td { font-size: 12px; }
+  .compare-table .v30 { color: #7a9cc6; }
+  .compare-table .v31 { color: #4ecca3; }
+  .compare-table .doubao { color: #d4a835; }
+
+  .footer { text-align: center; margin-top: 30px; padding-top: 16px; border-top: 1px solid #2a2a2a; color: #555; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>韩K联第28轮 验证报告</h1>
+  <div class="subtitle">2026年9月9日 18:30 | K League 1 Round 28 | V3.0 vs V3.1 vs 豆包AI</div>
+  <div class="header-stats">
+    <div class="header-stat"><div class="num green">11/16</div><div class="label">V3.0 命中率 68.75%</div></div>
+    <div class="header-stat"><div class="num green">11/16</div><div class="label">V3.1 命中率 68.75%</div></div>
+    <div class="header-stat"><div class="num red">1/4</div><div class="label">豆包 单双命中 25%</div></div>
+    <div class="header-stat"><div class="num blue">2/4</div><div class="label">比分精确命中</div></div>
+  </div>
+</div>
+
+<div class="summary-cards">
+  <div class="card card-green"><div class="card-num">3/4</div><div class="card-label">胜负命中</div></div>
+  <div class="card card-green"><div class="card-num">2/4</div><div class="card-label">比分命中</div></div>
+  <div class="card card-green"><div class="card-num">3/4</div><div class="card-label">大小球命中</div></div>
+  <div class="card card-yellow"><div class="card-num">3/4</div><div class="card-label">单双命中</div></div>
+</div>
+
+<!-- 实际比分汇总 -->
+<div class="section">
+  <div class="section-title">实际比赛结果</div>
+  <table>
+    <thead><tr><th>#</th><th>对阵</th><th>半场</th><th>全场</th><th>胜负</th><th>大小2.5</th><th>单双</th><th>进球</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td class="match">江原FC vs 全北现代</td>
+        <td>0-1</td>
+        <td class="score">1-1</td>
+        <td>平局</td>
+        <td>小</td>
+        <td>双</td>
+        <td>伊塔洛15' / 哈拉伊哈尔59'</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="match">光州FC vs 济州SK</td>
+        <td>0-0</td>
+        <td class="score">0-1</td>
+        <td>客胜</td>
+        <td>小</td>
+        <td>单</td>
+        <td>Aiás 63'(崔秉旭助)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="match">浦项制铁 vs 金泉尚武</td>
+        <td>0-0</td>
+        <td class="score">0-0</td>
+        <td>平局</td>
+        <td>小</td>
+        <td>双</td>
+        <td>无进球</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="match">大田市民 vs 安养FC</td>
+        <td>0-1</td>
+        <td class="score">3-2</td>
+        <td>主胜</td>
+        <td>大</td>
+        <td>单</td>
+        <td>马特乌斯10' / 周敏圭47' / 博布辛65' / 周敏圭75' / 艾尔顿79'</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- V3.0 vs V3.1 逐场验证 -->
+<div class="section">
+  <div class="section-title">逐场验证 — V3.0 vs V3.1 vs 豆包</div>
+  <table class="compare-table">
+    <thead>
+      <tr><th>#</th><th>对阵</th><th>项目</th><th>实际</th><th>V3.0</th><th>V3.1</th><th>豆包</th></tr>
+    </thead>
+    <tbody>
+      <!-- Match 1 -->
+      <tr><td rowspan="4">1</td><td rowspan="4" class="match">江原FC vs 全北现代</td><td>胜负</td><td class="actual">平局</td><td class="correct">平局 ✅</td><td class="correct">平局 ✅</td><td>—</td></tr>
+      <tr><td>比分</td><td class="actual">1-1</td><td class="correct">1-1 ✅</td><td class="correct">1-1 ✅</td><td>—</td></tr>
+      <tr><td>大小</td><td class="actual">小</td><td class="correct">小 ✅</td><td class="correct">小 ✅</td><td>—</td></tr>
+      <tr><td>单双</td><td class="actual">双</td><td class="correct">双 ✅</td><td class="correct">双 ✅</td><td class="wrong">单 ❌</td></tr>
+
+      <!-- Match 2 -->
+      <tr><td rowspan="4">2</td><td rowspan="4" class="match">光州FC vs 济州SK</td><td>胜负</td><td class="actual">客胜</td><td class="correct">客胜 ✅</td><td class="correct">客胜 ✅</td><td>—</td></tr>
+      <tr><td>比分</td><td class="actual">0-1</td><td class="correct">0-1 ✅</td><td class="wrong">0-2 ❌</td><td>—</td></tr>
+      <tr><td>大小</td><td class="actual">小</td><td class="correct">小 ✅</td><td class="correct">小 ✅</td><td>—</td></tr>
+      <tr><td>单双</td><td class="actual">单</td><td class="correct">单 ✅</td><td class="wrong">双 ❌</td><td class="wrong">双 ❌</td></tr>
+
+      <!-- Match 3 -->
+      <tr><td rowspan="4">3</td><td rowspan="4" class="match">浦项制铁 vs 金泉尚武</td><td>胜负</td><td class="actual">平局</td><td class="wrong">主胜 ❌</td><td class="wrong">主胜 ❌</td><td>—</td></tr>
+      <tr><td>比分</td><td class="actual">0-0</td><td class="wrong">2-0 ❌</td><td class="wrong">2-0 ❌</td><td>—</td></tr>
+      <tr><td>大小</td><td class="actual">小</td><td class="correct">小 ✅</td><td class="correct">小 ✅</td><td>—</td></tr>
+      <tr><td>单双</td><td class="actual">双</td><td class="correct">双 ✅</td><td class="correct">双 ✅</td><td class="wrong">单 ❌</td></tr>
+
+      <!-- Match 4 -->
+      <tr><td rowspan="4">4</td><td rowspan="4" class="match">大田市民 vs 安养FC</td><td>胜负</td><td class="actual">主胜</td><td class="correct">主胜 ✅</td><td class="correct">主胜 ✅</td><td>—</td></tr>
+      <tr><td>比分</td><td class="actual">3-2</td><td class="wrong">2-0 ❌</td><td class="wrong">2-1 ❌</td><td>—</td></tr>
+      <tr><td>大小</td><td class="actual">大</td><td class="wrong">小 ❌</td><td class="correct">临界 ✅</td><td>—</td></tr>
+      <tr><td>单双</td><td class="actual">单</td><td class="wrong">双 ❌</td><td class="correct">单 ✅</td><td class="correct">单 ✅</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 总分对比 -->
+<div class="section">
+  <div class="section-title">命中率总结</div>
+  <table>
+    <thead><tr><th>模型</th><th>胜负</th><th>比分</th><th>大小球</th><th>单双</th><th>总分</th><th>命中率</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="match" style="color:#7a9cc6;font-weight:600;">V3.0</td>
+        <td class="correct">3/4</td>
+        <td class="correct">2/4</td>
+        <td class="correct">3/4</td>
+        <td class="correct">3/4</td>
+        <td class="correct" style="font-size:16px;">11/16</td>
+        <td class="correct" style="font-size:16px;">68.75%</td>
+      </tr>
+      <tr>
+        <td class="match" style="color:#4ecca3;font-weight:600;">V3.1</td>
+        <td class="correct">3/4</td>
+        <td>1/4</td>
+        <td class="correct">3/4</td>
+        <td>2/4</td>
+        <td class="correct" style="font-size:16px;">11/16</td>
+        <td class="correct" style="font-size:16px;">68.75%</td>
+      </tr>
+      <tr>
+        <td class="match" style="color:#d4a835;font-weight:600;">豆包AI</td>
+        <td>—</td><td>—</td><td>—</td>
+        <td class="wrong">1/4</td>
+        <td class="wrong" style="font-size:16px;">1/4</td>
+        <td class="wrong" style="font-size:16px;">25.00%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 逐场分析 -->
+<div class="section">
+  <div class="section-title">逐场深度分析</div>
+</div>
+
+<!-- Match 1 -->
+<div class="verdict-box">
+  <div class="verdict-header">
+    <div class="title">1. 江原FC 1-1 全北现代 — 完美命中</div>
+    <div class="badge badge-perfect">V3.0 & V3.1 全对 4/4</div>
+  </div>
+  <div class="verdict-body">
+    <div class="verdict-row"><div class="verdict-label">预测</div><div class="verdict-value">V3.0/V3.1: 平局 1-1 / 双 / 小2.5 / 48%</div></div>
+    <div class="verdict-row"><div class="verdict-label">实际</div><div class="verdict-value">1-1 平局 / 双 / 小 / 伊塔洛15'首开, 哈拉伊哈尔59'扳平</div></div>
+    <div class="verdict-row"><div class="verdict-label">判定</div><div class="verdict-value"><span class="green">胜负✅ 比分✅ 大小✅ 单双✅ — 满分命中</span></div></div>
+    <div class="analysis-box">
+      <p><span class="key">分析:</span> V3.0基于江原主场50%平局率+两队仅差2分的判断完全正确。平局必然双数(1+1=2)，比分1-1精确命中。豆包"单数优先"判断错误 — 江原主场并非"拼对攻"类型，而是稳固防守+低进球率(场均1.27)，平局1-1是最自然的结果。</p>
+      <p style="margin-top:6px;"><span class="key">关键:</span> 全北15分钟领先但未能守住，江原主场韧性在59分钟扳平。模型对"争冠组卡位战闷战"的判断完全正确。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Match 2 -->
+<div class="verdict-box">
+  <div class="verdict-header">
+    <div class="title">2. 光州FC 0-1 济州SK — V3.0完美，V3.1调整失败</div>
+    <div class="badge badge-poor">V3.1 调整失误</div>
+  </div>
+  <div class="verdict-body">
+    <div class="verdict-row"><div class="verdict-label">V3.0预测</div><div class="verdict-value">客胜 0-1 / <span class="green">单</span> / 小2.5 / 45%</div></div>
+    <div class="verdict-row"><div class="verdict-label">V3.1调整</div><div class="verdict-value">客胜 0-2 / <span class="red">双</span> / 小2.5 / 45% — 依据济州近4场75%双</div></div>
+    <div class="verdict-row"><div class="verdict-label">实际</div><div class="verdict-value">0-1 客胜 / 单 / 小 / Aiás 63'折射进球, 半场0-0</div></div>
+    <div class="verdict-row"><div class="verdict-label">判定</div><div class="verdict-value">V3.0: <span class="green">4/4满分</span> | V3.1: <span class="red">2/4(比分+单双失误)</span></div></div>
+    <div class="analysis-box">
+      <p><span class="miss">V3.1最大失误:</span> 重新评估将单改为双，依据是济州近4场75%双数。但实际0-1(单数)。光州赛季27场仅进10球(场均0.37)，极可能被零封 → 比分0-1(单)比0-2(双)更合理。V3.0的原始泊松模型判断正确。</p>
+      <p style="margin-top:6px;"><span class="key">教训:</span> 球队特异性单双趋势(济州75%双)不应覆盖进球期望模型。光州进攻极弱 → 1球(单)比2球(双)概率更高。近期趋势适合辅助但不适合主导单双判断。</p>
+      <p style="margin-top:6px;"><span class="key">进球详情:</span> Aiás 63分钟折射进球(崔秉旭助攻)，半场0-0。光州全场比赛0进球，进攻能力确实联赛垫底。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Match 3 -->
+<div class="verdict-box">
+  <div class="verdict-header">
+    <div class="title">3. 浦项制铁 0-0 金泉尚武 — 单双对但胜负错</div>
+    <div class="badge badge-partial">部分命中</div>
+  </div>
+  <div class="verdict-body">
+    <div class="verdict-row"><div class="verdict-label">预测</div><div class="verdict-value">V3.0/V3.1: 主胜 2-0 / 双 / 小2.5 / 55%</div></div>
+    <div class="verdict-row"><div class="verdict-label">实际</div><div class="verdict-value">0-0 平局 / 双 / 小 / 无进球</div></div>
+    <div class="verdict-row"><div class="verdict-label">判定</div><div class="verdict-value"><span class="red">胜负❌</span>(主胜→平局) <span class="red">比分❌</span>(2-0→0-0) <span class="green">大小✅</span> <span class="green">单双✅</span> — 2/4</div></div>
+    <div class="analysis-box">
+      <p><span class="key">单双命中:</span> 金泉近5场0%单(全双)的判断完全正确，0-0(双)验证了金泉极强双数倾向。模型对"双数"的判断正确。</p>
+      <p style="margin-top:6px;"><span class="miss">胜负失误:</span> 预测浦项主胜2-0，实际0-0平局。浦项制铁排名第8，主场让平/半，模型过度看好浦项进攻。金泉尚武虽排名第11，但客场防守纪律性极强(军队球队)，0-0平局反映了两队都缺乏终结能力。防平(防平)的保护方向正确但主预测应更倾向平局。</p>
+      <p style="margin-top:6px;"><span class="key">数据验证:</span> 金泉赛季27场有4场0-0、12场2球 — 低分+双数的极端球队。V3.1正确维持双数判断，但2-0比分过于乐观。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Match 4 -->
+<div class="verdict-box">
+  <div class="verdict-header">
+    <div class="title">4. 大田市民 3-2 安养FC — V3.1关键调整成功</div>
+    <div class="badge badge-good">V3.1 调整成功</div>
+  </div>
+  <div class="verdict-body">
+    <div class="verdict-row"><div class="verdict-label">V3.0预测</div><div class="verdict-value">主胜 2-0 / <span class="red">双</span> / <span class="red">小2.5</span> / 68%</div></div>
+    <div class="verdict-row"><div class="verdict-label">V3.1调整</div><div class="verdict-value">主胜 2-1 / <span class="green">单</span> / <span class="green">临界</span> / 65%</div></div>
+    <div class="verdict-row"><div class="verdict-label">实际</div><div class="verdict-value">3-2 主胜 / 单 / 大 / 5球对攻大战</div></div>
+    <div class="verdict-row"><div class="verdict-label">判定</div><div class="verdict-value">V3.0: <span class="red">1/4(仅胜负)</span> | V3.1: <span class="green">3/4(胜负+大小+单双)</span></div></div>
+    <div class="analysis-box">
+      <p><span class="key">V3.1最大成功:</span> 将单双从双改为单是关键正确调整。大田近4场75%单+安养近4场75%单 → 实际3-2(5球=单)验证了球队特异性趋势。大小球从"小2.5"改为"临界"也正确 — 大田近6场进16球(场均2.67)的火力判断准确。</p>
+      <p style="margin-top:6px;"><span class="key">进球详情:</span> 安养马特乌斯10分钟先拔头筹 → 大田周敏圭47分钟扳平 → 博布辛65分钟反超 → 周敏圭75分钟梅开二度 → 艾尔顿79分钟再追一球。5球对攻大战完全验证了"大田火力强+安养防守差"的判断。</p>
+      <p style="margin-top:6px;"><span class="miss">比分未中:</span> 预测2-1，实际3-2。方向正确(主胜+单数+大球)，但低估了进球量。安养虽然客场防守差(0-3, 0-7)，但客场进攻并不差(本场打进2球)。大田2-0→3-2的差距来自安养的2个进球。</p>
+      <p style="margin-top:6px;"><span class="key">与豆包:</span> 豆包"单数优先"在此场唯一正确。大田火力强+安养防守漏洞 → 高频2-1(单)的定性分析正确，虽然最终是3-2而非2-1。</p>
+    </div>
+  </div>
+</div>
+
+<!-- V3.1 调整效果评估 -->
+<div class="section">
+  <div class="section-title">V3.1 重新评估效果总结</div>
+  <table>
+    <thead><tr><th>场次</th><th>V3.0得分</th><th>V3.1得分</th><th>调整变化</th><th>评价</th></tr></thead>
+    <tbody>
+      <tr><td>M1 江原vs全北</td><td class="correct">4/4</td><td class="correct">4/4</td><td>不变</td><td>维持正确</td></tr>
+      <tr><td>M2 光州vs济州</td><td class="correct">4/4</td><td class="wrong">2/4</td><td style="color:#cc6666;">-2</td><td style="color:#cc6666;">调整失误</td></tr>
+      <tr><td>M3 浦项vs金泉</td><td>2/4</td><td>2/4</td><td>不变</td><td>维持</td></tr>
+      <tr><td>M4 大田vs安养</td><td class="wrong">1/4</td><td class="correct">3/4</td><td style="color:#4ecca3;">+2</td><td style="color:#4ecca3;">调整成功</td></tr>
+      <tr style="border-top:2px solid #2a2a2a;font-weight:700;">
+        <td>总分</td><td class="correct">11/16</td><td class="correct">11/16</td><td>0</td><td>净效果为零</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 关键结论 -->
+<div class="section">
+  <div class="section-title">关键结论与教训</div>
+  <div class="verdict-box">
+    <div class="verdict-body">
+      <div class="verdict-row"><div class="verdict-label">1. 净效果为零</div><div class="verdict-value">V3.1的2次调整(M2-2分, M4+2分)完全抵消，总分不变。但调整方向有参考价值：M4单数判断正确，M2双数判断错误。</div></div>
+      <div class="verdict-row"><div class="verdict-label">2. 球队趋势≠单场结果</div><div class="verdict-value">济州近4场75%双数，但本场0-1(单)。球队特异性趋势适合概率参考，不适合直接推翻模型。</div></div>
+      <div class="verdict-row"><div class="verdict-label">3. 进攻极弱队</div><div class="verdict-value">光州场均0.37球 → 被零封概率极高 → 比分0-1(单)比0-2(双)更合理。泊松模型在此优于趋势统计。</div></div>
+      <div class="verdict-row"><div class="verdict-label">4. 金泉极端双数</div><div class="verdict-value">金泉近6场: 0-0, 0-0, 0-0, 1-1, 2-2, 0-0 — 全双数。V3.1维持双数判断正确(0-0验证)。</div></div>
+      <div class="verdict-row"><div class="verdict-label">5. 大田火力判断</div><div class="verdict-value">大田近6场进16球+安养客场失球多 → V3.1将大小改为"临界"+单双改为"单"完全正确。3-2(5球单数)验证。</div></div>
+      <div class="verdict-row"><div class="verdict-label">6. 豆包准确率</div><div class="verdict-value">1/4(25%) — 仅M4单数正确。豆包基于定性风格分析，忽略球队特异性数据，不适合直接参考单双结论。</div></div>
+      <div class="verdict-row"><div class="verdict-label">7. 平局→双数关联</div><div class="verdict-value">M1(1-1)和M3(0-0)都是平局→双数。江原主场50%平局率是双数的强力信号，V3.1的"平局→双数+10-15%"规则在此验证正确。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- V3.2 参数建议 -->
+<div class="section">
+  <div class="section-title">V3.2 模型参数调整建议</div>
+  <table>
+    <thead><tr><th>参数</th><th>V3.0</th><th>V3.1</th><th>V3.2建议</th><th>依据</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="match">泊松模型权重</td>
+        <td>100%</td>
+        <td>20%</td>
+        <td style="color:#4ecca3;font-weight:600;">40%</td>
+        <td>M2泊松正确但V3.1降低权重导致失误</td>
+      </tr>
+      <tr>
+        <td class="match">球队单双趋势权重</td>
+        <td>0%</td>
+        <td>30%</td>
+        <td style="color:#4ecca3;font-weight:600;">20%</td>
+        <td>M4成功但M2失误，需降低权重</td>
+      </tr>
+      <tr>
+        <td class="match">赛季单双统计权重</td>
+        <td>0%</td>
+        <td>40%</td>
+        <td style="color:#4ecca3;font-weight:600;">25%</td>
+        <td>整体有参考价值但不应主导</td>
+      </tr>
+      <tr>
+        <td class="match">近5场趋势权重</td>
+        <td>0%</td>
+        <td>30%</td>
+        <td style="color:#d4a835;font-weight:600;">10%</td>
+        <td>样本太小，波动大(M2反例)</td>
+      </tr>
+      <tr>
+        <td class="match">平局→双数加成</td>
+        <td>0%</td>
+        <td>+10-15%</td>
+        <td style="color:#4ecca3;font-weight:600;">+10-15%</td>
+        <td>M1/M3验证正确，保留</td>
+      </tr>
+      <tr>
+        <td class="match">进攻极弱队规则</td>
+        <td>—</td>
+        <td>—</td>
+        <td style="color:#4ecca3;font-weight:600;">新增</td>
+        <td>光州0.37球/场 → 零封概率高 → 1球(单)优先</td>
+      </tr>
+      <tr>
+        <td class="match">大小球临界区间</td>
+        <td>—</td>
+        <td>2.4-2.6</td>
+        <td style="color:#4ecca3;font-weight:600;">2.3-2.8</td>
+        <td>M4期望3.0但标记临界 → 需扩大区间</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>验证报告 | V3.0 vs V3.1 vs 豆包AI | 4场16项 | 命中率68.75% | 2026年9月10日</p>
+  <p>数据来源: zhibo8 / dongqiudi / transfermarkt / newsis / qiumiwu / titan007</p>
+</div>
+
+</div>
+</body>
+</html>

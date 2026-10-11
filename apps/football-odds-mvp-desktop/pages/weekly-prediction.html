@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本周预测 (8.18-24)</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="padding: 24px 20px 8px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Football icon SVG -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/>
+          <path d="M12 2a8 8 0 0 1 5 3M12 22a8 8 0 0 0 5-3M2 12a8 8 0 0 1 3-5M22 12a8 8 0 0 0-3-5"/>
+        </svg>
+        <span style="font-size: 16px; font-weight: 700; color: var(--foreground);">赔率分析</span>
+      </div>
+    </div>
+
+    <nav style="margin-top: 20px;">
+      <a href="schedule.html" class="nav-item" data-dom-id="nav-schedule">
+        <!-- Calendar icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        赛程日历
+      </a>
+      <a href="odds-input.html" class="nav-item" data-dom-id="nav-odds-input">
+        <!-- Plus/edit icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        赔率录入
+      </a>
+      <a href="factor-analysis.html" class="nav-item" data-dom-id="nav-factor">
+        <!-- Chart icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        影响因子
+      </a>
+      <a href="ai-analysis.html" class="nav-item" data-dom-id="nav-ai">
+        <!-- AI/brain icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M12 18v4"/><path d="M8 22h8"/><path d="M5 8a7 7 0 0 0 14 0"/></svg>
+        AI 分析
+      </a>
+      <a href="weekly-prediction.html" class="nav-item active" data-dom-id="nav-prediction">
+        <!-- Trending up / prediction icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        本周预测
+      </a>
+    </nav>
+
+    <!-- Bottom user section -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- User avatar -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--muted)" stroke="none"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" fill="var(--muted)"/></svg>
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--foreground);">用户</div>
+          <div style="font-size: 11px; color: var(--muted-foreground);">专业版</div>
+        </div>
+      </div>
+      <!-- Settings icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- Date display -->
+      <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--foreground);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        2026-08-18 至 08-24
+      </div>
+
+      <!-- League filter -->
+      <select class="filter-input" style="min-width: 120px; cursor: pointer;">
+        <option>全部联赛</option>
+        <option>英超</option>
+        <option>西甲</option>
+        <option>德甲</option>
+        <option>意甲</option>
+        <option>法甲</option>
+      </select>
+
+      <!-- Spacer -->
+      <div style="flex: 1;"></div>
+
+      <!-- Search -->
+      <div style="position: relative; display: flex; align-items: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="搜索球队或联赛..." class="filter-input" style="padding-left: 32px; min-width: 220px;">
+      </div>
+    </div>
+
+    <!-- Content area -->
+    <div style="padding: 24px 32px;">
+
+      <!-- Section A: Summary Stats -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div class="stat-card">
+          <div class="stat-value">32</div>
+          <div class="stat-label">总场次</div>
+        </div>
+        <div class="stat-card">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            <div class="stat-value">5</div>
+          </div>
+          <div class="stat-label">覆盖联赛 (英超/西甲/德甲/意甲/法甲)</div>
+        </div>
+        <div class="stat-card">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <div class="stat-value" style="font-size: 20px;">3</div>
+          </div>
+          <div class="stat-label">新赛季揭幕 (英超/德甲/意甲)</div>
+        </div>
+        <div class="stat-card">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="stat-value" style="font-size: 20px; color: var(--state-warning);">中等</div>
+          </div>
+          <div class="stat-label">置信度 (新赛季数据有限)</div>
+        </div>
+      </div>
+
+      <!-- Section B: Match Predictions Table -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h2 style="font-size: 16px; font-weight: 600; color: var(--foreground);">本周预测详情</h2>
+          <span style="font-size: 12px; color: var(--muted-foreground);">共 32 场比赛</span>
+        </div>
+        <div style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden;">
+          <table class="match-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">联赛</th>
+                <th style="width: 80px;">日期</th>
+                <th style="width: 60px;">时间</th>
+                <th style="min-width: 240px;">对阵</th>
+                <th style="width: 100px;">预测</th>
+                <th style="width: 100px;">预测比分</th>
+                <th style="width: 100px;">置信度</th>
+                <th style="width: 80px;">详情</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- ===== 英超 (10 matches) ===== -->
+
+              <!-- 1. Arsenal vs Coventry City -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Arsenal</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Coventry City</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">3-1</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 85%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 2. Hull City vs Man United -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">19:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Hull City</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Man United</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-2</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 82%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 3. Everton vs Crystal Palace -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">22:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Everton</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Crystal Palace</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 65%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 4. Ipswich vs Sunderland -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">22:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Ipswich</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Sunderland</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 68%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 5. Nott'm Forest vs Leeds -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">22:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Nott'm Forest</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Leeds</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 62%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 6. Brentford vs Tottenham -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">00:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Brentford</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Tottenham</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-2</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 70%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 7. Brighton vs Aston Villa -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Brighton</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Aston Villa</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 67%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 8. Man City vs Bournemouth -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Man City</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Bournemouth</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">3-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 88%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 9. Newcastle vs Liverpool -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Newcastle</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Liverpool</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-2</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 70%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 10. Fulham vs Chelsea -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #3d195b;"></span>
+                    <span>英超</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">22:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Fulham</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Chelsea</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 72%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- ===== 西甲 (5 matches) ===== -->
+
+              <!-- 11. Deportivo vs Elche -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #ee8707;"></span>
+                    <span>西甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/19</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Deportivo</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Elche</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 68%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 12. Atletico Madrid vs Malaga -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #ee8707;"></span>
+                    <span>西甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/20</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Atletico Madrid</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Malaga</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 80%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 13. Rayo Vallecano vs TBD -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #ee8707;"></span>
+                    <span>西甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/21</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Rayo Vallecano</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500; color: var(--muted-foreground);">TBD</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-pending">待确认</span></td>
+                <td style="font-family: var(--font-mono); color: var(--muted-foreground);">-</td>
+                <td>
+                  <div class="confidence-badge confidence-pending">
+                    <span class="confidence-dot confidence-dot-pending"></span>
+                    <span>-</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail" style="opacity: 0.5;">查看</a></td>
+              </tr>
+
+              <!-- 14. Getafe vs Santander -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #ee8707;"></span>
+                    <span>西甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Getafe</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Santander</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-0</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 72%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 15. Osasuna vs Levante -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #ee8707;"></span>
+                    <span>西甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Osasuna</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Levante</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 65%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- ===== 德甲 (6 matches) ===== -->
+
+              <!-- 16. Dortmund vs Bayern (德超杯) -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">02:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Dortmund</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Bayern</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); margin-top: 2px;">德超杯</div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-2</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 65%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 17. Heidenheim vs Wolfsburg -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Heidenheim</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Wolfsburg</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 70%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 18. Union Berlin vs Stuttgart -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Union Berlin</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Stuttgart</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 62%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 19. Freiburg vs Augsburg -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Freiburg</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Augsburg</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 68%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 20. Frankfurt vs Bremen -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Frankfurt</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Bremen</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 70%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 21. Leverkusen vs Hoffenheim -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #d20515;"></span>
+                    <span>德甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Leverkusen</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Hoffenheim</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 78%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- ===== 意甲 (10 matches) ===== -->
+
+              <!-- 22. Inter vs Monza -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Inter</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Monza</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 85%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 23. Udinese vs Como -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Udinese</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Como</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-0</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 68%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 24. Genoa vs Napoli -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:45</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Genoa</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Napoli</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 72%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 25. Parma vs Cagliari -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:45</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Parma</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Cagliari</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 60%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 26. Frosinone vs Juventus -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Frosinone</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">Juventus</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-2</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 80%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 27. Venezia vs Lecce -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/23</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Venezia</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Lecce</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 62%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 28. Atalanta vs Sassuolo -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:45</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">Atalanta</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Sassuolo</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 78%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 29. Torino vs AC Milan -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">01:45</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Torino</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 600;">AC Milan</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">0-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 72%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 30. Bologna vs Lazio -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 500;">Bologna</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Lazio</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">1-1</td>
+                <td>
+                  <div class="confidence-badge confidence-medium">
+                    <span class="confidence-dot confidence-dot-medium"></span>
+                    <span>中 65%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- 31. AS Roma vs Spezia -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #024494;"></span>
+                    <span>意甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/24</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">AS Roma</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Spezia</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">2-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 82%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+              <!-- ===== 法甲 (1 match) ===== -->
+
+              <!-- 32. PSG vs Reims -->
+              <tr>
+                <td>
+                  <div class="league-badge">
+                    <span class="league-dot" style="background: #091c3e;"></span>
+                    <span>法甲</span>
+                  </div>
+                </td>
+                <td style="font-family: var(--font-mono); font-size: 13px;">8/22</td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+                <td>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-weight: 600;">PSG</span>
+                    <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 500;">Reims</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 500;">3-0</td>
+                <td>
+                  <div class="confidence-badge confidence-high">
+                    <span class="confidence-dot confidence-dot-high"></span>
+                    <span>高 88%</span>
+                  </div>
+                </td>
+                <td><a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section C: Confidence Distribution -->
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 16px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">置信度分布</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div class="stat-card">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span style="font-size: 13px; font-weight: 600; color: var(--state-success);">高置信度</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span class="stat-value" style="color: var(--state-success);">8</span>
+              <span style="font-size: 13px; color: var(--muted-foreground);">场</span>
+              <span class="confidence-badge confidence-high" style="margin-left: auto;">
+                <span class="confidence-dot confidence-dot-high"></span>
+                <span>25%</span>
+              </span>
+            </div>
+            <div style="font-size: 11px; color: var(--muted-foreground); margin-top: 6px;">置信度≥78%</div>
+          </div>
+          <div class="stat-card">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-warning)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span style="font-size: 13px; font-weight: 600; color: var(--state-warning);">中置信度</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span class="stat-value" style="color: var(--state-warning);">22</span>
+              <span style="font-size: 13px; color: var(--muted-foreground);">场</span>
+              <span class="confidence-badge confidence-medium" style="margin-left: auto;">
+                <span class="confidence-dot confidence-dot-medium"></span>
+                <span>69%</span>
+              </span>
+            </div>
+            <div style="font-size: 11px; color: var(--muted-foreground); margin-top: 6px;">置信度 60-77%</div>
+          </div>
+          <div class="stat-card">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <span style="font-size: 13px; font-weight: 600; color: var(--muted-foreground);">低/待确认</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span class="stat-value" style="color: var(--muted-foreground);">2</span>
+              <span style="font-size: 13px; color: var(--muted-foreground);">场</span>
+              <span class="confidence-badge confidence-pending" style="margin-left: auto;">
+                <span class="confidence-dot confidence-dot-pending"></span>
+                <span>6%</span>
+              </span>
+            </div>
+            <div style="font-size: 11px; color: var(--muted-foreground); margin-top: 6px;">置信度&lt;60%或待确认</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section D: Key Insights -->
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 16px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">关键洞察</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div class="insight-card">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--state-info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div>
+                <div style="font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">新赛季揭幕</div>
+                <div style="font-size: 13px; color: var(--muted-foreground); line-height: 1.6;">英超、德甲、意甲本周迎来新赛季首轮，历史交锋和上赛季数据是主要参考依据。</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--state-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+              <div>
+                <div style="font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">主场优势</div>
+                <div style="font-size: 13px; color: var(--muted-foreground); line-height: 1.6;">本周预测主胜占比约50%，客胜约25%，平局约25%。</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--state-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <div>
+                <div style="font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">重点关注</div>
+                <div style="font-size: 13px; color: var(--muted-foreground); line-height: 1.6;">德超杯多特vs拜仁、纽卡vs利物浦、阿森纳揭幕战为本周焦点战。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section E: Prediction Methodology -->
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 16px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">预测方法说明</h2>
+        <div class="insight-card" style="grid-column: auto;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <div style="font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">数据来源与局限性</div>
+              <div style="font-size: 13px; color: var(--muted-foreground); line-height: 1.6;">
+                本页面预测基于历史交锋记录、上赛季表现数据、球队阵容变化以及市场赔率综合分析。对于新赛季揭幕的联赛（英超、德甲、意甲），由于缺乏本赛季实时数据，预测置信度相对较低。建议结合实时赔率变化和赛前资讯综合判断。预测结果仅供参考，不构成投注建议。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+    <style>
+    :root {
+      --color-primary-50: #f0fdf4;
+      --color-primary-100: #dcfce7;
+      --color-primary-200: #bbf7d0;
+      --color-primary-300: #86efac;
+      --color-primary-400: #4ade80;
+      --color-primary-500: #22c55e;
+      --color-primary-600: #16a34a;
+      --color-primary-700: #15803d;
+      --color-primary-800: #166534;
+      --color-primary-900: #14532d;
+      --color-neutral-50: #fafafa;
+      --color-neutral-100: #f5f5f5;
+      --color-neutral-200: #e5e5e5;
+      --color-neutral-300: #d4d4d4;
+      --color-neutral-400: #a3a3a3;
+      --color-neutral-500: #737373;
+      --color-neutral-600: #525252;
+      --color-neutral-700: #404040;
+      --color-neutral-800: #262626;
+      --color-neutral-900: #171717;
+      --state-success: #16a34a;
+      --state-success-light: #dcfce7;
+      --state-warning: #ea580c;
+      --state-warning-light: #fff7ed;
+      --state-error: #dc2626;
+      --state-error-light: #fef2f2;
+      --state-info: #2563eb;
+      --state-info-light: #eff6ff;
+      --background: #ffffff;
+      --foreground: #171717;
+      --card: #ffffff;
+      --card-foreground: #171717;
+      --popover: #ffffff;
+      --popover-foreground: #171717;
+      --primary: #16a34a;
+      --primary-foreground: #ffffff;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --input: #e5e5e5;
+      --ring: #16a34a;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .dark {
+      --background: #0a0a0a;
+      --foreground: #fafafa;
+      --card: #141414;
+      --card-foreground: #fafafa;
+      --popover: #141414;
+      --popover-foreground: #fafafa;
+      --primary: #22c55e;
+      --primary-foreground: #052e16;
+      --muted: #262626;
+      --muted-foreground: #a3a3a3;
+      --border: #262626;
+      --input: #262626;
+      --ring: #22c55e;
+      --color-primary-50: #052e16;
+      --color-primary-100: #052e16;
+      --color-primary-200: #14532d;
+      --color-primary-300: #166534;
+      --color-primary-400: #15803d;
+      --color-primary-500: #16a34a;
+      --color-primary-600: #22c55e;
+      --color-primary-700: #4ade80;
+      --color-primary-800: #86efac;
+      --color-primary-900: #bbf7d0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .font-heading { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; }
+
+    body { background: var(--background); color: var(--foreground); font-family: var(--font-body); }
+
+    /* Sidebar */
+    .sidebar { width: 240px; min-height: 100vh; border-right: 1px solid var(--border); background: var(--card); position: fixed; left: 0; top: 0; z-index: 10; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--muted-foreground); font-size: 14px; font-weight: 500; border-left: 3px solid transparent; cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-item:hover { background: var(--muted); color: var(--foreground); }
+    .nav-item.active { color: var(--primary); border-left-color: var(--primary); background: var(--color-primary-50); }
+
+    /* Main */
+    .main-content { margin-left: 240px; min-height: 100vh; }
+
+    /* Top bar */
+    .top-bar { border-bottom: 1px solid var(--border); padding: 16px 32px; background: var(--card); display: flex; align-items: center; gap: 16px; }
+
+    /* Filter controls */
+    .filter-input { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; background: var(--background); color: var(--foreground); outline: none; transition: border-color 0.15s; }
+    .filter-input:focus { border-color: var(--ring); }
+
+    /* Stats cards */
+    .stat-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; background: var(--card); }
+    .stat-value { font-size: 24px; font-weight: 700; color: var(--foreground); line-height: 1.2; }
+    .stat-label { font-size: 12px; color: var(--muted-foreground); margin-top: 4px; }
+
+    /* Table */
+    .match-table { width: 100%; border-collapse: collapse; }
+    .match-table thead th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--muted); }
+    .match-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    .match-table tbody tr:hover { background: var(--muted); }
+    .match-table tbody td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
+
+    /* Action buttons */
+    .btn-sm { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; border: 1px solid var(--border); background: var(--card); color: var(--foreground); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-sm:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-primary-sm { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+    .btn-primary-sm:hover { background: var(--color-primary-700); color: var(--primary-foreground); border-color: var(--color-primary-700); }
+
+    /* League badge */
+    .league-badge { display: inline-flex; align-items: center; gap: 8px; }
+    .league-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Prediction badges */
+    .prediction-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
+    .prediction-home { background: var(--color-primary-50); color: var(--state-success); }
+    .prediction-away { background: var(--state-info-light); color: var(--state-info); }
+    .prediction-draw { background: var(--state-warning-light); color: var(--state-warning); }
+    .prediction-pending { background: var(--muted); color: var(--muted-foreground); }
+
+    /* Confidence badges */
+    .confidence-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; }
+    .confidence-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .confidence-dot-high { background: var(--state-success); }
+    .confidence-dot-medium { background: var(--state-warning); }
+    .confidence-dot-pending { background: var(--muted-foreground); }
+    .confidence-high { color: var(--state-success); }
+    .confidence-medium { color: var(--state-warning); }
+    .confidence-pending { color: var(--muted-foreground); }
+
+    /* Insight cards */
+    .insight-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; background: var(--card); }
+  </style>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

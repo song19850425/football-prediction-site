@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全页面查看器 · 足球预测系统</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  body { overflow: hidden; }
+  .topbar-inner { padding: 12px 20px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo">⚽</span>
+      <span>全页面查看器<small>点击左侧任意页面即可内嵌预览</small></span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">← 返回总览</a>
+    </nav>
+  </div>
+</header>
+
+<div class="viewer">
+  <aside class="vsidebar">
+    <div class="vhead">
+      <h2>页面目录（<span id="vcount"></span>）</h2>
+      <input class="vsearch" id="vsearch" type="search" placeholder="搜索页面…">
+    </div>
+    <div id="vsidebar-list"></div>
+  </aside>
+
+  <section class="vstage">
+    <div class="vbar">
+      <span class="path" id="vpath">正在加载…</span>
+      <a class="open-ext" id="vext" href="#" target="_blank" rel="noopener">在新标签打开 ↗</a>
+    </div>
+    <iframe id="vframe" title="页面预览" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+  </section>
+</div>
+
+<script src="assets/site.js"></script>
+<script>
+  renderViewer();
+  document.getElementById("vcount").textContent = countAll();
+</script>
+</body>
+</html>

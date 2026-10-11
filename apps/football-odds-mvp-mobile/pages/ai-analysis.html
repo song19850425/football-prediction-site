@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 分析 - Football Odds MVP</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body>
+
+  <!-- ===== Top Bar ===== -->
+  <header class="sticky top-0 z-50 bg-white border-b border-neutral-200">
+    <div class="flex items-center justify-between h-12 px-4 max-w-[390px] mx-auto">
+      <!-- Back -->
+      <button data-dom-id="btn-back" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-neutral-100 active:bg-neutral-200 transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <!-- Title -->
+      <span class="text-[15px] font-semibold text-neutral-900">AI 分析</span>
+      <!-- Refresh -->
+      <button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-neutral-100 active:bg-neutral-200 transition-colors">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Page Content ===== -->
+  <main class="page-content max-w-[390px] mx-auto">
+
+    <!-- Match Quick Bar -->
+    <section class="bg-white px-4 py-3 border-b border-neutral-100">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <!-- Live dot -->
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
+          </span>
+          <span class="text-[15px] font-semibold text-neutral-900">曼联 vs 利物浦</span>
+        </div>
+        <span class="text-[13px] font-mono font-medium text-primary-600">2-1 · 67'</span>
+      </div>
+      <p class="text-[11px] text-neutral-400 mt-1 ml-4">分析生成于 2 分钟前</p>
+    </section>
+
+    <!-- ===== AI Conclusion Card ===== -->
+    <section class="mx-3 mt-3 bg-white rounded-[var(--radius-lg)] shadow-[var(--shadow-md)] overflow-hidden border-l-[3px] border-primary-600">
+      <div class="p-4">
+        <!-- Main conclusion -->
+        <h1 class="text-[22px] font-bold text-neutral-900 leading-tight">主胜价值投注</h1>
+
+        <!-- Confidence pill -->
+        <div class="mt-2.5">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 text-[12px] font-medium">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            72% 中高置信度
+          </span>
+        </div>
+
+        <!-- Summary line -->
+        <p class="mt-2.5 text-[13px] text-neutral-600 leading-relaxed">主胜赔率存在约 8% 价值空间</p>
+
+        <!-- Key numbers row -->
+        <div class="mt-3.5 flex items-center gap-0 rounded-[var(--radius-md)] bg-neutral-50 overflow-hidden text-[12px]">
+          <div class="flex-1 py-2.5 px-3 text-center">
+            <div class="text-[10px] text-neutral-400 mb-0.5">隐含概率</div>
+            <div class="font-mono font-semibold text-neutral-800">55%</div>
+          </div>
+          <div class="w-px h-6 bg-neutral-200"></div>
+          <div class="flex-1 py-2.5 px-3 text-center">
+            <div class="text-[10px] text-neutral-400 mb-0.5">模型估算</div>
+            <div class="font-mono font-semibold text-primary-600">63%</div>
+          </div>
+          <div class="w-px h-6 bg-neutral-200"></div>
+          <div class="flex-1 py-2.5 px-3 text-center">
+            <div class="text-[10px] text-neutral-400 mb-0.5">价值差</div>
+            <div class="font-mono font-semibold text-primary-600">+8%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Reasoning Chain ===== -->
+    <section class="mx-3 mt-3 bg-white rounded-[var(--radius-lg)] shadow-[var(--shadow-sm)] overflow-hidden">
+      <div class="px-4 pt-3.5 pb-2">
+        <h2 class="text-[14px] font-semibold text-neutral-900 flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          推理依据
+        </h2>
+      </div>
+
+      <!-- Accordion Items -->
+      <div class="accordion-group" id="accordionGroup">
+
+        <!-- Item 1: 赔率分歧 (expanded by default) -->
+        <div class="accordion-item active border-t border-neutral-100">
+          <button class="accordion-header w-full flex items-center justify-between px-4 py-3 text-left active:bg-neutral-50 transition-colors" onclick="toggleAccordion(this)">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded bg-primary-50 text-[11px] font-semibold text-primary-700 shrink-0">1</span>
+              <span class="text-[13px] font-medium text-neutral-800 truncate">赔率分歧</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 ml-2">
+              <span class="text-[11px] text-neutral-400 truncate max-w-[140px]">4/6家公司主胜赔率低于1.85</span>
+              <svg class="accordion-chevron w-4 h-4 text-neutral-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </button>
+          <div class="accordion-body">
+            <div class="px-4 pb-3.5 pt-0">
+              <div class="bg-neutral-50 rounded-lg p-3">
+                <p class="text-[12px] text-neutral-600 leading-relaxed">
+                  对比6家主要博彩公司赔率，其中4家（Bet365、威廉希尔、立博、10BET）主胜赔率均低于1.85，仅2家高于1.90。多数庄家倾向于看好主胜，但赔率分歧较小说明市场对该结果有较高共识。
+                </p>
+                <div class="mt-2 flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span class="text-[11px] text-neutral-400">数据来源: OddsPortal 实时赔率</span>
+                </div>
+                <!-- Confidence bar -->
+                <div class="mt-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] text-neutral-400">置信度</span>
+                    <span class="text-[10px] font-mono font-medium text-neutral-600">85%</span>
+                  </div>
+                  <div class="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full conf-high" style="width:85%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: 伤停影响 -->
+        <div class="accordion-item border-t border-neutral-100">
+          <button class="accordion-header w-full flex items-center justify-between px-4 py-3 text-left active:bg-neutral-50 transition-colors" onclick="toggleAccordion(this)">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded bg-primary-50 text-[11px] font-semibold text-primary-700 shrink-0">2</span>
+              <span class="text-[13px] font-medium text-neutral-800 truncate">伤停影响</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 ml-2">
+              <span class="text-[11px] text-neutral-400 truncate max-w-[140px]">利物浦中场缺阵</span>
+              <svg class="accordion-chevron w-4 h-4 text-neutral-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </button>
+          <div class="accordion-body">
+            <div class="px-4 pb-3.5 pt-0">
+              <div class="bg-neutral-50 rounded-lg p-3">
+                <p class="text-[12px] text-neutral-600 leading-relaxed">
+                  利物浦主力中场球员因累计黄牌停赛，将缺席本场。该球员本赛季场均关键传球2.1次，其缺阵将削弱利物浦中场的控球与组织能力，降低客场进攻威胁。
+                </p>
+                <div class="mt-2 flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span class="text-[11px] text-neutral-400">数据来源: Transfermarkt 伤病名单</span>
+                </div>
+                <div class="mt-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] text-neutral-400">置信度</span>
+                    <span class="text-[10px] font-mono font-medium text-neutral-600">70%</span>
+                  </div>
+                  <div class="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full conf-mid" style="width:70%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: 近期状态 -->
+        <div class="accordion-item border-t border-neutral-100">
+          <button class="accordion-header w-full flex items-center justify-between px-4 py-3 text-left active:bg-neutral-50 transition-colors" onclick="toggleAccordion(this)">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded bg-primary-50 text-[11px] font-semibold text-primary-700 shrink-0">3</span>
+              <span class="text-[13px] font-medium text-neutral-800 truncate">近期状态</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 ml-2">
+              <span class="text-[11px] text-neutral-400 truncate max-w-[140px]">曼联近5场4胜</span>
+              <svg class="accordion-chevron w-4 h-4 text-neutral-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </button>
+          <div class="accordion-body">
+            <div class="px-4 pb-3.5 pt-0">
+              <div class="bg-neutral-50 rounded-lg p-3">
+                <p class="text-[12px] text-neutral-600 leading-relaxed">
+                  曼联近5场联赛取得4胜1平，进12球失4球，状态火热。主场近3场全胜且场均进球2.3个。利物浦近5场2胜2平1负，客场表现相对不稳定。两队状态形成鲜明对比。
+                </p>
+                <div class="mt-2 flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span class="text-[11px] text-neutral-400">数据来源: FlashScore 近期赛果</span>
+                </div>
+                <div class="mt-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] text-neutral-400">置信度</span>
+                    <span class="text-[10px] font-mono font-medium text-neutral-600">80%</span>
+                  </div>
+                  <div class="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full conf-high" style="width:80%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4: 天气修正 -->
+        <div class="accordion-item border-t border-neutral-100">
+          <button class="accordion-header w-full flex items-center justify-between px-4 py-3 text-left active:bg-neutral-50 transition-colors" onclick="toggleAccordion(this)">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded bg-primary-50 text-[11px] font-semibold text-primary-700 shrink-0">4</span>
+              <span class="text-[13px] font-medium text-neutral-800 truncate">天气修正</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 ml-2">
+              <span class="text-[11px] text-neutral-400 truncate max-w-[140px]">中雨+天然草皮</span>
+              <svg class="accordion-chevron w-4 h-4 text-neutral-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </button>
+          <div class="accordion-body">
+            <div class="px-4 pb-3.5 pt-0">
+              <div class="bg-neutral-50 rounded-lg p-3">
+                <p class="text-[12px] text-neutral-600 leading-relaxed">
+                  赛前天气预报为中雨，场地为天然草皮。雨天湿滑条件下天然草皮球速加快，有利于身体对抗更强的球队。曼联身体对抗数据优于利物浦，可能在恶劣天气中受益。
+                </p>
+                <div class="mt-2 flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span class="text-[11px] text-neutral-400">数据来源: OpenWeather 赛场天气</span>
+                </div>
+                <div class="mt-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] text-neutral-400">置信度</span>
+                    <span class="text-[10px] font-mono font-medium text-neutral-600">60%</span>
+                  </div>
+                  <div class="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full conf-mid" style="width:60%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== Counter Arguments ===== -->
+    <section class="mx-3 mt-3 bg-warning-50 rounded-[var(--radius-lg)] border border-orange-100 overflow-hidden">
+      <div class="p-4">
+        <h2 class="text-[14px] font-semibold text-warning-500 flex items-center gap-1.5 mb-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          反面论点
+        </h2>
+        <ul class="space-y-2">
+          <li class="flex items-start gap-2 text-[12px] text-neutral-700 leading-relaxed">
+            <span class="w-1 h-1 rounded-full bg-warning-500 shrink-0 mt-1.5"></span>
+            <span>利物浦客场仅1负，客战韧性不容忽视</span>
+          </li>
+          <li class="flex items-start gap-2 text-[12px] text-neutral-700 leading-relaxed">
+            <span class="w-1 h-1 rounded-full bg-warning-500 shrink-0 mt-1.5"></span>
+            <span>庄家可能压低赔率以平衡主队热度，存在诱盘可能</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Historical Reference ===== -->
+    <section class="mx-3 mt-3 mb-3 bg-white rounded-[var(--radius-lg)] shadow-[var(--shadow-sm)] overflow-hidden">
+      <div class="px-4 pt-3.5 pb-1">
+        <h2 class="text-[14px] font-semibold text-neutral-900 flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          历史参照
+        </h2>
+      </div>
+      <div class="px-4 pb-3 space-y-0">
+        <!-- Row 1 -->
+        <div class="flex items-center justify-between py-2.5 border-t border-neutral-100">
+          <div>
+            <span class="text-[12px] text-neutral-500">2024-12-14</span>
+            <span class="text-[13px] font-medium text-neutral-800 ml-2">曼联 3-1 利物浦</span>
+          </div>
+          <span class="text-[11px] font-mono font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">相似度 82%</span>
+        </div>
+        <!-- Row 2 -->
+        <div class="flex items-center justify-between py-2.5 border-t border-neutral-100">
+          <div>
+            <span class="text-[12px] text-neutral-500">2024-01-28</span>
+            <span class="text-[13px] font-medium text-neutral-800 ml-2">曼联 2-1 利物浦</span>
+          </div>
+          <span class="text-[11px] font-mono font-medium text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded-full">相似度 65%</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Action Bar (sticky above bottom nav) ===== -->
+  <div class="fixed bottom-[56px] left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white/95 backdrop-blur-sm border-t border-neutral-100 z-40">
+    <div class="flex items-center gap-3 px-4 py-2.5">
+      <button class="flex-1 h-10 rounded-[var(--radius-md)] border border-neutral-300 text-[13px] font-medium text-neutral-700 bg-white active:bg-neutral-50 transition-colors flex items-center justify-center gap-1.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        重新分析
+      </button>
+      <button class="flex-1 h-10 rounded-[var(--radius-md)] text-[13px] font-medium text-white bg-primary-600 active:bg-primary-700 transition-colors flex items-center justify-center gap-1.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        导出报告
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Bottom Navigation (fixed) ===== -->
+  <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40" style="height: 56px; padding-bottom: env(safe-area-inset-bottom, 0);">
+    <div class="flex items-center justify-around h-full">
+      <!-- 赛程 -->
+      <a href="#" data-dom-id="nav-schedule" data-nav-key="schedule" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">赛程</span>
+      </a>
+      <!-- 录入 -->
+      <a href="#" data-dom-id="nav-odds-input" data-nav-key="odds-input" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">录入</span>
+      </a>
+      <!-- 因子 -->
+      <a href="#" data-dom-id="nav-factor" data-nav-key="factor" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">因子</span>
+      </a>
+      <!-- AI (active) -->
+      <a href="#" data-dom-id="nav-ai" data-nav-key="ai" class="flex flex-col items-center justify-center gap-0.5 text-primary-600 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span class="text-[10px] font-semibold whitespace-nowrap">AI</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===== Accordion Script ===== -->
+  <script>
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      const isActive = item.classList.contains('active');
+
+      // Close all items
+      document.querySelectorAll('.accordion-item').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Toggle clicked item
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+  </script>
+
+
+    <style>
+    :root {
+      --primary: #16a34a;
+      --primary-light: #dcfce7;
+      --muted: #f5f5f5;
+      --muted-fg: #737373;
+      --border: #e5e5e5;
+      --card: #ffffff;
+      --fg: #171717;
+      --warning-light: #fff7ed;
+      --warning-text: #ea580c;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --bottom-nav-h: 56px;
+      --action-bar-h: 64px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      background: var(--muted);
+      color: var(--fg);
+      max-width: 390px;
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Confidence bar colors */
+    .conf-high { background: #16a34a; }
+    .conf-mid { background: #eab308; }
+    .conf-low { background: #ef4444; }
+
+    /* Accordion chevron rotation */
+    .accordion-chevron {
+      transition: transform 0.25s ease;
+    }
+    .accordion-item.active .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .accordion-item.active .accordion-body {
+      max-height: 300px;
+    }
+
+    /* Page bottom spacing */
+    .page-content {
+      padding-bottom: calc(var(--bottom-nav-h) + var(--action-bar-h) + 16px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 0; height: 0; }
+  </style>
+</body>
+</html>

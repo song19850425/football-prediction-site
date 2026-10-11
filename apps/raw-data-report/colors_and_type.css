@@ -1,0 +1,53 @@
+/* ==========================================================================
+   五大联赛原始数据分析报告 · 设计令牌
+   品牌前缀: rpt   |   单一品牌色相: 深青绿（球场语义）
+   ========================================================================== */
+
+:root {
+  /* ---- 品牌语义色（浅色模式）---- */
+  --rpt-background: #F5F7F6;
+  --rpt-foreground: #0F1A17;
+  --rpt-card: #FFFFFF;
+  --rpt-card-foreground: #0F1A17;
+  --rpt-popover: #FFFFFF;
+  --rpt-popover-foreground: #0F1A17;
+  --rpt-primary: #0E7C66;
+  --rpt-primary-foreground: #FFFFFF;
+  --rpt-muted: #EBF0EE;
+  --rpt-muted-foreground: #5B6B66;
+  --rpt-border: #DEE5E2;
+  --rpt-input: #DEE5E2;
+  --rpt-ring: #0E7C66;
+
+  /* ---- 表面层级（浅色模式）---- */
+  --rpt-surface: #FFFFFF;
+  --rpt-surface-2: #EDF2F0;
+  --rpt-ink-2: #4C5B56;
+  --rpt-ink-3: #87948F;
+  --rpt-line: #E4EAE7;
+
+  /* ---- 状态色（仅用于真实状态）---- */
+  --rpt-state-success: #157347;
+  --rpt-state-warning: #A9690A;
+  --rpt-state-error: #B2352B;
+  --rpt-state-info: #1E6BA8;
+
+  /* ---- 数据可视化（单一品牌色相派生 + 中性）---- */
+  --rpt-chart-1: #0E7C66;
+  --rpt-chart-2: #479582;
+  --rpt-chart-3: #7FB5A6;
+  --rpt-chart-4: #B4D2C9;
+  --rpt-chart-5: #7C8B86;
+
+  /* ---- 圆角 ---- */
+  --rpt-radius-sm: 4px;
+  --rpt-radius-md: 8px;
+  --rpt-radius-lg: 16px;
+
+  /* ---- 阴影（静态表面极轻）---- */
+  --rpt-shadow-1: 0 1px 2px rgba(15, 26, 23, 0.04), 0 1px 1px rgba(15, 26, 23, 0.03);
+
+  /* ---- 字体 ---- */
+  --rpt-font-sans: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --rpt-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}

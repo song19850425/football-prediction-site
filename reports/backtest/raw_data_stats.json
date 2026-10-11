@@ -1,0 +1,1250 @@
+{
+  "overview": {
+    "total_matches": 17937,
+    "league_files": 50,
+    "season_count": 10,
+    "league_count": 5,
+    "cols_min": 61,
+    "cols_max": 132,
+    "cols_latest": 132,
+    "date_min": "2016-08-12",
+    "date_max": "2026-05-24",
+    "size_mb": 7.1,
+    "dup_ratio": 0.0
+  },
+  "league_dist": [
+    {
+      "code": "E0",
+      "name": "英超",
+      "matches": 3800,
+      "pct": 21.2,
+      "teams": 20
+    },
+    {
+      "code": "SP1",
+      "name": "西甲",
+      "matches": 3800,
+      "pct": 21.2,
+      "teams": 20
+    },
+    {
+      "code": "I1",
+      "name": "意甲",
+      "matches": 3800,
+      "pct": 21.2,
+      "teams": 20
+    },
+    {
+      "code": "F1",
+      "name": "法甲",
+      "matches": 3477,
+      "pct": 19.4,
+      "teams": 20
+    },
+    {
+      "code": "D1",
+      "name": "德甲",
+      "matches": 3060,
+      "pct": 17.1,
+      "teams": 18
+    }
+  ],
+  "result_dist": [
+    {
+      "key": "H",
+      "name": "主胜",
+      "matches": 7900,
+      "pct": 44.0
+    },
+    {
+      "key": "A",
+      "name": "客胜",
+      "matches": 5551,
+      "pct": 30.9
+    },
+    {
+      "key": "D",
+      "name": "平局",
+      "matches": 4486,
+      "pct": 25.0
+    }
+  ],
+  "goals": {
+    "avg_total": 2.79,
+    "avg_home": 1.55,
+    "avg_away": 1.25,
+    "over25_pct": 53.1,
+    "over15_pct": 77.0,
+    "over35_pct": 30.6,
+    "btts_pct": 53.7,
+    "clean_sheet_pct": 46.3
+  },
+  "by_league": [
+    {
+      "code": "D1",
+      "name": "德甲",
+      "matches": 3060,
+      "avg_goals": 3.1,
+      "avg_home": 1.72,
+      "avg_away": 1.37,
+      "home_win_pct": 44.2,
+      "draw_pct": 24.8,
+      "away_win_pct": 30.9,
+      "over25_pct": 59.8,
+      "avg_shots": 25.9
+    },
+    {
+      "code": "E0",
+      "name": "英超",
+      "matches": 3800,
+      "avg_goals": 2.83,
+      "avg_home": 1.56,
+      "avg_away": 1.28,
+      "home_win_pct": 44.6,
+      "draw_pct": 23.2,
+      "away_win_pct": 32.1,
+      "over25_pct": 54.4,
+      "avg_shots": 25.3
+    },
+    {
+      "code": "I1",
+      "name": "意甲",
+      "matches": 3800,
+      "avg_goals": 2.74,
+      "avg_home": 1.48,
+      "avg_away": 1.26,
+      "home_win_pct": 41.9,
+      "draw_pct": 25.5,
+      "away_win_pct": 32.5,
+      "over25_pct": 52.6,
+      "avg_shots": 24.1
+    },
+    {
+      "code": "F1",
+      "name": "法甲",
+      "matches": 3477,
+      "avg_goals": 2.73,
+      "avg_home": 1.51,
+      "avg_away": 1.21,
+      "home_win_pct": 43.9,
+      "draw_pct": 25.2,
+      "away_win_pct": 30.8,
+      "over25_pct": 51.8,
+      "avg_shots": 24.5
+    },
+    {
+      "code": "SP1",
+      "name": "西甲",
+      "matches": 3800,
+      "avg_goals": 2.62,
+      "avg_home": 1.49,
+      "avg_away": 1.13,
+      "home_win_pct": 45.5,
+      "draw_pct": 26.2,
+      "away_win_pct": 28.3,
+      "over25_pct": 48.0,
+      "avg_shots": 23.8
+    }
+  ],
+  "by_season": [
+    {
+      "season": "1617",
+      "label": "16/17",
+      "matches": 1826,
+      "avg_goals": 2.83,
+      "home_win_pct": 48.6,
+      "draw_pct": 23.1,
+      "away_win_pct": 28.3,
+      "over25_pct": 54.4,
+      "avg_home_shots": 13.8,
+      "avg_away_shots": 11.2,
+      "cols": 65
+    },
+    {
+      "season": "1718",
+      "label": "17/18",
+      "matches": 1826,
+      "avg_goals": 2.71,
+      "home_win_pct": 45.3,
+      "draw_pct": 24.5,
+      "away_win_pct": 30.2,
+      "over25_pct": 51.5,
+      "avg_home_shots": 13.8,
+      "avg_away_shots": 11.0,
+      "cols": 65
+    },
+    {
+      "season": "1819",
+      "label": "18/19",
+      "matches": 1826,
+      "avg_goals": 2.75,
+      "home_win_pct": 44.7,
+      "draw_pct": 25.8,
+      "away_win_pct": 29.4,
+      "over25_pct": 52.2,
+      "avg_home_shots": 13.4,
+      "avg_away_shots": 10.8,
+      "cols": 62
+    },
+    {
+      "season": "1920",
+      "label": "19/20",
+      "matches": 1725,
+      "avg_goals": 2.79,
+      "home_win_pct": 44.1,
+      "draw_pct": 24.3,
+      "away_win_pct": 31.5,
+      "over25_pct": 54.6,
+      "avg_home_shots": 12.9,
+      "avg_away_shots": 10.8,
+      "cols": 106
+    },
+    {
+      "season": "2021",
+      "label": "20/21",
+      "matches": 1826,
+      "avg_goals": 2.8,
+      "home_win_pct": 39.9,
+      "draw_pct": 25.5,
+      "away_win_pct": 34.7,
+      "over25_pct": 52.5,
+      "avg_home_shots": 12.3,
+      "avg_away_shots": 10.8,
+      "cols": 106
+    },
+    {
+      "season": "2122",
+      "label": "21/22",
+      "matches": 1826,
+      "avg_goals": 2.81,
+      "home_win_pct": 42.8,
+      "draw_pct": 25.8,
+      "away_win_pct": 31.4,
+      "over25_pct": 52.4,
+      "avg_home_shots": 13.6,
+      "avg_away_shots": 11.3,
+      "cols": 106
+    },
+    {
+      "season": "2223",
+      "label": "22/23",
+      "matches": 1826,
+      "avg_goals": 2.77,
+      "home_win_pct": 45.7,
+      "draw_pct": 24.3,
+      "away_win_pct": 30.0,
+      "over25_pct": 52.2,
+      "avg_home_shots": 13.7,
+      "avg_away_shots": 11.3,
+      "cols": 106
+    },
+    {
+      "season": "2324",
+      "label": "23/24",
+      "matches": 1752,
+      "avg_goals": 2.88,
+      "home_win_pct": 43.1,
+      "draw_pct": 26.4,
+      "away_win_pct": 30.5,
+      "over25_pct": 54.9,
+      "avg_home_shots": 14.5,
+      "avg_away_shots": 11.5,
+      "cols": 106
+    },
+    {
+      "season": "2425",
+      "label": "24/25",
+      "matches": 1752,
+      "avg_goals": 2.83,
+      "home_win_pct": 42.0,
+      "draw_pct": 24.9,
+      "away_win_pct": 33.0,
+      "over25_pct": 53.4,
+      "avg_home_shots": 13.5,
+      "avg_away_shots": 11.3,
+      "cols": 120
+    },
+    {
+      "season": "2526",
+      "label": "25/26",
+      "matches": 1752,
+      "avg_goals": 2.76,
+      "home_win_pct": 44.0,
+      "draw_pct": 25.5,
+      "away_win_pct": 30.5,
+      "over25_pct": 53.0,
+      "avg_home_shots": 13.9,
+      "avg_away_shots": 11.2,
+      "cols": 132
+    }
+  ],
+  "field_total": 180,
+  "field_groups": [
+    {
+      "name": "比赛信息",
+      "count": 6,
+      "desc": "联赛、日期、时间、主客队、裁判",
+      "fields": [
+        "Div",
+        "Date",
+        "Time",
+        "HomeTeam",
+        "AwayTeam",
+        "Referee"
+      ]
+    },
+    {
+      "name": "赛果",
+      "count": 6,
+      "desc": "全场/半场比分与结果",
+      "fields": [
+        "FTHG",
+        "FTAG",
+        "FTR",
+        "HTHG",
+        "HTAG",
+        "HTR"
+      ]
+    },
+    {
+      "name": "比赛统计",
+      "count": 12,
+      "desc": "射门、射正、犯规、角球、红黄牌",
+      "fields": [
+        "HS",
+        "AS",
+        "HST",
+        "AST",
+        "HF",
+        "AF",
+        "HC",
+        "AC",
+        "HY",
+        "AY",
+        "HR",
+        "AR"
+      ]
+    },
+    {
+      "name": "胜平负 · 开盘",
+      "count": 33,
+      "desc": "11 家博彩公司 + Max/Avg",
+      "fields": [
+        "B365H",
+        "B365D",
+        "B365A",
+        "BWH",
+        "BWD",
+        "BWA",
+        "LBH",
+        "LBD",
+        "LBA",
+        "PSH",
+        "PSD",
+        "PSA",
+        "MaxH",
+        "MaxD",
+        "MaxA",
+        "AvgH",
+        "AvgD",
+        "AvgA",
+        "BFEH",
+        "BFED",
+        "BFEA",
+        "BFDH",
+        "BFDD",
+        "BFDA",
+        "BMGMH",
+        "BMGMD",
+        "BMGMA",
+        "BVH",
+        "BVD",
+        "BVA",
+        "CLH",
+        "CLD",
+        "CLA"
+      ]
+    },
+    {
+      "name": "大小球 · 开盘",
+      "count": 14,
+      "desc": "2.5 球盘口",
+      "fields": [
+        "BbMx>2.5",
+        "BbAv>2.5",
+        "BbMx<2.5",
+        "BbAv<2.5",
+        "B365>2.5",
+        "B365<2.5",
+        "P>2.5",
+        "P<2.5",
+        "Max>2.5",
+        "Max<2.5",
+        "Avg>2.5",
+        "Avg<2.5",
+        "BFE>2.5",
+        "BFE<2.5"
+      ]
+    },
+    {
+      "name": "让球 · 开盘",
+      "count": 11,
+      "desc": "亚盘让球",
+      "fields": [
+        "AHh",
+        "B365AHH",
+        "B365AHA",
+        "PAHH",
+        "PAHA",
+        "MaxAHH",
+        "MaxAHA",
+        "AvgAHH",
+        "AvgAHA",
+        "BFEAHH",
+        "BFEAHA"
+      ]
+    },
+    {
+      "name": "胜平负 · 收盘",
+      "count": 51,
+      "desc": "赛前最新赔率",
+      "fields": [
+        "VCH",
+        "VCD",
+        "VCA",
+        "PSCH",
+        "PSCD",
+        "PSCA",
+        "B365CH",
+        "B365CD",
+        "B365CA",
+        "BWCH",
+        "BWCD",
+        "BWCA",
+        "IWCH",
+        "IWCD",
+        "IWCA",
+        "WHCH",
+        "WHCD",
+        "WHCA",
+        "VCCH",
+        "VCCD",
+        "VCCA",
+        "MaxCH",
+        "MaxCD",
+        "MaxCA",
+        "AvgCH",
+        "AvgCD",
+        "AvgCA",
+        "BFCH",
+        "BFCD",
+        "BFCA",
+        "1XBCH",
+        "1XBCD",
+        "1XBCA",
+        "BFECH",
+        "BFECD",
+        "BFECA",
+        "BFDCH",
+        "BFDCD",
+        "BFDCA",
+        "BMGMCH",
+        "BMGMCD",
+        "BMGMCA",
+        "BVCH",
+        "BVCD",
+        "BVCA",
+        "CLCH",
+        "CLCD",
+        "CLCA",
+        "LBCH",
+        "LBCD",
+        "LBCA"
+      ]
+    },
+    {
+      "name": "大小球 · 收盘",
+      "count": 10,
+      "desc": "2.5 球盘口收盘",
+      "fields": [
+        "B365C>2.5",
+        "B365C<2.5",
+        "PC>2.5",
+        "PC<2.5",
+        "MaxC>2.5",
+        "MaxC<2.5",
+        "AvgC>2.5",
+        "AvgC<2.5",
+        "BFEC>2.5",
+        "BFEC<2.5"
+      ]
+    },
+    {
+      "name": "让球 · 收盘",
+      "count": 10,
+      "desc": "亚盘收盘",
+      "fields": [
+        "B365CAHH",
+        "B365CAHA",
+        "PCAHH",
+        "PCAHA",
+        "MaxCAHH",
+        "MaxCAHA",
+        "AvgCAHH",
+        "AvgCAHA",
+        "BFECAHH",
+        "BFECAHA"
+      ]
+    }
+  ],
+  "odds_coverage": [
+    {
+      "season": "1617",
+      "label": "16/17",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 99.7,
+        "MaxH": 0.0,
+        "AvgH": 0.0,
+        "B365CH": 0.0,
+        "PSCH": 100.0,
+        "B365>2.5": 0.0,
+        "P>2.5": 0.0
+      }
+    },
+    {
+      "season": "1718",
+      "label": "17/18",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 99.8,
+        "MaxH": 0.0,
+        "AvgH": 0.0,
+        "B365CH": 0.0,
+        "PSCH": 99.9,
+        "B365>2.5": 0.0,
+        "P>2.5": 0.0
+      }
+    },
+    {
+      "season": "1819",
+      "label": "18/19",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 99.9,
+        "MaxH": 0.0,
+        "AvgH": 0.0,
+        "B365CH": 0.0,
+        "PSCH": 99.9,
+        "B365>2.5": 0.0,
+        "P>2.5": 0.0
+      }
+    },
+    {
+      "season": "1920",
+      "label": "19/20",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 99.9,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 100.0,
+        "PSCH": 100.0,
+        "B365>2.5": 100.0,
+        "P>2.5": 99.8
+      }
+    },
+    {
+      "season": "2021",
+      "label": "20/21",
+      "odds": {
+        "B365H": 99.8,
+        "PSH": 99.8,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 99.9,
+        "PSCH": 100.0,
+        "B365>2.5": 99.6,
+        "P>2.5": 99.5
+      }
+    },
+    {
+      "season": "2122",
+      "label": "21/22",
+      "odds": {
+        "B365H": 99.9,
+        "PSH": 99.9,
+        "MaxH": 99.9,
+        "AvgH": 99.9,
+        "B365CH": 100.0,
+        "PSCH": 100.0,
+        "B365>2.5": 99.9,
+        "P>2.5": 99.6
+      }
+    },
+    {
+      "season": "2223",
+      "label": "22/23",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 100.0,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 100.0,
+        "PSCH": 100.0,
+        "B365>2.5": 100.0,
+        "P>2.5": 99.0
+      }
+    },
+    {
+      "season": "2324",
+      "label": "23/24",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 100.0,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 100.0,
+        "PSCH": 100.0,
+        "B365>2.5": 100.0,
+        "P>2.5": 98.7
+      }
+    },
+    {
+      "season": "2425",
+      "label": "24/25",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 100.0,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 100.0,
+        "PSCH": 100.0,
+        "B365>2.5": 100.0,
+        "P>2.5": 99.0
+      }
+    },
+    {
+      "season": "2526",
+      "label": "25/26",
+      "odds": {
+        "B365H": 100.0,
+        "PSH": 51.5,
+        "MaxH": 100.0,
+        "AvgH": 100.0,
+        "B365CH": 100.0,
+        "PSCH": 51.3,
+        "B365>2.5": 100.0,
+        "P>2.5": 50.9
+      }
+    }
+  ],
+  "missing_top": [
+    {
+      "field": "CLCA",
+      "rate": 93.2
+    },
+    {
+      "field": "CLCD",
+      "rate": 93.2
+    },
+    {
+      "field": "CLCH",
+      "rate": 93.2
+    },
+    {
+      "field": "CLD",
+      "rate": 92.9
+    },
+    {
+      "field": "CLH",
+      "rate": 92.9
+    },
+    {
+      "field": "CLA",
+      "rate": 92.9
+    },
+    {
+      "field": "LBCH",
+      "rate": 92.7
+    },
+    {
+      "field": "LBCD",
+      "rate": 92.7
+    },
+    {
+      "field": "LBCA",
+      "rate": 92.7
+    },
+    {
+      "field": "1XBA",
+      "rate": 90.5
+    },
+    {
+      "field": "1XBH",
+      "rate": 90.5
+    },
+    {
+      "field": "1XBD",
+      "rate": 90.5
+    }
+  ],
+  "missing_zero": 7,
+  "match_stats": {
+    "avg_home_shots": 13.5,
+    "avg_away_shots": 11.1,
+    "avg_home_sot": 4.8,
+    "avg_away_sot": 4.0,
+    "avg_home_corners": 5.4,
+    "avg_away_corners": 4.4,
+    "avg_home_fouls": 12.2,
+    "avg_away_fouls": 12.4,
+    "shot_to_sot_home": 35.8,
+    "shot_to_sot_away": 36.0
+  },
+  "files": [
+    {
+      "file": "E0_1617.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "1617",
+      "season_label": "16/17",
+      "matches": 380,
+      "cols": 65,
+      "size_kb": 100.5
+    },
+    {
+      "file": "E0_1718.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "1718",
+      "season_label": "17/18",
+      "matches": 380,
+      "cols": 65,
+      "size_kb": 101.5
+    },
+    {
+      "file": "E0_1819.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "1819",
+      "season_label": "18/19",
+      "matches": 380,
+      "cols": 62,
+      "size_kb": 96.6
+    },
+    {
+      "file": "E0_1920.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "1920",
+      "season_label": "19/20",
+      "matches": 380,
+      "cols": 106,
+      "size_kb": 176.1
+    },
+    {
+      "file": "E0_2021.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2021",
+      "season_label": "20/21",
+      "matches": 380,
+      "cols": 106,
+      "size_kb": 176.0
+    },
+    {
+      "file": "E0_2122.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2122",
+      "season_label": "21/22",
+      "matches": 380,
+      "cols": 106,
+      "size_kb": 176.1
+    },
+    {
+      "file": "E0_2223.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2223",
+      "season_label": "22/23",
+      "matches": 380,
+      "cols": 106,
+      "size_kb": 176.5
+    },
+    {
+      "file": "E0_2324.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2324",
+      "season_label": "23/24",
+      "matches": 380,
+      "cols": 106,
+      "size_kb": 172.8
+    },
+    {
+      "file": "E0_2425.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2425",
+      "season_label": "24/25",
+      "matches": 380,
+      "cols": 120,
+      "size_kb": 197.1
+    },
+    {
+      "file": "E0_2526.csv",
+      "league": "E0",
+      "league_name": "英超",
+      "season": "2526",
+      "season_label": "25/26",
+      "matches": 380,
+      "cols": 132,
+      "size_kb": 204.6
+    },
+    {
+      "file": "D1_1617.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "1617",
+      "season_label": "16/17",
+      "matches": 306,
+      "cols": 64,
+      "size_kb": 78.6
+    },
+    {
+      "file": "D1_1718.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "1718",
+      "season_label": "17/18",
+      "matches": 306,
+      "cols": 64,
+      "size_kb": 78.6
+    },
+    {
+      "file": "D1_1819.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "1819",
+      "season_label": "18/19",
+      "matches": 306,
+      "cols": 61,
+      "size_kb": 75.5
+    },
+    {
+      "file": "D1_1920.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "1920",
+      "season_label": "19/20",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 139.6
+    },
+    {
+      "file": "D1_2021.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2021",
+      "season_label": "20/21",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 139.6
+    },
+    {
+      "file": "D1_2122.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2122",
+      "season_label": "21/22",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 139.6
+    },
+    {
+      "file": "D1_2223.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2223",
+      "season_label": "22/23",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 139.4
+    },
+    {
+      "file": "D1_2324.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2324",
+      "season_label": "23/24",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 136.2
+    },
+    {
+      "file": "D1_2425.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2425",
+      "season_label": "24/25",
+      "matches": 306,
+      "cols": 119,
+      "size_kb": 164.7
+    },
+    {
+      "file": "D1_2526.csv",
+      "league": "D1",
+      "league_name": "德甲",
+      "season": "2526",
+      "season_label": "25/26",
+      "matches": 306,
+      "cols": 131,
+      "size_kb": 161.2
+    },
+    {
+      "file": "I1_1617.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "1617",
+      "season_label": "16/17",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 97.3
+    },
+    {
+      "file": "I1_1718.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "1718",
+      "season_label": "17/18",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 96.0
+    },
+    {
+      "file": "I1_1819.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "1819",
+      "season_label": "18/19",
+      "matches": 380,
+      "cols": 61,
+      "size_kb": 91.6
+    },
+    {
+      "file": "I1_1920.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "1920",
+      "season_label": "19/20",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 170.8
+    },
+    {
+      "file": "I1_2021.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2021",
+      "season_label": "20/21",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.1
+    },
+    {
+      "file": "I1_2122.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2122",
+      "season_label": "21/22",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.5
+    },
+    {
+      "file": "I1_2223.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2223",
+      "season_label": "22/23",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.5
+    },
+    {
+      "file": "I1_2324.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2324",
+      "season_label": "23/24",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 167.0
+    },
+    {
+      "file": "I1_2425.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2425",
+      "season_label": "24/25",
+      "matches": 380,
+      "cols": 119,
+      "size_kb": 191.5
+    },
+    {
+      "file": "I1_2526.csv",
+      "league": "I1",
+      "league_name": "意甲",
+      "season": "2526",
+      "season_label": "25/26",
+      "matches": 380,
+      "cols": 131,
+      "size_kb": 198.5
+    },
+    {
+      "file": "SP1_1617.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "1617",
+      "season_label": "16/17",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 97.1
+    },
+    {
+      "file": "SP1_1718.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "1718",
+      "season_label": "17/18",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 97.2
+    },
+    {
+      "file": "SP1_1819.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "1819",
+      "season_label": "18/19",
+      "matches": 380,
+      "cols": 61,
+      "size_kb": 92.8
+    },
+    {
+      "file": "SP1_1920.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "1920",
+      "season_label": "19/20",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.8
+    },
+    {
+      "file": "SP1_2021.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2021",
+      "season_label": "20/21",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.9
+    },
+    {
+      "file": "SP1_2122.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2122",
+      "season_label": "21/22",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 172.1
+    },
+    {
+      "file": "SP1_2223.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2223",
+      "season_label": "22/23",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 172.4
+    },
+    {
+      "file": "SP1_2324.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2324",
+      "season_label": "23/24",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 168.3
+    },
+    {
+      "file": "SP1_2425.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2425",
+      "season_label": "24/25",
+      "matches": 380,
+      "cols": 119,
+      "size_kb": 193.0
+    },
+    {
+      "file": "SP1_2526.csv",
+      "league": "SP1",
+      "league_name": "西甲",
+      "season": "2526",
+      "season_label": "25/26",
+      "matches": 380,
+      "cols": 131,
+      "size_kb": 199.2
+    },
+    {
+      "file": "F1_1617.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "1617",
+      "season_label": "16/17",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 105.6
+    },
+    {
+      "file": "F1_1718.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "1718",
+      "season_label": "17/18",
+      "matches": 380,
+      "cols": 64,
+      "size_kb": 95.9
+    },
+    {
+      "file": "F1_1819.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "1819",
+      "season_label": "18/19",
+      "matches": 380,
+      "cols": 61,
+      "size_kb": 91.7
+    },
+    {
+      "file": "F1_1920.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "1920",
+      "season_label": "19/20",
+      "matches": 279,
+      "cols": 105,
+      "size_kb": 125.4
+    },
+    {
+      "file": "F1_2021.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2021",
+      "season_label": "20/21",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 170.7
+    },
+    {
+      "file": "F1_2122.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2122",
+      "season_label": "21/22",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.1
+    },
+    {
+      "file": "F1_2223.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2223",
+      "season_label": "22/23",
+      "matches": 380,
+      "cols": 105,
+      "size_kb": 171.3
+    },
+    {
+      "file": "F1_2324.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2324",
+      "season_label": "23/24",
+      "matches": 306,
+      "cols": 105,
+      "size_kb": 134.7
+    },
+    {
+      "file": "F1_2425.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2425",
+      "season_label": "24/25",
+      "matches": 306,
+      "cols": 119,
+      "size_kb": 154.5
+    },
+    {
+      "file": "F1_2526.csv",
+      "league": "F1",
+      "league_name": "法甲",
+      "season": "2526",
+      "season_label": "25/26",
+      "matches": 306,
+      "cols": 131,
+      "size_kb": 159.7
+    }
+  ],
+  "margin_sample": {
+    "match": "Burnley vs Swansea",
+    "b365": 2.74,
+    "pinnacle": 1.95
+  },
+  "all_top5": {
+    "matches": 14053,
+    "date_min": "2016-08-12",
+    "date_max": "2024-06-02",
+    "seasons": [
+      "2016/17",
+      "2017/18",
+      "2018/19",
+      "2019/20",
+      "2020/21",
+      "2021/22",
+      "2022/23",
+      "2023/24"
+    ],
+    "note": "all_top5.csv 仅含 14,053 场（16/17 ~ 23/24），比 50 个分赛季文件合计 17,937 场少 3,884 场，缺少 24/25 与 25/26 两个赛季。"
+  },
+  "quality_notes": [
+    {
+      "title": "双重编码 BOM",
+      "detail": "部分文件首列名为 ï»¿Div（UTF-8 BOM 被二次编码），读取时需清理列名，否则 Div 列识别失败。",
+      "affected": "24/25 与 25/26 赛季共 11 个文件"
+    },
+    {
+      "title": "日期格式不统一",
+      "detail": "16/17 赛季使用两位年份（13/08/16），其余赛季使用四位年份（11/08/2017）。",
+      "affected": "16/17 赛季 10 个文件"
+    },
+    {
+      "title": "列数随赛季演进",
+      "detail": "字段数从 16/17 的 65 列扩展到 25/26 的 132 列，早期赛季缺失收盘赔率与部分博彩公司。",
+      "affected": "全部赛季"
+    },
+    {
+      "title": "合并文件非全量",
+      "detail": "all_top5.csv 仅含 7 个赛季 14,053 场，比 50 个分文件少 3,884 场。",
+      "affected": "all_top5.csv"
+    }
+  ]
+}

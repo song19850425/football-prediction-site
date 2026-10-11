@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V3.2 升级方案 — 基于开源项目深度分析</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.7; padding: 20px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  .header { text-align: center; padding: 36px 20px 28px; border-bottom: 1px solid #1f2e26; margin-bottom: 32px; }
+  .header h1 { font-size: 2rem; color: #4ecca3; font-weight: 700; margin-bottom: 8px; }
+  .header .subtitle { font-size: 0.9rem; color: #888; }
+  .header .version-badge { display: inline-block; margin-top: 12px; padding: 4px 14px; background: rgba(78,204,163,0.12); color: #4ecca3; border: 1px solid #2a5a3a; border-radius: 14px; font-size: 12px; font-weight: 600; }
+
+  .phase-section { margin-bottom: 32px; }
+  .phase-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: linear-gradient(135deg, #1a3a2e 0%, #102018 100%); border: 1px solid #2a4a3a; border-radius: 8px; margin-bottom: 14px; }
+  .phase-header .phase-num { width: 32px; height: 32px; border-radius: 50%; background: #4ecca3; color: #0d2818; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+  .phase-header h2 { color: #4ecca3; font-size: 1.15rem; font-weight: 700; }
+  .phase-header .phase-meta { margin-left: auto; display: flex; gap: 10px; }
+  .chip { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; }
+  .chip-impact-high { background: rgba(78,204,163,0.12); color: #4ecca3; border: 1px solid #2a5a3a; }
+  .chip-impact-mid { background: rgba(212,168,53,0.12); color: #d4a835; border: 1px solid #5a5a2a; }
+  .chip-cost-low { background: rgba(122,156,198,0.12); color: #7a9cc6; border: 1px solid #2a4a6a; }
+  .chip-cost-high { background: rgba(204,102,102,0.12); color: #cc6666; border: 1px solid #4a2a2a; }
+
+  .feature-card { background: #111; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+  .fc-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #161616; border-bottom: 1px solid #2a2a2a; cursor: pointer; }
+  .fc-header .fc-title { font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .fc-header .fc-title .icon { font-size: 16px; }
+  .fc-header .fc-source { font-size: 11px; color: #888; }
+  .fc-header .fc-source .src { color: #7a9cc6; font-weight: 600; }
+  .fc-body { padding: 14px 16px; }
+  .fc-row { display: flex; margin-bottom: 8px; gap: 12px; }
+  .fc-label { width: 100px; color: #666; font-size: 11px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  .fc-value { color: #e0e0e0; font-size: 13px; flex: 1; }
+  .fc-value .green { color: #4ecca3; }
+  .fc-value .yellow { color: #d4a835; }
+  .fc-value .red { color: #cc6666; }
+  .fc-value .blue { color: #7a9cc6; }
+  .fc-value code { background: #1a1a1a; padding: 1px 6px; border-radius: 3px; font-size: 11px; color: #aaa; }
+
+  .benefit-box { margin-top: 10px; padding: 10px 12px; background: #0d1a14; border-left: 3px solid #4ecca3; border-radius: 4px; }
+  .benefit-box p { color: #aaa; font-size: 12px; line-height: 1.7; }
+  .benefit-box .key { color: #4ecca3; font-weight: 600; }
+  .warn-box { margin-top: 10px; padding: 10px 12px; background: #1a140d; border-left: 3px solid #d4a835; border-radius: 4px; }
+  .warn-box p { color: #aaa; font-size: 12px; line-height: 1.7; }
+  .warn-box .key { color: #d4a835; font-weight: 600; }
+
+  /* 对比表 */
+  .compare-section { margin-bottom: 28px; }
+  .compare-section h2 { font-size: 1.1rem; color: #fff; padding: 10px 14px; background: #1a1a1a; border-left: 3px solid #4ecca3; border-radius: 4px; margin-bottom: 12px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: #161616; color: #999; font-weight: 500; padding: 8px 6px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2a2a2a; white-space: nowrap; }
+  thead th:first-child { text-align: left; padding-left: 12px; }
+  tbody tr { border-bottom: 1px solid #1e1e1e; }
+  tbody tr:hover { background: #1a1a1a; }
+  tbody td { padding: 8px 6px; text-align: center; color: #ccc; font-size: 11px; }
+  tbody td:first-child { text-align: left; padding-left: 12px; color: #e0e0e0; font-weight: 500; }
+  .green { color: #4ecca3; }
+  .yellow { color: #d4a835; }
+  .red { color: #cc6666; }
+  .blue { color: #7a9cc6; }
+
+  /* 路线图 */
+  .roadmap { position: relative; padding-left: 24px; margin-bottom: 28px; }
+  .roadmap::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #2a5a3a; }
+  .roadmap-item { position: relative; margin-bottom: 18px; }
+  .roadmap-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: #4ecca3; border: 3px solid #0d0d0d; box-shadow: 0 0 0 2px #2a5a3a; }
+  .roadmap-item.done::before { background: #4ecca3; }
+  .roadmap-item.todo::before { background: #333; box-shadow: 0 0 0 2px #555; }
+  .roadmap-item .ri-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .roadmap-item .ri-desc { font-size: 12px; color: #aaa; line-height: 1.6; }
+
+  .footer { text-align: center; margin-top: 30px; padding-top: 16px; border-top: 1px solid #2a2a2a; color: #555; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>V3.2 升级方案</h1>
+  <div class="subtitle">基于9个开源项目深度分析 · 提取12项可借鉴特性 · 三阶段落地路线图</div>
+  <span class="version-badge">V3.1 → V3.2 升级规划</span>
+</div>
+
+<!-- ===== 现状回顾 ===== -->
+<div class="compare-section">
+  <h2>当前 V3.1 模型现状</h2>
+  <table>
+    <thead><tr><th>维度</th><th>当前状态</th><th>主要问题</th></tr></thead>
+    <tbody>
+      <tr><td>核心算法</td><td class="yellow">Poisson进球期望(手工权重)</td><td>纯统计模型，无机器学习</td></tr>
+      <tr><td>特征维度</td><td class="yellow">进攻/防守强度 + 主场优势 + 单双统计</td><td>约8-10个基础特征，无xG/PPDA等高级指标</td></tr>
+      <tr><td>预测输出</td><td class="green">胜平负+比分+大小球+单双(亚洲盘友好)</td><td>多数开源仅胜平负，此为我方特色</td></tr>
+      <tr><td>准确率</td><td class="green">68.75%(4场16项验证)</td><td>样本太少，需回测系统验证</td></tr>
+      <tr><td>数据来源</td><td class="yellow">WebSearch抓取 + 各站零散数据</td><td>无统一数据源，无历史数据库</td></tr>
+      <tr><td>回测系统</td><td class="red">无</td><td>无法系统验证模型有效性</td></tr>
+      <tr><td>工程化</td><td class="yellow">HTML报告 + 手工分析</td><td>无可执行代码/API，依赖人工</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== 各模型可借鉴要点 ===== -->
+<div class="compare-section">
+  <h2>各项目可借鉴价值评估</h2>
+  <table>
+    <thead>
+      <tr><th>项目</th><th>核心亮点</th><th>可借鉴度</th><th>优先级</th><th>落地难度</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>FootballGPT</td>
+        <td class="blue">XGBoost+LSTM集成 · xG/PPDA/疲劳特征 · Kelly资金管理 · Pinnacle价值投注 · 公开ROI追踪</td>
+        <td class="green">★★★★★</td><td class="green">最高</td><td class="yellow">中-高</td>
+      </tr>
+      <tr>
+        <td>ProphitBet</td>
+        <td class="blue">8种算法对比 · Boruta特征选择 · 时间序列交叉验证 · Profit Balance盈亏指标 · football-data数据源</td>
+        <td class="green">★★★★☆</td><td class="green">高</td><td class="yellow">中</td>
+      </tr>
+      <tr>
+        <td>TheDrawCode</td>
+        <td class="blue">5模型Stacked集成 · 精确度优化权重 · 阈值调优 · 平局专项 · MLflow版本管理</td>
+        <td class="green">★★★★</td><td class="yellow">中</td><td class="red">高</td>
+      </tr>
+      <tr>
+        <td>GoalCast FC</td>
+        <td class="blue">StatsBomb高级特征(xG/控球率) · 65-70%诚实准确率 · 联赛模拟器</td>
+        <td class="green">★★★★</td><td class="yellow">中</td><td class="yellow">中</td>
+      </tr>
+      <tr>
+        <td>MatchPredict</td>
+        <td class="blue">串关策略 · 半全场预测 · 价值投注识别 · LLM分析文本生成</td>
+        <td class="yellow">★★★</td><td class="yellow">中</td><td class="yellow">中</td>
+      </tr>
+      <tr>
+        <td>ai-football</td>
+        <td class="blue">三模型分工(XGB+Poisson+LLM)</td>
+        <td class="yellow">★★★</td><td class="yellow">中</td><td class="yellow">中</td>
+      </tr>
+      <tr>
+        <td>Deep-Learning-FB</td>
+        <td class="blue">SMOTE数据平衡(平局少) · Dropout正则化</td>
+        <td class="yellow">★★</td><td class="red">低</td><td class="yellow">中</td>
+      </tr>
+      <tr>
+        <td>TSW-GAT</td>
+        <td class="blue">时间滑动窗口 · 图注意力网络</td>
+        <td class="yellow">★★</td><td class="red">低</td><td class="red">很高</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== Phase 1 ===== -->
+<div class="phase-section">
+  <div class="phase-header">
+    <div class="phase-num">1</div>
+    <h2>Phase 1: 基础能力升级（高价值·低门槛）</h2>
+    <div class="phase-meta">
+      <span class="chip chip-impact-high">高影响</span>
+      <span class="chip chip-cost-low">低-中成本</span>
+    </div>
+  </div>
+
+  <!-- 1.1 XGBoost引入 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🧠</span> 引入XGBoost替代手工权重</div>
+      <div class="fc-source">来源: <span class="src">FootballGPT / ProphitBet / GoalCast</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">手工设定各维度权重(泊松40%+单双统计25%+趋势10%+...)，主观性强，难以量化优化</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">用 <code>XGBClassifier</code> 训练胜平负三分类模型，特征包括: 主客队进攻/防守强度、ELO评分、近期状态、主客场胜率、联赛排名差、历史交锋等。模型自动学习特征权重，无需手工设定。</div></div>
+      <div class="fc-row"><div class="fc-label">为什么是XGBoost</div><div class="fc-value">所有开源项目的一致选择 — 处理表格数据能力最强，解释性优于神经网络，训练快。9个项目中有6个用XGBoost作为主力或核心模型。</div></div>
+      <div class="fc-row"><div class="fc-label">输出</div><div class="fc-value"><span class="green">胜平负概率分布</span> + <span class="green">特征重要性排序</span>(可解释性)</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 胜平负准确率从手工75%提升至约65-70%(注意: 65-70%是行业水平，手工高准确率可能是过拟合/小样本偏差)。最大价值是<strong>可量化、可回测、可持续优化</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.2 回测框架 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">📊</span> 时间序列回测系统</div>
+      <div class="fc-source">来源: <span class="src">ProphitBet / FootballGPT</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">手工验证单场比赛，样本小、无统计显著性，无法判断模型真实水平</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        实现 <code>TimeSeriesSplit</code> 时间序列交叉验证(避免未来数据泄露)。按赛季/轮次划分训练集和测试集，模拟真实预测场景。输出: 赛季准确率、盈亏曲线、胜率、ROI、最大回撤等指标。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">核心原则</div><div class="fc-value"><span class="green">禁止用未来数据训练</span> — 只能用比赛前已有的数据(前N轮)预测下一轮。这是ProphitBet强调的关键原则。</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 从"感觉对"到"数据说话"。有了回测系统，每次模型改动都能量化评估是否有效(类似FootballGPT的公开ROI追踪)。这是模型迭代的基础设施。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.3 价值投注 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">💰</span> 价值投注计算(赔率对比)</div>
+      <div class="fc-source">来源: <span class="src">MatchPredict / FootballGPT</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">只输出预测概率，不与赔率对比，无法判断是否有投注价值</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        引入赔率数据，计算: <code>隐含概率 = 1 / 赔率</code> → <code>Edge = 模型概率 - 隐含概率</code>。当 Edge > 5% 时标记为"价值投注"。参考FootballGPT: 仅推Edge>6%的场次，这是长期盈利的关键。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">延伸功能</div><div class="fc-value">串关组合计算 — 多场联合概率 vs 联合赔率，找正期望值串关(MatchPredict已有此功能)</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 从"猜对错"升级为"找价值"。博彩长期盈利靠的不是高胜率，而是找到被市场低估的场次。此功能直接对接实战应用。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.4 统一数据源 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">📦</span> 统一数据源 + 历史数据库</div>
+      <div class="fc-source">来源: <span class="src">ProphitBet (football-data.co.uk)</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">WebSearch零散抓取，数据不统一，无历史库，每次从零开始</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        接入 <code>football-data.co.uk</code> CSV 数据(ProphitBet使用的数据源)，覆盖英超/西甲/意甲/德甲/法甲/英冠等联赛，包含: 赛果、赔率(B365/平均赔率)、射门/射正/角球/黄牌/红牌等。建立本地SQLite数据库，定时同步。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">数据字段</div><div class="fc-value">主客队、比分、半场比分、射门、射正、角球、黄牌、红牌、B365胜平负赔率、大小球赔率等20+字段</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 所有分析的基础。有了历史数据才能训练模型、做回测、计算特征。这是最优先的基础设施工作。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Phase 2 ===== -->
+<div class="phase-section">
+  <div class="phase-header">
+    <div class="phase-num">2</div>
+    <h2>Phase 2: 特征与模型深化（中价值·中门槛）</h2>
+    <div class="phase-meta">
+      <span class="chip chip-impact-high">高影响</span>
+      <span class="chip chip-cost-low">中成本</span>
+    </div>
+  </div>
+
+  <!-- 2.1 特征工程升级 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">⚡</span> 特征工程升级(20+特征)</div>
+      <div class="fc-source">来源: <span class="src">FootballGPT / GoalCast FC</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">仅8-10个基础特征(进攻/防守强度、主场优势、单双率等)</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">从football-data数据衍生20+特征，参考FootballGPT和GoalCast FC的特征体系:</div></div>
+      <div class="fc-row"><div class="fc-label">进攻类</div><div class="fc-value">场均进球、场均射门、场均射正、射正率、进球效率(进球/射正)</div></div>
+      <div class="fc-row"><div class="fc-label">防守类</div><div class="fc-value">场均失球、场均被射门、场均被射正、零封率、失球效率</div></div>
+      <div class="fc-row"><div class="fc-label">状态类</div><div class="fc-value">近5场胜率、近5场场均进球、近5场场均失球、状态衰减加权(越近权重越高) — <span class="green">FootballGPT form decay</span></div></div>
+      <div class="fc-row"><div class="fc-label">赛程类</div><div class="fc-value">休息天数、连续客场次数、赛程密集度 — <span class="green">FootballGPT fatigue</span></div></div>
+      <div class="fc-row"><div class="fc-label">交锋类</div><div class="fc-value">历史交锋胜率、近3次交锋结果、主场交锋胜率</div></div>
+      <div class="fc-row"><div class="fc-label">联赛类</div><div class="fc-value">排名差、积分差、主客场联赛排名</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 特征是模型上限的决定因素。从10个特征扩展到25+，预计准确率提升5-10%。XGBoost能自动学习各特征的重要性，无需手工调权重。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.2 集成模型 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🔗</span> Poisson + XGBoost 加权集成</div>
+      <div class="fc-source">来源: <span class="src">ai-football / TheDrawCode</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">纯Poisson模型，对非线性关系(如球队风格克制)捕捉能力有限</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        两路模型集成: <br>
+        <span class="blue">Poisson路:</span> 基于攻防强度的概率分布(优势: 比分分布可解释，有理论基础)<br>
+        <span class="blue">XGBoost路:</span> 基于20+特征的机器学习分类(优势: 捕捉非线性模式)<br>
+        按权重融合胜平负概率，初始权重 <code>Poisson 40% + XGBoost 60%</code>，通过回测优化最优权重。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">比分生成</div><div class="fc-value">保留Poisson的比分分布矩阵，但用XGBoost的胜平负概率做Bayesian校准(FootballGPT的思路)，修正分布。</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 集成模型通常比单模型提升3-5%准确率。ai-football的三模型(XGB+Poisson+LLM)思路就是这个道理 — 不同模型捕捉不同模式，融合后更稳健。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 Boruta特征选择 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🔍</span> Boruta自动特征选择</div>
+      <div class="fc-source">来源: <span class="src">ProphitBet</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">手工选择特征，可能遗漏重要特征或保留噪声特征</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        引入 <code>Boruta算法</code>(ProphitBet内置功能): 通过随机森林迭代，将每个特征与"影子特征"(随机打乱)比较，统计显著性判断特征是否真的有预测力。自动筛选有效特征，减少人工调参。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">配合工具</div><div class="fc-value">特征重要性排序、相关性矩阵、方差分析 — 全部从ProphitBet的分析工具借鉴</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 减少过拟合(剔除噪声特征)，提升模型泛化能力。同时提供可解释性 — 知道哪些因素最重要。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.4 平局专项优化 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🤝</span> 平局预测专项优化</div>
+      <div class="fc-source">来源: <span class="src">TheDrawCode</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">平局是三分类中最难的(样本最少，约25%)，模型倾向于预测主胜/客胜，平局召回率低</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        借鉴TheDrawCode专攻平局的思路: <br>
+        1. <span class="green">类别权重调整</span>: 平局类权重×1.5，让模型更关注平局样本<br>
+        2. <span class="green">阈值优化</span>: 不使用默认0.33阈值，通过验证集搜索最优平局阈值(如0.28)<br>
+        3. <span class="green">平局特征工程</span>: 两队防守强度乘积、近5场平局率、历史交锋平局率等专门特征
+      </div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 平局预测准确率提升5-10%。平局赔率通常较高(2.5-3.5)，即使命中率略低，价值投注空间也很大。TheDrawCode专攻平局就是因为这个原因。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.5 Kelly资金管理 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🎯</span> Kelly准则仓位管理</div>
+      <div class="fc-source">来源: <span class="src">FootballGPT</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">无资金管理概念，只给预测不给仓位建议</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        实现 <code>Kelly Criterion</code>: <br>
+        <code>f = (b × p - q) / b</code>，其中 f=仓位比例，b=赔率-1，p=获胜概率，q=输的概率<br>
+        FootballGPT使用: 最大2-3%仓位/场，高选择性(每周仅选少数场次)。实战中用Kelly的一半(Half-Kelly)更稳健。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">输出</div><div class="fc-value">每场预测附带"建议仓位"百分比，高置信度场次仓位高，低置信度场次仓位低</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 从"预测对错"升级为"资金管理"。长期盈利靠的是正期望值 + 合理仓位。Kelly准则是博彩/投资的黄金标准。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Phase 3 ===== -->
+<div class="phase-section">
+  <div class="phase-header">
+    <div class="phase-num">3</div>
+    <h2>Phase 3: 前沿探索（高价值·高门槛）</h2>
+    <div class="phase-meta">
+      <span class="chip chip-impact-high">中-高影响</span>
+      <span class="chip chip-cost-high">高成本</span>
+    </div>
+  </div>
+
+  <!-- 3.1 LSTM序列模型 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🧬</span> LSTM时序模型集成</div>
+      <div class="fc-source">来源: <span class="src">FootballGPT</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">无深度学习模型</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        引入 <code>LSTM神经网络</code> 捕捉球队状态的时间序列模式。输入: 近10场比赛的时间序列特征(进球、失球、射门等)，输出: 下一场表现预测。与XGBoost+Poisson集成，形成三路融合。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">注意</div><div class="fc-value"><span class="yellow">需谨慎</span> — 深度学习需要大量数据(50万+事件才有意义)，小样本下XGBoost通常优于LSTM。参考Deep-Learning-Football项目: 3层NN仅53%准确率。</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 数据量足够时提升2-5%。更重要的是捕捉XGBoost无法捕捉的序列模式(如连续不胜后的反弹、连胜后的回落)。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.2 LLM分析生成 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">💬</span> LLM智能分析文本生成</div>
+      <div class="fc-source">来源: <span class="src">MatchPredict / ai-football</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">分析文本为手工模板生成，缺乏"分析感"</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        接入LLM(GPT-4o/DeepSeek)，将模型输出(概率、比分、特征重要性) + 球队近期数据 + 赔率信息结构化喂给LLM，生成自然语言分析报告。
+        参考ai-football的三阶段: <span class="green">XGBoost算概率 → Poisson生比分 → LLM写分析</span>。
+      </div></div>
+      <div class="fc-row"><div class="fc-label">关键约束</div><div class="fc-value">LLM只做文本生成，<span class="red">不做概率计算</span> — 概率由统计/ML模型输出，LLM负责"翻译"成人话。这是MatchPredict和ai-football的共同设计原则。</div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 体验升级。预测结果从干巴巴的数字变成有逻辑的分析文字，用户体验大幅提升。同时可生成多语言、多风格的分析内容。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.3 半全场+角球+黄牌 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🎲</span> 扩展预测维度(半全场/角球/黄牌)</div>
+      <div class="fc-source">来源: <span class="src">MatchPredict</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">胜平负+比分+大小球+单双(4维)</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        新增预测维度: <br>
+        1. <span class="green">半全场</span>(9种组合): 半场泊松模型 + 全场泊松模型联合概率(MatchPredict已有)<br>
+        2. <span class="green">角球大小</span>: 基于场均角球数据的泊松分布<br>
+        3. <span class="green">黄牌大小</span>: 基于场均黄牌数据的泊松分布<br>
+        football-data.co.uk数据已包含角球和黄牌字段，无需额外数据源。
+      </div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 差异化竞争优势。90%的开源项目只做胜平负。覆盖亚洲盘口更多玩法，实用性更强。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.4 Web仪表盘 -->
+  <div class="feature-card">
+    <div class="fc-header">
+      <div class="fc-title"><span class="icon">🖥️</span> Streamlit交互式仪表盘</div>
+      <div class="fc-source">来源: <span class="src">GoalCast FC / Goal-Prediction</span></div>
+    </div>
+    <div class="fc-body">
+      <div class="fc-row"><div class="fc-label">现状</div><div class="fc-value">静态HTML报告，无交互，需手动生成</div></div>
+      <div class="fc-row"><div class="fc-label">升级方案</div><div class="fc-value">
+        构建 <code>Streamlit</code> Web应用: <br>
+        - 每日比赛预测面板<br>
+        - 模型回测结果可视化<br>
+        - 特征重要性分析<br>
+        - 联赛积分榜/状态追踪<br>
+        - 赔率变动监控<br>
+        GoalCast FC和Goal-Prediction-Model都用Streamlit作为UI，开发成本低，效果好。
+      </div></div>
+      <div class="benefit-box">
+        <p><span class="key">预期收益:</span> 从"一次性报告"变为"可交互工具"。用户可自主选择联赛、比赛、调整参数、查看历史。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 路线图 ===== -->
+<div class="compare-section">
+  <h2>落地路线图</h2>
+  <div class="roadmap">
+    <div class="roadmap-item done">
+      <div class="ri-title">Step 0: 数据基础设施 (1-2周)</div>
+      <div class="ri-desc">接入football-data.co.uk → 建立本地SQLite数据库 → 数据清洗与特征工程脚本 → 五大联赛历史数据入库</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="ri-title">Step 1: XGBoost基线模型 (2周)</div>
+      <div class="ri-desc">20+基础特征 → XGBClassifier三分类 → 时间序列回测 → 与Poisson模型对比基准</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="ri-title">Step 2: 集成模型 + 价值投注 (2周)</div>
+      <div class="ri-desc">Poisson+XGBoost加权集成 → 赔率接入 → Edge计算 → Kelly仓位 → 串关策略</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="ri-title">Step 3: 特征深化 + 平局优化 (2周)</div>
+      <div class="ri-desc">Boruta特征选择 → 25+高级特征 → 平局专项优化(权重+阈值) → 单双/大小球ML化</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="ri-title">Step 4: LLM分析 + Web UI (2-3周)</div>
+      <div class="ri-desc">LLM分析文本生成 → Streamlit仪表盘 → 回测可视化 → 半全场/角球扩展</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="ri-title">Step 5: LSTM探索 + 持续优化 (长期)</div>
+      <div class="ri-desc">LSTM时序模型集成 → 多联赛扩展 → 模型持续迭代 → ROI追踪系统</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 预期效果 ===== -->
+<div class="compare-section">
+  <h2>预期效果对比</h2>
+  <table>
+    <thead>
+      <tr><th>指标</th><th>V3.1 当前</th><th>V3.2 Phase 1</th><th>V3.2 Phase 2</th><th>V3.2 Phase 3</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>核心算法</td><td class="yellow">Poisson手工</td>
+        <td class="green">XGBoost+回测</td>
+        <td class="green">Poisson+XGB集成</td>
+        <td class="green">三路集成+LLM</td>
+      </tr>
+      <tr>
+        <td>特征数</td><td class="yellow">~10个</td>
+        <td class="green">~20个</td>
+        <td class="green">~25个</td>
+        <td class="green">~30个</td>
+      </tr>
+      <tr>
+        <td>胜平负准确率</td><td class="yellow">~75%*(小样本)</td>
+        <td class="green">65-70%(大样本)</td>
+        <td class="green">68-73%</td>
+        <td class="green">70-75%</td>
+      </tr>
+      <tr>
+        <td>预测维度</td><td class="green">4维</td>
+        <td class="green">4维+价值</td>
+        <td class="green">4维+价值+仓位</td>
+        <td class="green">7维+分析</td>
+      </tr>
+      <tr>
+        <td>回测能力</td><td class="red">无</td>
+        <td class="green">有(时间序列)</td>
+        <td class="green">完整回测框架</td>
+        <td class="green">ROI追踪系统</td>
+      </tr>
+      <tr>
+        <td>UI</td><td class="yellow">静态HTML</td>
+        <td class="yellow">静态HTML</td>
+        <td class="yellow">静态HTML</td>
+        <td class="green">Streamlit交互</td>
+      </tr>
+      <tr>
+        <td>工程化</td><td class="red">手工流程</td>
+        <td class="yellow">脚本化</td>
+        <td class="yellow">半自动化</td>
+        <td class="green">全自动化</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:8px;color:#555;font-size:11px;">* V3.1的75%基于4场小样本，存在偏差。V3.2的65-70%是基于行业水平的保守估计，有回测验证后才可信。</p>
+</div>
+
+<!-- ===== 关键结论 ===== -->
+<div class="conclusion" style="background:#111;border:1px solid #2a4a3a;border-radius:8px;padding:20px;margin-bottom:20px;">
+  <h2 style="color:#4ecca3;font-size:1.1rem;margin-bottom:12px;">最值得优先做的3件事</h2>
+  <p style="color:#aaa;font-size:13px;line-height:1.8;margin-bottom:8px;">
+    <span style="color:#4ecca3;font-weight:600;">1. 建立数据源 + 回测框架</span> — 这是一切的基础。没有历史数据和回测，模型好坏全靠感觉。football-data.co.uk免费且覆盖全面，优先搞定。
+  </p>
+  <p style="color:#aaa;font-size:13px;line-height:1.8;margin-bottom:8px;">
+    <span style="color:#4ecca3;font-weight:600;">2. 引入XGBoost替代手工权重</span> — 9个项目6个选XGBoost不是巧合。它处理表格数据最强，训练快，可解释。从手工权重→ML模型是质变。
+  </p>
+  <p style="color:#aaa;font-size:13px;line-height:1.8;">
+    <span style="color:#4ecca3;font-weight:600;">3. 价值投注 + Kelly仓位</span> — 从"猜对错"升级为"找价值"。长期盈利靠的是正期望值+合理仓位，而非高胜率。这是从娱乐到实战的关键跨越。
+  </p>
+</div>
+
+<div class="footer">
+  <p>V3.2 升级方案 | 基于9个开源项目深度分析 | 三阶段12项升级 | 2026年9月</p>
+  <p>预计总开发周期: 8-12周 | 预期胜平负准确率: 68-73% | ROI需回测验证</p>
+</div>
+
+</div>
+</body>
+</html>

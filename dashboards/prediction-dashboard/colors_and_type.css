@@ -1,0 +1,101 @@
+/* ============================================
+   足球预测仪表盘 - 深色暗黑风主题
+   ============================================ */
+
+:root {
+  /* 品牌色 - 霓虹绿（代表足球/数据/精准） */
+  --pd-primary: #22c55e;
+  --pd-primary-foreground: #0a0a0f;
+  --pd-primary-hover: #16a34a;
+
+  /* 支持色 */
+  --pd-accent: #f97316;
+  --pd-accent-foreground: #ffffff;
+  --pd-gold: #fbbf24;
+
+  /* 状态色 */
+  --pd-win: #22c55e;
+  --pd-draw: #fbbf24;
+  --pd-lose: #ef4444;
+
+  /* 中性色 - 深色基底 */
+  --pd-background: #0a0a0f;
+  --pd-foreground: #e2e8f0;
+  --pd-card: #13131a;
+  --pd-card-foreground: #e2e8f0;
+  --pd-card-hover: #1a1a25;
+
+  /* 次级表面 */
+  --pd-muted: #1a1a24;
+  --pd-muted-foreground: #94a3b8;
+
+  /* 边框 */
+  --pd-border: #1e1e2e;
+  --pd-border-light: #2d2d3d;
+
+  /* 输入 */
+  --pd-input: #1a1a24;
+  --pd-ring: #22c55e;
+
+  /* 联赛色 */
+  --pd-csl: #e53935;
+  --pd-eliteserien: #00c781;
+  --pd-kleague: #3b82f6;
+  --pd-allsvenskan: #fbbf24;
+
+  /* 圆角 */
+  --pd-radius-sm: 4px;
+  --pd-radius-md: 8px;
+  --pd-radius-lg: 12px;
+  --pd-radius-xl: 16px;
+
+  /* 字体 */
+  --pd-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  --pd-font-mono: "SF Mono", "Fira Code", Consolas, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--pd-font-sans);
+  background: var(--pd-background);
+  color: var(--pd-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 背景渐变纹理 - 深色版 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at top left, rgba(34, 197, 94, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom center, rgba(249, 115, 22, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 网格线纹理 - 深色版 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}

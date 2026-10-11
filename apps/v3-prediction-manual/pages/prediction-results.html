@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预测 vs 实际结果对比 | 8.14-17</title>
+    <style id="theme-vars">
+/* V3.0 预测系统 - 产品说明书 Brand CSS */
+/* 专业科技文档风格 · 深色主题 */
+
+:root {
+  /* --- Brand Primary --- */
+  --v3-brand: #059669;
+  --v3-brand-50: #ecfdf5;
+  --v3-brand-100: #d1fae5;
+  --v3-brand-200: #a7f3d0;
+  --v3-brand-300: #6ee7b7;
+  --v3-brand-400: #34d399;
+  --v3-brand-500: #10b981;
+  --v3-brand-600: #059669;
+  --v3-brand-700: #047857;
+  --v3-brand-800: #065f46;
+  --v3-brand-900: #064e3b;
+  --v3-brand-ink: #ffffff;
+
+  /* --- Surface / Background --- */
+  --v3-bg: #0a0a0f;
+  --v3-surface: #111118;
+  --v3-surface-2: #18181f;
+  --v3-surface-3: #1f1f28;
+
+  /* --- Ink --- */
+  --v3-ink: #e8e8ed;
+  --v3-ink-2: #9ca3af;
+  --v3-ink-3: #6b7280;
+
+  /* --- Line / Border --- */
+  --v3-line: #27272a;
+  --v3-line-2: #3f3f46;
+
+  /* --- Radius --- */
+  --v3-radius-sm: 4px;
+  --v3-radius-md: 8px;
+  --v3-radius-lg: 16px;
+  --v3-radius-full: 9999px;
+
+  /* --- Shadow --- */
+  --v3-shadow-1: 0 1px 2px rgba(0,0,0,.3);
+  --v3-shadow-2: 0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* --- State --- */
+  --v3-state-success: #10b981;
+  --v3-state-warning: #f59e0b;
+  --v3-state-error: #ef4444;
+  --v3-state-info: #3b82f6;
+
+  /* --- Semantic Aliases --- */
+  --v3-background: var(--v3-bg);
+  --v3-foreground: var(--v3-ink);
+  --v3-card: var(--v3-surface);
+  --v3-card-foreground: var(--v3-ink);
+  --v3-popover: var(--v3-surface-2);
+  --v3-popover-foreground: var(--v3-ink);
+  --v3-primary: var(--v3-brand-500);
+  --v3-primary-foreground: var(--v3-brand-ink);
+  --v3-muted: var(--v3-surface-2);
+  --v3-muted-foreground: var(--v3-ink-2);
+  --v3-border: var(--v3-line);
+  --v3-input: var(--v3-surface-2);
+  --v3-ring: var(--v3-brand-500);
+  --v3-radius: var(--v3-radius-md);
+}
+
+/* --- Typography --- */
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v3-ink);
+  background: var(--v3-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: clamp(28px, 3.5vw, 48px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+
+.caption { font-size: 13px; line-height: 1.5; color: var(--v3-ink-3); }
+.mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+
+/* --- Layout --- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 768px) { .container { padding: 0 16px; } }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--v3-bg); }
+::-webkit-scrollbar-thumb { background: var(--v3-line-2); border-radius: 3px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--v3-background);
+    --color-foreground: var(--v3-foreground);
+    --color-card: var(--v3-card);
+    --color-card-foreground: var(--v3-card-foreground);
+    --color-popover: var(--v3-popover);
+    --color-popover-foreground: var(--v3-popover-foreground);
+    --color-primary: var(--v3-primary);
+    --color-primary-foreground: var(--v3-primary-foreground);
+    --color-muted: var(--v3-muted);
+    --color-muted-foreground: var(--v3-muted-foreground);
+    --color-border: var(--v3-border);
+    --color-input: var(--v3-input);
+    --color-ring: var(--v3-ring);
+    --radius-sm: var(--v3-radius-sm);
+    --radius-md: var(--v3-radius-md);
+    --radius-lg: var(--v3-radius-lg);
+  }
+  @layer base {
+    body { background: var(--v3-background); color: var(--v3-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--v3-background); }
+      .text-background { color: var(--v3-background); }
+      .border-background { border-color: var(--v3-background); }
+      .ring-background { --tw-ring-color: var(--v3-background); }
+      .bg-foreground { background-color: var(--v3-foreground); }
+      .text-foreground { color: var(--v3-foreground); }
+      .border-foreground { border-color: var(--v3-foreground); }
+      .ring-foreground { --tw-ring-color: var(--v3-foreground); }
+      .bg-card { background-color: var(--v3-card); }
+      .text-card { color: var(--v3-card); }
+      .border-card { border-color: var(--v3-card); }
+      .ring-card { --tw-ring-color: var(--v3-card); }
+      .bg-card-foreground { background-color: var(--v3-card-foreground); }
+      .text-card-foreground { color: var(--v3-card-foreground); }
+      .border-card-foreground { border-color: var(--v3-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--v3-card-foreground); }
+      .bg-popover { background-color: var(--v3-popover); }
+      .text-popover { color: var(--v3-popover); }
+      .border-popover { border-color: var(--v3-popover); }
+      .ring-popover { --tw-ring-color: var(--v3-popover); }
+      .bg-popover-foreground { background-color: var(--v3-popover-foreground); }
+      .text-popover-foreground { color: var(--v3-popover-foreground); }
+      .border-popover-foreground { border-color: var(--v3-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--v3-popover-foreground); }
+      .bg-primary { background-color: var(--v3-primary); }
+      .text-primary { color: var(--v3-primary); }
+      .border-primary { border-color: var(--v3-primary); }
+      .ring-primary { --tw-ring-color: var(--v3-primary); }
+      .bg-primary-foreground { background-color: var(--v3-primary-foreground); }
+      .text-primary-foreground { color: var(--v3-primary-foreground); }
+      .border-primary-foreground { border-color: var(--v3-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--v3-primary-foreground); }
+      .bg-muted { background-color: var(--v3-muted); }
+      .text-muted { color: var(--v3-muted); }
+      .border-muted { border-color: var(--v3-muted); }
+      .ring-muted { --tw-ring-color: var(--v3-muted); }
+      .bg-muted-foreground { background-color: var(--v3-muted-foreground); }
+      .text-muted-foreground { color: var(--v3-muted-foreground); }
+      .border-muted-foreground { border-color: var(--v3-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--v3-muted-foreground); }
+      .bg-border { background-color: var(--v3-border); }
+      .text-border { color: var(--v3-border); }
+      .border-border { border-color: var(--v3-border); }
+      .ring-border { --tw-ring-color: var(--v3-border); }
+      .bg-input { background-color: var(--v3-input); }
+      .text-input { color: var(--v3-input); }
+      .border-input { border-color: var(--v3-input); }
+      .ring-input { --tw-ring-color: var(--v3-input); }
+      .bg-ring { background-color: var(--v3-ring); }
+      .text-ring { color: var(--v3-ring); }
+      .border-ring { border-color: var(--v3-ring); }
+      .ring-ring { --tw-ring-color: var(--v3-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main class="container py-8 md:py-12">
+        <!-- ===== Header ===== -->
+        <header class="mb-10">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
+                    预测回溯
+                </span>
+                <span class="text-xs text-muted-foreground">2026年8月14日-17日</span>
+            </div>
+            <h1 class="text-foreground mb-3">预测 vs 实际结果对比分析</h1>
+            <p class="text-muted-foreground text-lg max-w-2xl">三大联赛（英冠、西甲、巴甲）22场预测完整回溯，逐场对比预测方向、比分与实际赛果。</p>
+        </header>
+
+        <!-- ===== Overall Summary Cards ===== -->
+        <section class="mb-10">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="layers" class="w-5 h-5 text-primary"></i>
+                总体概览
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1: 总场次 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <i data-lucide="calendar-check" class="w-5 h-5 text-primary"></i>
+                        </div>
+                        <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">总场次</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-foreground">22</span>
+                        <span class="text-sm text-muted-foreground">场</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground mt-2">21场已赛 · 1场待定</p>
+                </div>
+
+                <!-- Card 2: 方向正确 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                            <i data-lucide="target" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">方向正确</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-foreground">8/21</span>
+                        <span class="text-sm text-amber-400 font-semibold">38.1%</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground mt-2">8场方向正确 · 13场错误</p>
+                </div>
+
+                <!-- Card 3: 精确比分 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-9 h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-yellow-400"></i>
+                        </div>
+                        <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">精确比分</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-foreground">1</span>
+                        <span class="text-sm text-yellow-400 font-semibold">场</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground mt-2">Vitoria 1-0 Botafogo</p>
+                </div>
+
+                <!-- Card 4: 综合评分 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-9 h-9 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                            <i data-lucide="award" class="w-5 h-5 text-orange-400"></i>
+                        </div>
+                        <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">综合评分</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-orange-400">C+</span>
+                        <span class="text-sm text-muted-foreground">需优化</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground mt-2">方向准确率偏低 · 置信度校准不足</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== League Accuracy Cards ===== -->
+        <section class="mb-10">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-5 h-5 text-primary"></i>
+                各联赛准确率
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Championship -->
+                <div class="bg-card border border-red-500/30 rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-foreground">Championship 英冠</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                            <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                            红色警告
+                        </span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mb-2">
+                        <span class="text-4xl font-bold text-red-400">1/9</span>
+                    </div>
+                    <div class="w-full bg-muted rounded-full h-2 mb-3">
+                        <div class="bg-red-500 h-2 rounded-full" style="width: 11.1%"></div>
+                    </div>
+                    <p class="text-xs text-muted-foreground">准确率 <span class="text-red-400 font-semibold">11.1%</span> · 9场中仅1场方向正确</p>
+                </div>
+
+                <!-- La Liga -->
+                <div class="bg-card border border-green-500/30 rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-foreground">La Liga 西甲</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i>
+                            绿色优秀
+                        </span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mb-2">
+                        <span class="text-4xl font-bold text-green-400">3/4</span>
+                    </div>
+                    <div class="w-full bg-muted rounded-full h-2 mb-3">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <p class="text-xs text-muted-foreground">准确率 <span class="text-green-400 font-semibold">75.0%</span> · 4场中3场方向正确</p>
+                </div>
+
+                <!-- Brasileirao -->
+                <div class="bg-card border border-yellow-500/30 rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-yellow-500"></div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-foreground">Brasileirao 巴甲</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                            <i data-lucide="minus-circle" class="w-3 h-3"></i>
+                            黄色一般
+                        </span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mb-2">
+                        <span class="text-4xl font-bold text-yellow-400">4/8</span>
+                    </div>
+                    <div class="w-full bg-muted rounded-full h-2 mb-3">
+                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 50%"></div>
+                    </div>
+                    <p class="text-xs text-muted-foreground">准确率 <span class="text-yellow-400 font-semibold">50.0%</span> · 8场已赛中4场方向正确 · 1场待定</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Detailed Match-by-Match Tables ===== -->
+        <section class="mb-10">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="list-checks" class="w-5 h-5 text-primary"></i>
+                逐场对比详情
+            </h2>
+
+            <!-- Championship Table -->
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20">
+                        <i data-lucide="flag" class="w-3 h-3"></i>
+                        Championship 英冠
+                    </span>
+                    <span class="text-xs text-muted-foreground">准确率: 1/9 (11.1%)</span>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-border">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
+                                <th class="text-left px-4 py-3 font-medium">日期</th>
+                                <th class="text-left px-4 py-3 font-medium">主队</th>
+                                <th class="text-center px-4 py-3 font-medium">比分</th>
+                                <th class="text-left px-4 py-3 font-medium">客队</th>
+                                <th class="text-left px-4 py-3 font-medium">预测方向</th>
+                                <th class="text-center px-4 py-3 font-medium">预测比分</th>
+                                <th class="text-center px-4 py-3 font-medium">置信度</th>
+                                <th class="text-center px-4 py-3 font-medium">结果</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border">
+                            <!-- 1. Wolves vs Blackburn -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/14</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Wolves</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">2-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Blackburn</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">0-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">75%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 2. Norwich vs West Brom -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/14</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Norwich</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">West Brom</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">71%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 3. Bristol City vs Millwall (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Bristol City</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">0-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Millwall</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">0-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">74%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 4. Stoke vs Swansea -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Stoke</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Swansea</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">70%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 5. Charlton vs Derby -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Charlton</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">2-1</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Derby</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">0-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">74%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 6. Portsmouth vs QPR -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Portsmouth</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-3</td>
+                                <td class="px-4 py-3 text-foreground font-medium">QPR</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">70%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 7. Sheffield Utd vs Birmingham -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Sheffield Utd</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">0-0</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Birmingham</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">75%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 8. Watford vs Southampton -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Watford</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">2-1</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Southampton</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-2</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">72%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 9. Burnley vs West Ham -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Burnley</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">2-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">West Ham</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">0-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">71%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- La Liga Table -->
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20">
+                        <i data-lucide="flag" class="w-3 h-3"></i>
+                        La Liga 西甲
+                    </span>
+                    <span class="text-xs text-muted-foreground">准确率: 3/4 (75.0%)</span>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-border">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
+                                <th class="text-left px-4 py-3 font-medium">日期</th>
+                                <th class="text-left px-4 py-3 font-medium">主队</th>
+                                <th class="text-center px-4 py-3 font-medium">比分</th>
+                                <th class="text-left px-4 py-3 font-medium">客队</th>
+                                <th class="text-left px-4 py-3 font-medium">预测方向</th>
+                                <th class="text-center px-4 py-3 font-medium">预测比分</th>
+                                <th class="text-center px-4 py-3 font-medium">置信度</th>
+                                <th class="text-center px-4 py-3 font-medium">结果</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border">
+                            <!-- 1. Alaves vs Getafe -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Alaves</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-0</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Getafe</td>
+                                <td class="px-4 py-3 text-muted-foreground">平局</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">0-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">72%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                    <p class="text-[10px] text-muted-foreground mt-0.5">Getafe 10人应战</p>
+                                </td>
+                            </tr>
+                            <!-- 2. Sevilla vs Rayo (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Sevilla</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">2-1</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Rayo</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">72%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                    <p class="text-[10px] text-muted-foreground mt-0.5">补时点球绝杀</p>
+                                </td>
+                            </tr>
+                            <!-- 3. Espanyol vs Levante (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Espanyol</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-0</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Levante</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">71%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 4. Celta Vigo vs Osasuna (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Celta Vigo</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Osasuna</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">72%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Brasileirao Table -->
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                        <i data-lucide="flag" class="w-3 h-3"></i>
+                        Brasileirao 巴甲
+                    </span>
+                    <span class="text-xs text-muted-foreground">准确率: 4/8 (50.0%) · 1场待定</span>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-border">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
+                                <th class="text-left px-4 py-3 font-medium">日期</th>
+                                <th class="text-left px-4 py-3 font-medium">主队</th>
+                                <th class="text-center px-4 py-3 font-medium">比分</th>
+                                <th class="text-left px-4 py-3 font-medium">客队</th>
+                                <th class="text-left px-4 py-3 font-medium">预测方向</th>
+                                <th class="text-center px-4 py-3 font-medium">预测比分</th>
+                                <th class="text-center px-4 py-3 font-medium">置信度</th>
+                                <th class="text-center px-4 py-3 font-medium">结果</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border">
+                            <!-- 1. Fluminense vs Palmeiras (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Fluminense</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-2</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Palmeiras</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">74%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                    <p class="text-[10px] text-muted-foreground mt-0.5">补时逆转</p>
+                                </td>
+                            </tr>
+                            <!-- 2. Athletico PR vs Bragantino -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/15</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Athletico PR</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-1</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Bragantino</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">2-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">80%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 3. Sao Paulo vs Coritiba -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Sao Paulo</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-1</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Coritiba</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">74%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 4. Chapecoense vs Bahia -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Chapecoense</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-3</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Bahia</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-2</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">70%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 5. Atletico Mineiro vs Gremio (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Atletico Mineiro</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">3-0</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Gremio</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">73%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 6. Vasco da Gama vs Santos -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-red-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Vasco da Gama</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">0-3</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Santos</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">2-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">73%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400">
+                                        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 错误
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 7. Mirassol vs Flamengo (CORRECT) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-green-500">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/16</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Mirassol</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-foreground">1-5</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Flamengo</td>
+                                <td class="px-4 py-3 text-muted-foreground">客胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">1-2</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">72%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-green-400">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 方向正确
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 8. Vitoria vs Botafogo (EXACT MATCH!) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-yellow-400 bg-yellow-400/5">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/17</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Vitoria</td>
+                                <td class="px-4 py-3 text-center font-mono font-bold text-yellow-400">1-0</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Botafogo</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-yellow-400 font-bold">1-0</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">73%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-yellow-400">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 精确命中!
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- 9. Internacional vs Remo (PENDING) -->
+                            <tr class="hover:bg-muted/50 transition-colors border-l-2 border-l-yellow-500 bg-yellow-500/5">
+                                <td class="px-4 py-3 text-muted-foreground whitespace-nowrap">8/18</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Internacional</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">—</td>
+                                <td class="px-4 py-3 text-foreground font-medium">Remo</td>
+                                <td class="px-4 py-3 text-muted-foreground">主胜</td>
+                                <td class="px-4 py-3 text-center font-mono text-muted-foreground">2-1</td>
+                                <td class="px-4 py-3 text-center text-muted-foreground">75%</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-yellow-400">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5"></i> 待定
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Prediction Direction Distribution ===== -->
+        <section class="mb-10">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="pie-chart" class="w-5 h-5 text-primary"></i>
+                预测方向分布 vs 实际结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- 预测方向 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <h3 class="text-sm font-semibold text-foreground mb-4">预测方向分布 (22场)</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">主胜预测</span>
+                                <span class="text-foreground font-semibold">14场 (63.6%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 63.6%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">客胜预测</span>
+                                <span class="text-foreground font-semibold">7场 (31.8%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 31.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">平局预测</span>
+                                <span class="text-foreground font-semibold">1场 (4.5%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-gray-500 h-2 rounded-full" style="width: 4.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实际结果 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <h3 class="text-sm font-semibold text-foreground mb-4">实际结果分布 (21场已赛)</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">主胜实际</span>
+                                <span class="text-foreground font-semibold">9场 (42.9%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 42.9%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">客胜实际</span>
+                                <span class="text-foreground font-semibold">6场 (28.6%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 28.6%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-muted-foreground">平局实际</span>
+                                <span class="text-foreground font-semibold">6场 (28.6%)</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-2">
+                                <div class="bg-gray-500 h-2 rounded-full" style="width: 28.6%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Key Insights Section ===== -->
+        <section class="mb-10">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="lightbulb" class="w-5 h-5 text-primary"></i>
+                关键洞察
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- 1. 模型偏差 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                            <i data-lucide="trending-down" class="w-4 h-4 text-red-400"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">模型偏差</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground">过度预测<span class="text-blue-400 font-semibold">主胜</span> (63.6% vs 实际42.9%)</p>
+                        <p class="text-muted-foreground">严重低估<span class="text-gray-400 font-semibold">平局</span> (4.5% vs 实际28.6%)</p>
+                        <p class="text-muted-foreground">客胜预测偏差较小 (31.8% vs 28.6%)</p>
+                    </div>
+                </div>
+
+                <!-- 2. 联赛差异 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <i data-lucide="globe" class="w-4 h-4 text-green-400"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">联赛差异</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground"><span class="text-green-400 font-semibold">西甲</span> 预测表现最佳 (75%)</p>
+                        <p class="text-muted-foreground"><span class="text-red-400 font-semibold">英冠</span> 表现最差 (11.1%)</p>
+                        <p class="text-muted-foreground">英冠模型需重新校准，几乎完全失效</p>
+                    </div>
+                </div>
+
+                <!-- 3. 置信度问题 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 text-orange-400"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">置信度问题</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground">高置信度(≥75%)场次<span class="text-orange-400 font-semibold">全部错误</span></p>
+                        <p class="text-muted-foreground">共5场高置信度预测，0场正确</p>
+                        <p class="text-muted-foreground">置信度与准确率无正相关</p>
+                    </div>
+                </div>
+
+                <!-- 4. 比分预测 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                            <i data-lucide="hash" class="w-4 h-4 text-yellow-400"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">比分预测</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground">仅<span class="text-yellow-400 font-semibold">1场</span>精确命中 (Vitoria 1-0 Botafogo)</p>
+                        <p class="text-muted-foreground">精确比分命中率 4.8%</p>
+                        <p class="text-muted-foreground">比分预测能力弱，方向预测有一定参考价值</p>
+                    </div>
+                </div>
+
+                <!-- 5. 客胜预测 -->
+                <div class="bg-card border border-border rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-purple-400"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">客胜预测</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground">客胜预测7场仅<span class="text-red-400 font-semibold">2场</span>正确 (28.6%)</p>
+                        <p class="text-muted-foreground">客场优势被高估</p>
+                        <p class="text-muted-foreground">英冠客胜预测全部错误 (0/5)</p>
+                    </div>
+                </div>
+
+                <!-- 6. 改进建议 -->
+                <div class="bg-card border border-primary/30 rounded-xl p-5 bg-primary/5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                            <i data-lucide="wrench" class="w-4 h-4 text-primary"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-foreground">改进建议</h3>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <p class="text-muted-foreground">增加<span class="text-primary font-semibold">平局概率</span>权重</p>
+                        <p class="text-muted-foreground">降低<span class="text-primary font-semibold">主胜系统性</span>偏差</p>
+                        <p class="text-muted-foreground">引入<span class="text-primary font-semibold">红牌/伤病</span>实时变量</p>
+                        <p class="text-muted-foreground">英冠模型需<span class="text-primary font-semibold">重新校准</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Methodology Footer ===== -->
+        <section class="border-t border-border pt-8">
+            <h2 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="info" class="w-5 h-5 text-primary"></i>
+                分析方法说明
+            </h2>
+            <div class="bg-card border border-border rounded-xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h3 class="font-semibold text-foreground mb-2">预测模型</h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            基于V3.0预测系统，综合历史交锋数据、近期状态、主客场表现、阵容实力等多维度特征进行机器学习建模。预测输出包括胜平负方向、具体比分及置信度评分。
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground mb-2">评判标准</h3>
+                        <ul class="text-muted-foreground space-y-1.5 leading-relaxed">
+                            <li><span class="text-green-400 font-medium">方向正确</span>：预测的胜平负方向与实际结果一致</li>
+                            <li><span class="text-yellow-400 font-medium">精确命中</span>：预测比分与实际比分完全一致</li>
+                            <li><span class="text-red-400 font-medium">错误</span>：预测方向与实际结果不符</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground mb-2">数据来源</h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            比赛数据来源于官方赛果记录。预测时间点为各场比赛开赛前。部分比赛存在红牌、伤病等突发因素，可能影响预测准确性。
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground mb-2">免责声明</h3>
+                        <p class="text-muted-foreground leading-relaxed">
+                            本分析仅用于模型性能评估与优化参考，不构成任何投注建议。足球比赛结果受多种不可控因素影响，预测准确率存在天然上限。
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-5 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                    <span>V3.0 预测系统 · 回溯分析报告</span>
+                    <span>生成时间: 2026年8月17日</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

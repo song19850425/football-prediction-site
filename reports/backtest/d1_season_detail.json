@@ -1,0 +1,635 @@
+{
+  "by_season": [
+    {
+      "season": "1617",
+      "label": "16/17",
+      "matches": 306,
+      "total_goals": 877,
+      "avg_goals": 2.87,
+      "avg_home": 1.66,
+      "avg_away": 1.21,
+      "home_win_pct": 49.0,
+      "draw_pct": 24.2,
+      "away_win_pct": 26.8,
+      "over15_pct": 78.4,
+      "over25_pct": 54.9,
+      "over35_pct": 29.1,
+      "btts_pct": 54.9,
+      "clean_sheet_pct": 45.1,
+      "avg_home_shots": 13.5,
+      "avg_away_shots": 11.4,
+      "avg_shots": 24.9,
+      "avg_sot": 8.8,
+      "avg_corners": 9.1,
+      "avg_fouls": 28.6,
+      "avg_yellows": 3.7,
+      "cols": 65,
+      "date_min": "2016-08-26",
+      "date_max": "2017-05-20"
+    },
+    {
+      "season": "1718",
+      "label": "17/18",
+      "matches": 306,
+      "total_goals": 855,
+      "avg_goals": 2.79,
+      "avg_home": 1.6,
+      "avg_away": 1.19,
+      "home_win_pct": 45.4,
+      "draw_pct": 27.1,
+      "away_win_pct": 27.5,
+      "over15_pct": 78.8,
+      "over25_pct": 52.0,
+      "over35_pct": 30.7,
+      "btts_pct": 54.9,
+      "clean_sheet_pct": 45.1,
+      "avg_home_shots": 14.0,
+      "avg_away_shots": 11.2,
+      "avg_shots": 25.2,
+      "avg_sot": 9.0,
+      "avg_corners": 9.4,
+      "avg_fouls": 26.7,
+      "avg_yellows": 3.4,
+      "cols": 65,
+      "date_min": "2017-08-18",
+      "date_max": "2018-05-12"
+    },
+    {
+      "season": "1819",
+      "label": "18/19",
+      "matches": 306,
+      "total_goals": 973,
+      "avg_goals": 3.18,
+      "avg_home": 1.79,
+      "avg_away": 1.39,
+      "home_win_pct": 45.1,
+      "draw_pct": 23.9,
+      "away_win_pct": 31.0,
+      "over15_pct": 84.6,
+      "over25_pct": 62.4,
+      "over35_pct": 39.9,
+      "btts_pct": 59.5,
+      "clean_sheet_pct": 40.5,
+      "avg_home_shots": 14.6,
+      "avg_away_shots": 12.3,
+      "avg_shots": 26.8,
+      "avg_sot": 9.7,
+      "avg_corners": 10.1,
+      "avg_fouls": 22.4,
+      "avg_yellows": 3.5,
+      "cols": 62,
+      "date_min": "2018-08-24",
+      "date_max": "2019-05-18"
+    },
+    {
+      "season": "1920",
+      "label": "19/20",
+      "matches": 306,
+      "total_goals": 982,
+      "avg_goals": 3.21,
+      "avg_home": 1.66,
+      "avg_away": 1.55,
+      "home_win_pct": 40.2,
+      "draw_pct": 22.2,
+      "away_win_pct": 37.6,
+      "over15_pct": 85.6,
+      "over25_pct": 65.0,
+      "over35_pct": 41.5,
+      "btts_pct": 58.2,
+      "clean_sheet_pct": 41.8,
+      "avg_home_shots": 14.3,
+      "avg_away_shots": 12.2,
+      "avg_shots": 26.5,
+      "avg_sot": 9.6,
+      "avg_corners": 10.1,
+      "avg_fouls": 23.4,
+      "avg_yellows": 4.0,
+      "cols": 106,
+      "date_min": "2019-08-16",
+      "date_max": "2020-06-27"
+    },
+    {
+      "season": "2021",
+      "label": "20/21",
+      "matches": 306,
+      "total_goals": 928,
+      "avg_goals": 3.03,
+      "avg_home": 1.68,
+      "avg_away": 1.36,
+      "home_win_pct": 42.2,
+      "draw_pct": 26.5,
+      "away_win_pct": 31.4,
+      "over15_pct": 82.0,
+      "over25_pct": 58.8,
+      "over35_pct": 36.6,
+      "btts_pct": 60.1,
+      "clean_sheet_pct": 39.9,
+      "avg_home_shots": 13.0,
+      "avg_away_shots": 11.7,
+      "avg_shots": 24.7,
+      "avg_sot": 9.3,
+      "avg_corners": 9.2,
+      "avg_fouls": 24.7,
+      "avg_yellows": 3.6,
+      "cols": 106,
+      "date_min": "2020-09-18",
+      "date_max": "2021-05-22"
+    },
+    {
+      "season": "2122",
+      "label": "21/22",
+      "matches": 306,
+      "total_goals": 954,
+      "avg_goals": 3.12,
+      "avg_home": 1.76,
+      "avg_away": 1.36,
+      "home_win_pct": 46.7,
+      "draw_pct": 23.9,
+      "away_win_pct": 29.4,
+      "over15_pct": 83.3,
+      "over25_pct": 58.5,
+      "over35_pct": 39.2,
+      "btts_pct": 60.8,
+      "clean_sheet_pct": 39.2,
+      "avg_home_shots": 14.1,
+      "avg_away_shots": 11.6,
+      "avg_shots": 25.7,
+      "avg_sot": 9.5,
+      "avg_corners": 9.7,
+      "avg_fouls": 23.8,
+      "avg_yellows": 3.5,
+      "cols": 106,
+      "date_min": "2021-08-13",
+      "date_max": "2022-05-14"
+    },
+    {
+      "season": "2223",
+      "label": "22/23",
+      "matches": 306,
+      "total_goals": 971,
+      "avg_goals": 3.17,
+      "avg_home": 1.86,
+      "avg_away": 1.32,
+      "home_win_pct": 47.4,
+      "draw_pct": 24.5,
+      "away_win_pct": 28.1,
+      "over15_pct": 84.6,
+      "over25_pct": 60.5,
+      "over35_pct": 37.9,
+      "btts_pct": 59.2,
+      "clean_sheet_pct": 40.8,
+      "avg_home_shots": 14.0,
+      "avg_away_shots": 11.3,
+      "avg_shots": 25.3,
+      "avg_sot": 9.6,
+      "avg_corners": 9.7,
+      "avg_fouls": 23.7,
+      "avg_yellows": 4.1,
+      "cols": 106,
+      "date_min": "2022-08-05",
+      "date_max": "2023-05-27"
+    },
+    {
+      "season": "2324",
+      "label": "23/24",
+      "matches": 306,
+      "total_goals": 985,
+      "avg_goals": 3.22,
+      "avg_home": 1.81,
+      "avg_away": 1.41,
+      "home_win_pct": 43.8,
+      "draw_pct": 26.5,
+      "away_win_pct": 29.7,
+      "over15_pct": 85.3,
+      "over25_pct": 62.4,
+      "over35_pct": 41.2,
+      "btts_pct": 61.8,
+      "clean_sheet_pct": 38.2,
+      "avg_home_shots": 15.3,
+      "avg_away_shots": 11.9,
+      "avg_shots": 27.2,
+      "avg_sot": 9.9,
+      "avg_corners": 9.9,
+      "avg_fouls": 22.4,
+      "avg_yellows": 4.1,
+      "cols": 106,
+      "date_min": "2023-08-18",
+      "date_max": "2024-05-18"
+    },
+    {
+      "season": "2425",
+      "label": "24/25",
+      "matches": 306,
+      "total_goals": 959,
+      "avg_goals": 3.13,
+      "avg_home": 1.63,
+      "avg_away": 1.5,
+      "home_win_pct": 38.6,
+      "draw_pct": 25.2,
+      "away_win_pct": 36.3,
+      "over15_pct": 80.7,
+      "over25_pct": 59.8,
+      "over35_pct": 42.8,
+      "btts_pct": 56.9,
+      "clean_sheet_pct": 43.1,
+      "avg_home_shots": 14.2,
+      "avg_away_shots": 11.6,
+      "avg_shots": 25.8,
+      "avg_sot": 9.2,
+      "avg_corners": 9.6,
+      "avg_fouls": 21.4,
+      "avg_yellows": 3.9,
+      "cols": 120,
+      "date_min": "2024-08-23",
+      "date_max": "2025-05-17"
+    },
+    {
+      "season": "2526",
+      "label": "25/26",
+      "matches": 306,
+      "total_goals": 990,
+      "avg_goals": 3.24,
+      "avg_home": 1.78,
+      "avg_away": 1.46,
+      "home_win_pct": 43.8,
+      "draw_pct": 24.5,
+      "away_win_pct": 31.7,
+      "over15_pct": 83.7,
+      "over25_pct": 63.7,
+      "over35_pct": 42.8,
+      "btts_pct": 61.8,
+      "clean_sheet_pct": 38.2,
+      "avg_home_shots": 14.6,
+      "avg_away_shots": 11.9,
+      "avg_shots": 26.5,
+      "avg_sot": 9.5,
+      "avg_corners": 9.8,
+      "avg_fouls": 20.9,
+      "avg_yellows": 3.8,
+      "cols": 132,
+      "date_min": "2025-08-22",
+      "date_max": "2026-05-16"
+    }
+  ],
+  "overall": {
+    "matches": 3060,
+    "seasons": 10,
+    "total_goals": 9474,
+    "avg_goals": 3.1,
+    "avg_home": 1.72,
+    "avg_away": 1.37,
+    "home_win_pct": 44.2,
+    "draw_pct": 24.8,
+    "away_win_pct": 30.9,
+    "over25_pct": 59.8,
+    "btts_pct": 58.8,
+    "avg_shots": 25.9,
+    "avg_sot": 9.4,
+    "avg_corners": 9.7,
+    "avg_fouls": 23.8,
+    "avg_yellows": 3.8,
+    "goals_per_shot": 0.1198,
+    "sot_rate": 36.4,
+    "home_goals_per_shot": 0.1217,
+    "away_goals_per_shot": 0.1174
+  },
+  "extremes": {
+    "highest_scoring_season": {
+      "label": "25/26",
+      "avg_goals": 3.24,
+      "avg_home": 1.78,
+      "avg_away": 1.46
+    },
+    "lowest_scoring_season": {
+      "label": "17/18",
+      "avg_goals": 2.79,
+      "avg_home": 1.6,
+      "avg_away": 1.19
+    },
+    "strongest_home_advantage": {
+      "label": "16/17",
+      "home_win_pct": 49.0,
+      "away_win_pct": 26.8
+    },
+    "weakest_home_advantage": {
+      "label": "24/25",
+      "home_win_pct": 38.6,
+      "away_win_pct": 36.3
+    }
+  },
+  "top_scores": [
+    {
+      "score": "1-1",
+      "count": 368,
+      "pct": 12.03
+    },
+    {
+      "score": "2-1",
+      "count": 264,
+      "pct": 8.63
+    },
+    {
+      "score": "1-0",
+      "count": 202,
+      "pct": 6.6
+    },
+    {
+      "score": "2-0",
+      "count": 199,
+      "pct": 6.5
+    },
+    {
+      "score": "1-2",
+      "count": 190,
+      "pct": 6.21
+    },
+    {
+      "score": "2-2",
+      "count": 172,
+      "pct": 5.62
+    },
+    {
+      "score": "3-1",
+      "count": 165,
+      "pct": 5.39
+    },
+    {
+      "score": "0-0",
+      "count": 165,
+      "pct": 5.39
+    },
+    {
+      "score": "0-1",
+      "count": 162,
+      "pct": 5.29
+    },
+    {
+      "score": "0-2",
+      "count": 134,
+      "pct": 4.38
+    },
+    {
+      "score": "3-0",
+      "count": 126,
+      "pct": 4.12
+    },
+    {
+      "score": "1-3",
+      "count": 115,
+      "pct": 3.76
+    }
+  ],
+  "goal_dist": [
+    {
+      "goals": 0,
+      "count": 165,
+      "pct": 5.39
+    },
+    {
+      "goals": 1,
+      "count": 364,
+      "pct": 11.9
+    },
+    {
+      "goals": 2,
+      "count": 701,
+      "pct": 22.91
+    },
+    {
+      "goals": 3,
+      "count": 662,
+      "pct": 21.63
+    },
+    {
+      "goals": 4,
+      "count": 567,
+      "pct": 18.53
+    },
+    {
+      "goals": 5,
+      "count": 304,
+      "pct": 9.93
+    },
+    {
+      "goals": 6,
+      "count": 186,
+      "pct": 6.08
+    },
+    {
+      "goals": 7,
+      "count": 79,
+      "pct": 2.58
+    },
+    {
+      "goals": 8,
+      "count": 24,
+      "pct": 0.78
+    }
+  ],
+  "big_scores": {
+    "seven_plus": 111,
+    "seven_plus_pct": 3.63,
+    "six_plus": 297,
+    "six_plus_pct": 9.71,
+    "max_goals": 10,
+    "goalless_pct": 5.39
+  },
+  "ht_ft": {
+    "ht_home_lead_matches": 1090,
+    "ht_home_lead_win_pct": 78.4,
+    "ht_home_lead_draw_pct": 15.0,
+    "ht_home_lead_loss_pct": 6.5,
+    "ht_draw_matches": 1150,
+    "ht_draw_ft_draw_pct": 39.0,
+    "ht_away_lead_matches": 819,
+    "ht_away_lead_win_pct": 71.2,
+    "comeback_pct": 5.2
+  },
+  "league_context": [
+    {
+      "code": "D1",
+      "name": "德甲",
+      "matches": 3060,
+      "avg_goals": 3.1,
+      "home_win_pct": 44.2,
+      "draw_pct": 24.8,
+      "away_win_pct": 30.9,
+      "over25_pct": 59.8,
+      "btts_pct": 58.8,
+      "avg_shots": 25.9
+    },
+    {
+      "code": "E0",
+      "name": "英超",
+      "matches": 3800,
+      "avg_goals": 2.83,
+      "home_win_pct": 44.6,
+      "draw_pct": 23.2,
+      "away_win_pct": 32.1,
+      "over25_pct": 54.4,
+      "btts_pct": 52.8,
+      "avg_shots": 25.3
+    },
+    {
+      "code": "I1",
+      "name": "意甲",
+      "matches": 3800,
+      "avg_goals": 2.74,
+      "home_win_pct": 41.9,
+      "draw_pct": 25.5,
+      "away_win_pct": 32.5,
+      "over25_pct": 52.6,
+      "btts_pct": 53.9,
+      "avg_shots": 24.1
+    },
+    {
+      "code": "F1",
+      "name": "法甲",
+      "matches": 3477,
+      "avg_goals": 2.73,
+      "home_win_pct": 43.9,
+      "draw_pct": 25.2,
+      "away_win_pct": 30.8,
+      "over25_pct": 51.8,
+      "btts_pct": 52.4,
+      "avg_shots": 24.5
+    },
+    {
+      "code": "SP1",
+      "name": "西甲",
+      "matches": 3800,
+      "avg_goals": 2.62,
+      "home_win_pct": 45.5,
+      "draw_pct": 26.2,
+      "away_win_pct": 28.3,
+      "over25_pct": 48.0,
+      "btts_pct": 51.5,
+      "avg_shots": 23.8
+    }
+  ],
+  "d1_rank_avg_goals": 1,
+  "odds_coverage": [
+    {
+      "label": "16/17",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 0.0,
+      "AvgH": 0.0,
+      "B365CH": 0.0,
+      "B365>2.5": 0.0,
+      "P>2.5": 0.0
+    },
+    {
+      "label": "17/18",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 0.0,
+      "AvgH": 0.0,
+      "B365CH": 0.0,
+      "B365>2.5": 0.0,
+      "P>2.5": 0.0
+    },
+    {
+      "label": "18/19",
+      "B365H": 100.0,
+      "PSH": 99.7,
+      "MaxH": 0.0,
+      "AvgH": 0.0,
+      "B365CH": 0.0,
+      "B365>2.5": 0.0,
+      "P>2.5": 0.0
+    },
+    {
+      "label": "19/20",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 100.0
+    },
+    {
+      "label": "20/21",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 98.4
+    },
+    {
+      "label": "21/22",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 98.4
+    },
+    {
+      "label": "22/23",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 95.4
+    },
+    {
+      "label": "23/24",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 95.4
+    },
+    {
+      "label": "24/25",
+      "B365H": 100.0,
+      "PSH": 100.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 97.1
+    },
+    {
+      "label": "25/26",
+      "B365H": 100.0,
+      "PSH": 49.0,
+      "MaxH": 100.0,
+      "AvgH": 100.0,
+      "B365CH": 100.0,
+      "B365>2.5": 100.0,
+      "P>2.5": 46.4
+    }
+  ],
+  "competition_probe": {
+    "UCL (欧冠) mmz4281 路径": {
+      "url": "https://www.football-data.co.uk/mmz4281/2324/UCL.csv",
+      "status": 404,
+      "content_type": "text/html"
+    },
+    "EC (欧洲杯) mmz4281 路径": {
+      "url": "https://www.football-data.co.uk/mmz4281/2324/EC.csv",
+      "status": 200,
+      "content_type": "text/csv"
+    },
+    "new/UEFA 路径": {
+      "url": "https://www.football-data.co.uk/new/UEFA.csv",
+      "status": 404,
+      "content_type": "text/html"
+    },
+    "newleagues 页面": {
+      "url": "https://www.football-data.co.uk/newleagues.php",
+      "status": 404,
+      "content_type": "text/html"
+    }
+  }
+}

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V3.0 赔率系统预测报告 | 2026年8月14日-17日</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-before: always; }
+    .no-break { page-break-inside: avoid; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: #fff; color: #1a1a2e; font-size: 10pt; line-height: 1.55;
+    max-width: 190mm; margin: 0 auto; padding: 0;
+  }
+  .mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 9pt; }
+  .cover {
+    text-align: center; padding: 40mm 0 30mm;
+    border-bottom: 3px solid #059669;
+  }
+  .cover .badge {
+    display: inline-block; padding: 4px 16px; border-radius: 20px;
+    background: #059669; color: #fff; font-size: 9pt; font-weight: 700;
+    letter-spacing: 0.5px; margin-bottom: 16px;
+  }
+  .cover h1 { font-size: 24pt; font-weight: 700; color: #0a0a0f; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .cover .subtitle { font-size: 12pt; color: #6b7280; margin-bottom: 6px; }
+  .cover .desc { font-size: 9pt; color: #9ca3af; max-width: 400px; margin: 0 auto; }
+  .cover .meta { margin-top: 30px; font-size: 8pt; color: #9ca3af; }
+
+  .section { margin: 20px 0; }
+  .section-title {
+    font-size: 14pt; font-weight: 700; color: #059669;
+    border-bottom: 2px solid #059669; padding-bottom: 4px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .count { font-size: 9pt; font-weight: 400; color: #6b7280; }
+
+  /* Summary stats */
+  .stats { display: flex; gap: 12px; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1; padding: 10px 12px; border-radius: 6px;
+    background: #f8fafc; border: 1px solid #e2e8f0; text-align: center;
+  }
+  .stat-card .num { font-size: 18pt; font-weight: 700; color: #059669; }
+  .stat-card .label { font-size: 8pt; color: #6b7280; margin-top: 2px; }
+  .stat-card.away .num { color: #3b82f6; }
+  .stat-card.draw .num { color: #f59e0b; }
+
+  /* Match tables */
+  table.match-table {
+    width: 100%; border-collapse: collapse; font-size: 9pt;
+    margin-bottom: 16px; page-break-inside: avoid;
+  }
+  table.match-table th {
+    background: #059669; color: #fff; padding: 6px 8px; text-align: left;
+    font-size: 8pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  table.match-table td {
+    padding: 5px 8px; border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+  table.match-table tr:nth-child(even) td { background: #f8fafc; }
+  table.match-table .pred-home { color: #059669; font-weight: 700; }
+  table.match-table .pred-away { color: #3b82f6; font-weight: 700; }
+  table.match-table .pred-draw { color: #f59e0b; font-weight: 700; }
+  table.match-table .risk-low { color: #059669; font-size: 8pt; }
+  table.match-table .risk-med { color: #eab308; font-size: 8pt; }
+  table.match-table .risk-high { color: #ef4444; font-size: 8pt; }
+  table.match-table .conf-bar {
+    display: inline-block; height: 4px; border-radius: 2px; background: #059669;
+    vertical-align: middle; margin-right: 4px;
+  }
+  table.match-table .tag {
+    display: inline-block; padding: 1px 6px; border-radius: 3px;
+    font-size: 7pt; font-weight: 600; margin-right: 3px;
+  }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+
+  .value-section { margin: 20px 0; page-break-inside: avoid; }
+  .value-cards { display: flex; gap: 12px; }
+  .value-card {
+    flex: 1; padding: 12px; border-radius: 6px;
+    border: 1px solid #e2e8f0; background: #f8fafc;
+  }
+  .value-card .v-label { font-size: 7pt; font-weight: 700; text-transform: uppercase; }
+  .value-card .v-match { font-size: 10pt; font-weight: 700; margin: 4px 0; }
+  .value-card .v-desc { font-size: 8pt; color: #6b7280; }
+
+  .dual-perspective { display: flex; gap: 12px; margin: 20px 0; page-break-inside: avoid; }
+  .dual-card {
+    flex: 1; padding: 14px; border-radius: 6px;
+    border: 1px solid #e2e8f0; background: #f8fafc;
+  }
+  .dual-card h3 { font-size: 10pt; font-weight: 700; margin-bottom: 6px; color: #059669; }
+  .dual-card p { font-size: 9pt; color: #4b5563; }
+
+  .methodology {
+    margin-top: 20px; padding: 12px; border-radius: 6px;
+    background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 8pt; color: #065f46;
+  }
+  .methodology .m-title { font-weight: 700; margin-bottom: 4px; }
+
+  .footer {
+    margin-top: 30px; padding-top: 12px; border-top: 1px solid #e2e8f0;
+    text-align: center; font-size: 7pt; color: #9ca3af;
+  }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover no-break">
+  <div class="badge">V3.0</div>
+  <h1>V3.0 赔率系统预测报告</h1>
+  <p class="subtitle">2026年8月14日 — 17日 ｜ 全球热门联赛</p>
+  <p class="desc">基于泊松分布 + Dixon-Coles 模型的统计预测，结合赔率市场双视角分析</p>
+  <div class="meta">报告生成时间：2026年8月17日 ｜ 数据来源：多家主流博彩机构</div>
+</div>
+
+<!-- Summary Stats -->
+<div class="section no-break">
+  <div class="stats">
+    <div class="stat-card">
+      <div class="num">23</div>
+      <div class="label">总预测场次</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">14</div>
+      <div class="label">主胜预测 (61%)</div>
+    </div>
+    <div class="stat-card away">
+      <div class="num">7</div>
+      <div class="label">客胜预测 (30%)</div>
+    </div>
+    <div class="stat-card draw">
+      <div class="num">2</div>
+      <div class="label">平局预测 (9%)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Championship -->
+<div class="section">
+  <div class="section-title">Championship 英冠 <span class="count">9场 · 8月14日-16日</span></div>
+  <table class="match-table">
+    <thead>
+      <tr><th>日期</th><th>主队</th><th>客队</th><th>预测</th><th>置信度</th><th>风险</th><th>xG</th><th>比分</th><th>大小球</th><th>分析</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>8/14</td><td>Wolves</td><td>Blackburn</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:56px;"></span> 75%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">0.84/1.55</td><td class="mono">0-1</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">黑马布莱克本客场战力强劲，狼队主场进攻乏力</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Norwich</td><td>West Brom</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:52px;"></span> 71%</td>
+        <td class="risk-high">冷门预警</td>
+        <td class="mono">1.13/0.91</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">诺维奇主场优势微弱，西布朗客场韧性足</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Bristol City</td><td>Millwall</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:55px;"></span> 74%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">0.97/1.49</td><td class="mono">0-1</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">米尔沃尔攻防均衡，布城主场难有作为</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Stoke</td><td>Swansea</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:50px;"></span> 70%</td>
+        <td class="risk-med">中度防冷</td>
+        <td class="mono">1.32/1.06</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">斯托克城略占上风但斯旺西客场防守稳固</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Charlton</td><td>Derby</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:55px;"></span> 74%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">0.87/1.44</td><td class="mono">0-1</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">德比郡状态正佳，查尔顿攻防均有短板</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Portsmouth</td><td>QPR</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:50px;"></span> 70%</td>
+        <td class="risk-med">中度防冷</td>
+        <td class="mono">1.16/0.71</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">朴茨茅斯主场防守出色，QPR客场进攻乏力</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Sheffield Utd</td><td>Birmingham</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:56px;"></span> 75%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.51/0.86</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">谢菲联主场强势，伯明翰客场难有突破</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Watford</td><td>Southampton</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:53px;"></span> 72%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.25/1.98</td><td class="mono">1-2</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">南安普顿攻击力碾压，沃特福德防线漏洞多</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Burnley</td><td>West Ham</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:52px;"></span> 71%</td>
+        <td class="risk-high">冷门预警</td>
+        <td class="mono">1.07/1.18</td><td class="mono">0-1</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">实力接近的对决，西汉姆联客场经验更丰富</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- La Liga -->
+<div class="section">
+  <div class="section-title">La Liga 西甲 <span class="count">4场 · 8月15日-16日</span></div>
+  <table class="match-table">
+    <thead>
+      <tr><th>日期</th><th>主队</th><th>客队</th><th>预测</th><th>置信度</th><th>风险</th><th>xG</th><th>比分</th><th>大小球</th><th>分析</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>8/15</td><td>Alaves</td><td>Getafe</td>
+        <td class="pred-draw">平局</td>
+        <td><span class="conf-bar" style="width:53px;background:#f59e0b;"></span> 72%</td>
+        <td class="risk-high">冷门预警</td>
+        <td class="mono">1.0/0.8</td><td class="mono">0-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">两队攻防风格相似，闷平概率极高</td>
+      </tr>
+      <tr>
+        <td>8/15</td><td>Sevilla</td><td>Rayo</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:53px;"></span> 72%</td>
+        <td class="risk-med">中度防冷</td>
+        <td class="mono">1.32/1.01</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">塞维利亚主场优势明显但巴列卡诺不容小觑</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Espanyol</td><td>Levante</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:52px;"></span> 71%</td>
+        <td class="risk-med">中度防冷</td>
+        <td class="mono">1.24/1.11</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">西班牙人主场略占优，莱万特客场韧性强</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Celta Vigo</td><td>Osasuna</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:53px;"></span> 72%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.38/0.75</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">塞尔塔主场进攻犀利，奥萨苏纳客场乏力</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Brasileirao -->
+<div class="section">
+  <div class="section-title">Brasileirao 巴甲 <span class="count">9场 · 8月15日-17日</span></div>
+  <table class="match-table">
+    <thead>
+      <tr><th>日期</th><th>主队</th><th>客队</th><th>预测</th><th>置信度</th><th>风险</th><th>xG</th><th>比分</th><th>大小球</th><th>分析</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>8/15</td><td>Fluminense</td><td>Palmeiras</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:55px;"></span> 74%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.43/0.91</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">弗鲁米嫩塞主场强势，帕尔梅拉斯客场有隐患</td>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td>8/15</td><td><strong>Athletico PR</strong></td><td>Bragantino</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:60px;"></span> <strong>80%</strong></td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">2.05/0.44</td><td class="mono">2-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">巴拉纳竞技主场统治力极强，红牛客场进球困难</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Sao Paulo</td><td>Coritiba</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:55px;"></span> 74%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.84/0.86</td><td class="mono">1-0</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">圣保罗攻防俱佳，科里蒂巴客场疲软</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Chapecoense</td><td>Bahia</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:50px;"></span> 70%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.56/1.85</td><td class="mono">1-2</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">巴伊亚客场攻击力强，沙佩科恩斯防守漏洞大</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Atletico Mineiro</td><td>Gremio</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:54px;"></span> 73%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.72/1.01</td><td class="mono">1-0</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">米内罗竞技主场优势明显，格雷米奥客场不稳</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Vasco da Gama</td><td>Santos</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:54px;"></span> 73%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.96/1.5</td><td class="mono">2-1</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">达伽马进攻火力强劲，桑托斯客场有进球但难取胜</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Mirassol</td><td>Flamengo</td>
+        <td class="pred-away">客胜</td>
+        <td><span class="conf-bar" style="width:53px;"></span> 72%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.37/1.69</td><td class="mono">1-2</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">弗拉门戈实力碾压，米拉索尔主场难阻</td>
+      </tr>
+      <tr>
+        <td>8/16</td><td>Vitoria</td><td>Botafogo</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:54px;"></span> 73%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.44/0.65</td><td class="mono">1-0</td>
+        <td><span class="tag tag-green">小2.5</span><span class="tag tag-green">双</span></td>
+        <td style="font-size:8pt;color:#6b7280;">维多利亚主场防守稳固，博塔弗戈客场乏力</td>
+      </tr>
+      <tr>
+        <td>8/17</td><td>Internacional</td><td>Remo</td>
+        <td class="pred-home">主胜</td>
+        <td><span class="conf-bar" style="width:56px;"></span> 75%</td>
+        <td class="risk-low">低风险</td>
+        <td class="mono">1.92/1.1</td><td class="mono">2-1</td>
+        <td><span class="tag tag-blue">大2.5</span><span class="tag tag-blue">单</span></td>
+        <td style="font-size:8pt;color:#6b7280;">国际队实力占优，雷莫客场难有作为</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Value Betting -->
+<div class="value-section no-break">
+  <div class="section-title">价值投注推荐</div>
+  <div class="value-cards">
+    <div class="value-card">
+      <div class="v-label" style="color:#059669;">主胜 · 80% 置信</div>
+      <div class="v-match">Athletico PR vs 红牛</div>
+      <div class="v-desc">模型与市场一致看好主胜，主胜赔率仍有价值</div>
+    </div>
+    <div class="value-card">
+      <div class="v-label" style="color:#3b82f6;">客胜 · 75% 置信</div>
+      <div class="v-match">Wolves vs Blackburn</div>
+      <div class="v-desc">市场低估布莱克本客场战力，客胜赔率偏高</div>
+    </div>
+    <div class="value-card">
+      <div class="v-label" style="color:#f59e0b;">平局 · 72% 置信</div>
+      <div class="v-match">Alaves vs Getafe</div>
+      <div class="v-desc">平局赔率通常被低估，两队实力接近</div>
+    </div>
+  </div>
+</div>
+
+<!-- Dual Perspective -->
+<div class="dual-perspective no-break">
+  <div class="dual-card">
+    <h3>机构视角</h3>
+    <p>赔率市场倾向于主队优势，英冠和巴甲主胜赔率普遍偏低</p>
+  </div>
+  <div class="dual-card">
+    <h3>模型视角</h3>
+    <p>泊松分布模型显示多场比赛存在主客场实力错配，客胜价值被低估</p>
+  </div>
+</div>
+
+<!-- Methodology -->
+<div class="methodology no-break">
+  <div class="m-title">方法论说明</div>
+  <p>基于180支球队、2875场历史数据的泊松分布 + Dixon-Coles 修正模型。置信度综合数据量、近期状态一致性、预测优势幅度计算。赔率数据参考多家主流博彩机构。预测仅供参考，不构成投注建议。</p>
+</div>
+
+<div class="footer">
+  V3.0 赔率系统预测报告 ｜ 2026年8月14日-17日 ｜ 仅供分析参考
+</div>
+
+</body>
+</html>

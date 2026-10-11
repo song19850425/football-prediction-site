@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预测验证明细 - 8月1日-2日</title>
+    <style id="theme-vars">
+/* ============================================
+   足球预测仪表盘 - 深色暗黑风主题
+   ============================================ */
+
+:root {
+  /* 品牌色 - 霓虹绿（代表足球/数据/精准） */
+  --pd-primary: #22c55e;
+  --pd-primary-foreground: #0a0a0f;
+  --pd-primary-hover: #16a34a;
+
+  /* 支持色 */
+  --pd-accent: #f97316;
+  --pd-accent-foreground: #ffffff;
+  --pd-gold: #fbbf24;
+
+  /* 状态色 */
+  --pd-win: #22c55e;
+  --pd-draw: #fbbf24;
+  --pd-lose: #ef4444;
+
+  /* 中性色 - 深色基底 */
+  --pd-background: #0a0a0f;
+  --pd-foreground: #e2e8f0;
+  --pd-card: #13131a;
+  --pd-card-foreground: #e2e8f0;
+  --pd-card-hover: #1a1a25;
+
+  /* 次级表面 */
+  --pd-muted: #1a1a24;
+  --pd-muted-foreground: #94a3b8;
+
+  /* 边框 */
+  --pd-border: #1e1e2e;
+  --pd-border-light: #2d2d3d;
+
+  /* 输入 */
+  --pd-input: #1a1a24;
+  --pd-ring: #22c55e;
+
+  /* 联赛色 */
+  --pd-csl: #e53935;
+  --pd-eliteserien: #00c781;
+  --pd-kleague: #3b82f6;
+  --pd-allsvenskan: #fbbf24;
+
+  /* 圆角 */
+  --pd-radius-sm: 4px;
+  --pd-radius-md: 8px;
+  --pd-radius-lg: 12px;
+  --pd-radius-xl: 16px;
+
+  /* 字体 */
+  --pd-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  --pd-font-mono: "SF Mono", "Fira Code", Consolas, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--pd-font-sans);
+  background: var(--pd-background);
+  color: var(--pd-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 背景渐变纹理 - 深色版 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at top left, rgba(34, 197, 94, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom center, rgba(249, 115, 22, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 网格线纹理 - 深色版 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--pd-background);
+    --color-foreground: var(--pd-foreground);
+    --color-card: var(--pd-card);
+    --color-card-foreground: var(--pd-card-foreground);
+    --color-primary: var(--pd-primary);
+    --color-primary-foreground: var(--pd-primary-foreground);
+    --color-muted: var(--pd-muted);
+    --color-muted-foreground: var(--pd-muted-foreground);
+    --color-accent: var(--pd-accent);
+    --color-accent-foreground: var(--pd-accent-foreground);
+    --color-border: var(--pd-border);
+    --color-input: var(--pd-input);
+    --color-ring: var(--pd-ring);
+    --radius-sm: var(--pd-radius-sm);
+    --radius-md: var(--pd-radius-md);
+    --radius-lg: var(--pd-radius-lg);
+    --radius-xl: var(--pd-radius-xl);
+  }
+  @layer base {
+    body { background: var(--pd-background); color: var(--pd-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--pd-background); }
+      .text-background { color: var(--pd-background); }
+      .border-background { border-color: var(--pd-background); }
+      .ring-background { --tw-ring-color: var(--pd-background); }
+      .bg-foreground { background-color: var(--pd-foreground); }
+      .text-foreground { color: var(--pd-foreground); }
+      .border-foreground { border-color: var(--pd-foreground); }
+      .ring-foreground { --tw-ring-color: var(--pd-foreground); }
+      .bg-card { background-color: var(--pd-card); }
+      .text-card { color: var(--pd-card); }
+      .border-card { border-color: var(--pd-card); }
+      .ring-card { --tw-ring-color: var(--pd-card); }
+      .bg-card-foreground { background-color: var(--pd-card-foreground); }
+      .text-card-foreground { color: var(--pd-card-foreground); }
+      .border-card-foreground { border-color: var(--pd-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--pd-card-foreground); }
+      .bg-primary { background-color: var(--pd-primary); }
+      .text-primary { color: var(--pd-primary); }
+      .border-primary { border-color: var(--pd-primary); }
+      .ring-primary { --tw-ring-color: var(--pd-primary); }
+      .bg-primary-foreground { background-color: var(--pd-primary-foreground); }
+      .text-primary-foreground { color: var(--pd-primary-foreground); }
+      .border-primary-foreground { border-color: var(--pd-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--pd-primary-foreground); }
+      .bg-muted { background-color: var(--pd-muted); }
+      .text-muted { color: var(--pd-muted); }
+      .border-muted { border-color: var(--pd-muted); }
+      .ring-muted { --tw-ring-color: var(--pd-muted); }
+      .bg-muted-foreground { background-color: var(--pd-muted-foreground); }
+      .text-muted-foreground { color: var(--pd-muted-foreground); }
+      .border-muted-foreground { border-color: var(--pd-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--pd-muted-foreground); }
+      .bg-accent { background-color: var(--pd-accent); }
+      .text-accent { color: var(--pd-accent); }
+      .border-accent { border-color: var(--pd-accent); }
+      .ring-accent { --tw-ring-color: var(--pd-accent); }
+      .bg-accent-foreground { background-color: var(--pd-accent-foreground); }
+      .text-accent-foreground { color: var(--pd-accent-foreground); }
+      .border-accent-foreground { border-color: var(--pd-accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--pd-accent-foreground); }
+      .bg-border { background-color: var(--pd-border); }
+      .text-border { color: var(--pd-border); }
+      .border-border { border-color: var(--pd-border); }
+      .ring-border { --tw-ring-color: var(--pd-border); }
+      .bg-input { background-color: var(--pd-input); }
+      .text-input { color: var(--pd-input); }
+      .border-input { border-color: var(--pd-input); }
+      .ring-input { --tw-ring-color: var(--pd-input); }
+      .bg-ring { background-color: var(--pd-ring); }
+      .text-ring { color: var(--pd-ring); }
+      .border-ring { border-color: var(--pd-ring); }
+      .ring-ring { --tw-ring-color: var(--pd-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+    <style>
+        /* ========== 页面容器 ========== */
+        .page-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== 玻璃质感卡片 ========== */
+        .glass-card {
+            background: var(--pd-card);
+            border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-lg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.3), transparent);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(22, 163, 74, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 20px rgba(22, 163, 74, 0.05);
+        }
+
+        /* ========== KPI卡片 ========== */
+        .kpi-card {
+            background: var(--pd-card);
+            border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-lg);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .kpi-card:hover {
+            border-color: rgba(22, 163, 74, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(22, 163, 74, 0.08);
+        }
+
+        .kpi-card .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--pd-radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(22, 163, 74, 0.08);
+            color: var(--pd-primary);
+            margin-bottom: 12px;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--pd-foreground);
+            font-family: var(--pd-font-mono);
+            line-height: 1.2;
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 13px;
+            color: var(--pd-muted-foreground);
+            margin-top: 4px;
+        }
+
+        .kpi-card.kpi-correct .kpi-icon { background: rgba(34, 197, 94, 0.08); color: var(--pd-win); }
+        .kpi-card.kpi-wrong .kpi-icon { background: rgba(239, 68, 68, 0.08); color: var(--pd-lose); }
+        .kpi-card.kpi-accuracy .kpi-icon { background: rgba(22, 163, 74, 0.12); color: var(--pd-primary); }
+
+        /* ========== 渐变文字 ========== */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--pd-primary), #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow-primary {
+            text-shadow: 0 0 20px rgba(22, 163, 74, 0.2);
+        }
+
+        /* ========== 联赛标签 ========== */
+        .league-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .league-kleague { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .league-veikkausliiga { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+        .league-allsvenskan { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .league-eliteserien { background: rgba(0, 199, 129, 0.15); color: #00c781; }
+        .league-mls { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .league-brazilcup { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+
+        /* ========== 信心等级标签 ========== */
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .confidence-high { background: rgba(34, 197, 94, 0.15); color: var(--pd-win); }
+        .confidence-mid { background: rgba(251, 191, 36, 0.15); color: var(--pd-draw); }
+        .confidence-low { background: rgba(148, 163, 184, 0.15); color: var(--pd-muted-foreground); }
+
+        /* ========== 验证结果标记 ========== */
+        .verify-correct { color: var(--pd-win); font-weight: 700; }
+        .verify-wrong { color: var(--pd-lose); font-weight: 700; }
+
+        /* ========== 联赛横向柱状图 ========== */
+        .league-bar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .league-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .league-bar-label {
+            width: 52px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--pd-foreground);
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        .league-bar-track {
+            flex: 1;
+            height: 10px;
+            background: var(--pd-border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .league-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.8s ease-out;
+        }
+
+        .league-bar-value {
+            width: 48px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: var(--pd-font-mono);
+            flex-shrink: 0;
+        }
+
+        .league-bar-stats {
+            font-size: 11px;
+            color: var(--pd-muted-foreground);
+            width: 90px;
+            text-align: right;
+            flex-shrink: 0;
+            font-family: var(--pd-font-mono);
+        }
+
+        /* ========== 数据表格 ========== */
+        .detail-table-wrapper {
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .detail-table-wrapper::-webkit-scrollbar { display: none; }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .detail-table th {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--pd-muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--pd-border);
+            white-space: nowrap;
+        }
+
+        .detail-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(30, 30, 46, 0.5);
+            color: var(--pd-foreground);
+            white-space: nowrap;
+        }
+
+        .detail-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .detail-table tbody tr:hover {
+            background: rgba(22, 163, 74, 0.04);
+        }
+
+        .detail-table tbody tr.row-even {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .detail-table .league-group-header td {
+            padding: 14px 14px;
+            font-weight: 700;
+            font-size: 14px;
+            border-bottom: 1px solid var(--pd-border);
+        }
+
+        .league-group-kleague .league-group-header td { color: #3b82f6; border-left: 3px solid #3b82f6; }
+        .league-group-veikkausliiga .league-group-header td { color: #06b6d4; border-left: 3px solid #06b6d4; }
+        .league-group-allsvenskan .league-group-header td { color: #fbbf24; border-left: 3px solid #fbbf24; }
+        .league-group-eliteserien .league-group-header td { color: #00c781; border-left: 3px solid #00c781; }
+        .league-group-mls .league-group-header td { color: #ef4444; border-left: 3px solid #ef4444; }
+        .league-group-brazilcup .league-group-header td { color: #22c55e; border-left: 3px solid #22c55e; }
+
+        .match-no {
+            font-family: var(--pd-font-mono);
+            color: var(--pd-muted-foreground);
+            font-size: 12px;
+        }
+
+        .match-teams {
+            font-weight: 600;
+            color: var(--pd-foreground);
+        }
+
+        .match-score {
+            font-family: var(--pd-font-mono);
+            font-weight: 700;
+        }
+
+        .match-result {
+            font-weight: 600;
+        }
+
+        /* ========== 统计小表格 ========== */
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .stats-table th {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--pd-muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--pd-border);
+        }
+
+        .stats-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(30, 30, 46, 0.5);
+            color: var(--pd-foreground);
+        }
+
+        .stats-table tbody tr:hover {
+            background: rgba(22, 163, 74, 0.04);
+        }
+
+        .accuracy-bar-mini {
+            display: inline-block;
+            height: 6px;
+            border-radius: 999px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* ========== 亮点/问题卡片 ========== */
+        .highlight-card {
+            background: var(--pd-card);
+            border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-lg);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .highlight-card.highlight-good {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .highlight-card.highlight-bad {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .highlight-item + .highlight-item {
+            border-top: 1px solid rgba(30, 30, 46, 0.5);
+        }
+
+        .highlight-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .highlight-icon.good {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--pd-win);
+        }
+
+        .highlight-icon.bad {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--pd-lose);
+        }
+
+        /* ========== 返回按钮 ========== */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--pd-muted-foreground);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--pd-primary);
+        }
+
+        /* ========== 滚动条 ========== */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--pd-background); }
+        ::-webkit-scrollbar-thumb { background: var(--pd-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--pd-border-light); }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 1024px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .stats-row { grid-template-columns: 1fr !important; }
+        }
+
+        @media (max-width: 640px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .hero-layout { flex-direction: column !important; }
+            .detail-table th, .detail-table td { padding: 8px 10px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+        <div class="page-container py-10">
+
+            <!-- ===== 返回导航 ===== -->
+            <div class="mb-6">
+                <a href="dashboard.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    返回预测中心
+                </a>
+            </div>
+
+            <!-- ===== HERO区 ===== -->
+            <section class="mb-12">
+                <div class="hero-layout flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+                    <div class="flex-1">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                            <span class="text-sm text-primary font-medium">预测验证报告</span>
+                        </div>
+                        <h1 class="text-4xl lg:text-5xl font-bold mb-3 tracking-tight">
+                            <span class="gradient-text glow-primary">比赛预测与验证明细</span>
+                        </h1>
+                        <p class="text-lg text-muted-foreground">
+                            2026年8月1日-2日 · <span class="text-primary font-semibold">16场</span> 比赛 · 覆盖 <span class="text-primary font-semibold">6</span> 个联赛
+                        </p>
+                        <div class="flex items-center gap-4 mt-6">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-background" style="background:#3b82f6;">韩</div>
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-background" style="background:#06b6d4;">芬</div>
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-black text-xs font-bold border-2 border-background" style="background:#fbbf24;">瑞</div>
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-background" style="background:#00c781;">挪</div>
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-background" style="background:#ef4444;">美</div>
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-background" style="background:#22c55e;">巴</div>
+                            </div>
+                            <span class="text-sm text-muted-foreground">6 大联赛 · 逐场验证</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 汇总KPI行 ===== -->
+            <section class="mb-12">
+                <div class="kpi-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        </div>
+                        <div class="kpi-value">16<span class="text-base text-muted-foreground font-normal">场</span></div>
+                        <div class="kpi-label">总场次</div>
+                    </div>
+
+                    <div class="kpi-card kpi-correct">
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="kpi-value" style="color: var(--pd-win);">8<span class="text-base text-muted-foreground font-normal">场</span></div>
+                        <div class="kpi-label">预测正确</div>
+                    </div>
+
+                    <div class="kpi-card kpi-wrong">
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <div class="kpi-value" style="color: var(--pd-lose);">8<span class="text-base text-muted-foreground font-normal">场</span></div>
+                        <div class="kpi-label">预测错误</div>
+                    </div>
+
+                    <div class="kpi-card kpi-accuracy">
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <div class="kpi-value">50.0<span class="text-base text-muted-foreground font-normal">%</span></div>
+                        <div class="kpi-label">准确率</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== Section 1: 联赛准确率概览 ===== -->
+            <section class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        联赛准确率概览
+                    </h2>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="league-bar-list">
+                        <!-- 韩K联 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#3b82f6;">韩K联</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:33.33%; background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#3b82f6;">33.3%</span>
+                            <span class="league-bar-stats">1/3 正确</span>
+                        </div>
+                        <!-- 芬超 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#06b6d4;">芬超</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:66.67%; background: linear-gradient(90deg, #06b6d4, #22d3ee);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#06b6d4;">66.7%</span>
+                            <span class="league-bar-stats">2/3 正确</span>
+                        </div>
+                        <!-- 瑞典超 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#fbbf24;">瑞典超</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:0%; background: linear-gradient(90deg, #fbbf24, #fcd34d);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#fbbf24;">0%</span>
+                            <span class="league-bar-stats">0/1 正确</span>
+                        </div>
+                        <!-- 挪超 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#00c781;">挪超</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:100%; background: linear-gradient(90deg, #00c781, #34d399);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#00c781;">100%</span>
+                            <span class="league-bar-stats">2/2 正确</span>
+                        </div>
+                        <!-- 美职联 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#ef4444;">美职联</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:50%; background: linear-gradient(90deg, #ef4444, #f87171);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#ef4444;">50.0%</span>
+                            <span class="league-bar-stats">3/6 正确</span>
+                        </div>
+                        <!-- 巴西杯 -->
+                        <div class="league-bar-row">
+                            <span class="league-bar-label" style="color:#22c55e;">巴西杯</span>
+                            <div class="league-bar-track">
+                                <div class="league-bar-fill" style="width:0%; background: linear-gradient(90deg, #22c55e, #4ade80);"></div>
+                            </div>
+                            <span class="league-bar-value" style="color:#22c55e;">0%</span>
+                            <span class="league-bar-stats">0/1 正确</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== Section 2: 按信心等级统计 ===== -->
+            <section class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        按信心等级统计
+                    </h2>
+                </div>
+                <div class="glass-card overflow-hidden">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>信心等级</th>
+                                <th>场次</th>
+                                <th>正确</th>
+                                <th>错误</th>
+                                <th>准确率</th>
+                                <th style="width:200px;">分布</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="confidence-badge confidence-high">高</span></td>
+                                <td style="font-family: var(--pd-font-mono);">3</td>
+                                <td style="color: var(--pd-win); font-family: var(--pd-font-mono);">3</td>
+                                <td style="color: var(--pd-lose); font-family: var(--pd-font-mono);">0</td>
+                                <td style="color: var(--pd-win); font-weight: 700; font-family: var(--pd-font-mono);">100%</td>
+                                <td>
+                                    <div style="height:8px; background:var(--pd-border); border-radius:999px; overflow:hidden; width:100%;">
+                                        <div style="height:100%; width:100%; background: linear-gradient(90deg, #22c55e, #4ade80); border-radius:999px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="confidence-badge confidence-mid">中</span></td>
+                                <td style="font-family: var(--pd-font-mono);">6</td>
+                                <td style="color: var(--pd-win); font-family: var(--pd-font-mono);">1</td>
+                                <td style="color: var(--pd-lose); font-family: var(--pd-font-mono);">5</td>
+                                <td style="color: var(--pd-lose); font-weight: 700; font-family: var(--pd-font-mono);">16.7%</td>
+                                <td>
+                                    <div style="height:8px; background:var(--pd-border); border-radius:999px; overflow:hidden; width:100%;">
+                                        <div style="height:100%; width:16.7%; background: linear-gradient(90deg, #ef4444, #f87171); border-radius:999px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="confidence-badge confidence-low">低</span></td>
+                                <td style="font-family: var(--pd-font-mono);">7</td>
+                                <td style="color: var(--pd-win); font-family: var(--pd-font-mono);">4</td>
+                                <td style="color: var(--pd-lose); font-family: var(--pd-font-mono);">3</td>
+                                <td style="color: var(--pd-gold); font-weight: 700; font-family: var(--pd-font-mono);">57.1%</td>
+                                <td>
+                                    <div style="height:8px; background:var(--pd-border); border-radius:999px; overflow:hidden; width:100%;">
+                                        <div style="height:100%; width:57.1%; background: linear-gradient(90deg, #fbbf24, #fcd34d); border-radius:999px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ===== Section 3: 逐场验证明细 ===== -->
+            <section class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        逐场验证明细
+                    </h2>
+                    <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>共16场比赛</span>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden">
+                    <div class="detail-table-wrapper">
+                        <table class="detail-table">
+                            <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>比赛</th>
+                                    <th>预测</th>
+                                    <th>信心</th>
+                                    <th>实际比分</th>
+                                    <th>实际结果</th>
+                                    <th>验证</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <!-- ===== 韩K联 (3场) ===== -->
+                                <tr class="league-group-kleague league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-kleague">韩K联</span>
+                                        <span class="text-sm text-muted-foreground ml-2">3场比赛 · 准确率 33.3%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">001</td>
+                                    <td class="match-teams">江原FC vs 富川FC</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">0-3</td>
+                                    <td class="match-result">客胜</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">002</td>
+                                    <td class="match-teams">全北现代 vs 首尔FC</td>
+                                    <td><span style="color: var(--pd-draw); font-weight: 600;">平局</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">0-0</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">003</td>
+                                    <td class="match-teams">浦项制铁 vs 金泉尚武</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">0-1</td>
+                                    <td class="match-result">客胜</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+
+                                <!-- ===== 芬超 (3场) ===== -->
+                                <tr class="league-group-veikkausliiga league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-veikkausliiga">芬超</span>
+                                        <span class="text-sm text-muted-foreground ml-2">3场比赛 · 准确率 66.7%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">004</td>
+                                    <td class="match-teams">TPS图尔库 vs 玛丽港</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-high">高</span></td>
+                                    <td class="match-score">3-0</td>
+                                    <td class="match-result">主胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">005</td>
+                                    <td class="match-teams">拉赫蒂 vs 雅罗</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-high">高</span></td>
+                                    <td class="match-score">2-0</td>
+                                    <td class="match-result">主胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">006</td>
+                                    <td class="match-teams">赫尔火花 vs 库奥皮奥</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">0-1</td>
+                                    <td class="match-result">客胜</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+
+                                <!-- ===== 瑞典超 (1场) ===== -->
+                                <tr class="league-group-allsvenskan league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-allsvenskan">瑞典超</span>
+                                        <span class="text-sm text-muted-foreground ml-2">1场比赛 · 准确率 0%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">007</td>
+                                    <td class="match-teams">赫根 vs 卡尔马</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">1-1</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+
+                                <!-- ===== 挪超 (2场) ===== -->
+                                <tr class="league-group-eliteserien league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-eliteserien">挪超</span>
+                                        <span class="text-sm text-muted-foreground ml-2">2场比赛 · 准确率 100%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">008</td>
+                                    <td class="match-teams">腓特烈斯塔 vs 桑纳菲尤尔</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">1-0</td>
+                                    <td class="match-result">主胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">009</td>
+                                    <td class="match-teams">斯达 vs 维京</td>
+                                    <td><span style="color: var(--pd-lose); font-weight: 600;">客胜</span></td>
+                                    <td><span class="confidence-badge confidence-high">高</span></td>
+                                    <td class="match-score">0-3</td>
+                                    <td class="match-result">客胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+
+                                <!-- ===== 美职联 (6场) ===== -->
+                                <tr class="league-group-mls league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-mls">美职联</span>
+                                        <span class="text-sm text-muted-foreground ml-2">6场比赛 · 准确率 50.0%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">010</td>
+                                    <td class="match-teams">迈阿密国际 vs 哥伦布机员</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">2-2</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">011</td>
+                                    <td class="match-teams">温哥华白浪 vs 洛杉矶FC</td>
+                                    <td><span style="color: var(--pd-lose); font-weight: 600;">客胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">1-1</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">012</td>
+                                    <td class="match-teams">芝加哥火焰 vs 夏洛特FC</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">2-1</td>
+                                    <td class="match-result">主胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">013</td>
+                                    <td class="match-teams">圣路易斯城 vs 盐湖城</td>
+                                    <td><span style="color: var(--pd-draw); font-weight: 600;">平局</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">1-1</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">014</td>
+                                    <td class="match-teams">洛杉矶银河 vs 达拉斯</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">0-0</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+                                <tr class="row-even">
+                                    <td class="match-no">015</td>
+                                    <td class="match-teams">波特兰伐木者 vs 西雅图海湾人</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-low">低</span></td>
+                                    <td class="match-score">2-1</td>
+                                    <td class="match-result">主胜</td>
+                                    <td class="verify-correct">&#10003;</td>
+                                </tr>
+
+                                <!-- ===== 巴西杯 (1场) ===== -->
+                                <tr class="league-group-brazilcup league-group-header">
+                                    <td colspan="7">
+                                        <span class="league-badge league-brazilcup">巴西杯</span>
+                                        <span class="text-sm text-muted-foreground ml-2">1场比赛 · 准确率 0%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="match-no">016</td>
+                                    <td class="match-teams">桑托斯 vs 里莫</td>
+                                    <td><span style="color: var(--pd-win); font-weight: 600;">主胜</span></td>
+                                    <td><span class="confidence-badge confidence-mid">中</span></td>
+                                    <td class="match-score">0-0</td>
+                                    <td class="match-result">平局</td>
+                                    <td class="verify-wrong">&#10007;</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== Section 4: 亮点与问题分析 ===== -->
+            <section class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        亮点与问题分析
+                    </h2>
+                </div>
+                <div class="stats-row grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 亮点 -->
+                    <div class="highlight-card highlight-good">
+                        <div class="flex items-center gap-2 mb-4">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pd-win)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <h3 class="font-bold text-base" style="color: var(--pd-win);">亮点</h3>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon good">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">高信心预测全中</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">3场高信心预测全部命中（3/3 = 100%），模型在高置信度场景下表现优异</div>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon good">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">挪超全中</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">挪超联赛2场全部正确（2/2 = 100%），该联赛预测模型表现稳定</div>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon good">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">平局预测全中</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">本轮预测的2场平局（全北现代0-0首尔FC、圣路易斯城1-1盐湖城）全部命中</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 问题 -->
+                    <div class="highlight-card highlight-bad">
+                        <div class="flex items-center gap-2 mb-4">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pd-lose)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            <h3 class="font-bold text-base" style="color: var(--pd-lose);">问题</h3>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon bad">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">中信心崩盘</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">6场中信心预测仅命中1场（1/6 = 16.7%），中信心区间的模型校准存在严重偏差</div>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon bad">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">平局被严重低估</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">实际平局出现7场（43.8%），但模型仅预测2场平局（12.5%），存在显著低估</div>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon bad">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-sm">最大冷门</div>
+                                <div class="text-xs text-muted-foreground mt-0.5">江原FC 0-3 富川FC，预测为主胜，实际客队大胜，为本轮最大偏差</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== Footer ===== -->
+            <footer class="mt-16 pt-8 border-t border-border">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+                    <div class="flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>风险提示：足球预测存在不确定性，数据仅供参考，不构成投注建议</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>下次预测时间：2026年8月8日-9日</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

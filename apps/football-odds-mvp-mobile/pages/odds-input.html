@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赔率录入 - 赔率分析 MVP</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 max-w-mobile mx-auto relative" style="padding-bottom: 56px;">
+
+  <!-- ===== Sticky Header ===== -->
+  <header class="sticky top-0 z-30 bg-white border-b border-neutral-200 px-4 py-3 flex items-center justify-between" style="padding-top: env(safe-area-inset-top, 0);">
+    <button data-dom-id="btn-back" class="w-9 h-9 flex items-center justify-center rounded-full active:bg-neutral-100 transition-colors" aria-label="返回">
+      <svg class="w-5 h-5 text-neutral-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="text-base font-semibold tracking-tight">赔率录入</h1>
+    <div class="w-9 h-9"></div>
+  </header>
+
+  <!-- ===== Form Content ===== -->
+  <div class="px-4 mt-3 space-y-3">
+
+    <!-- Match Selection -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-1 text-xs font-medium text-neutral-500">选择比赛</label>
+      <div class="px-4 pb-3">
+        <div class="relative">
+          <select class="w-full appearance-none bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px] cursor-pointer" style="background-image: none;">
+            <option>曼联 vs 利物浦 | 英超第1轮 | 07-25 21:00</option>
+            <option>阿森纳 vs 切尔西 | 英超第1轮 | 07-25 23:30</option>
+            <option>曼城 vs 热刺 | 英超第1轮 | 07-26 01:00</option>
+            <option>皇马 vs 巴萨 | 西甲第1轮 | 07-26 02:00</option>
+            <option>马竞 vs 塞维利亚 | 西甲第1轮 | 07-26 04:00</option>
+            <option>纽卡斯尔 vs 阿斯顿维拉 | 英超第1轮 | 07-25 19:00</option>
+          </select>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookmaker Chips (horizontal scroll) -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-1 text-xs font-medium text-neutral-500">选择庄家</label>
+      <div class="px-4 pb-3">
+        <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-primary-600 text-white transition-colors min-h-[36px] flex items-center">Bet365</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">William Hill</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">Pinnacle</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">皇冠</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">Betfair</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">SBOBET</button>
+          <button class="bookmaker-chip shrink-0 px-3.5 py-2 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors min-h-[36px] flex items-center">明陞</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Odds Type Toggle -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-1 text-xs font-medium text-neutral-500">赔率类型</label>
+      <div class="px-4 pb-3">
+        <div class="flex bg-neutral-100 rounded-lg p-0.5">
+          <button data-odds-type="european" class="odds-type-toggle flex-1 py-2 text-xs font-medium rounded-md bg-white shadow-sm text-primary-600 transition-all min-h-[36px]">欧赔</button>
+          <button data-odds-type="asian" class="odds-type-toggle flex-1 py-2 text-xs font-medium rounded-md text-neutral-500 transition-all min-h-[36px]">亚盘</button>
+          <button data-odds-type="totals" class="odds-type-toggle flex-1 py-2 text-xs font-medium rounded-md text-neutral-500 transition-all min-h-[36px]">大小球</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- European Odds Form -->
+    <div id="form-european" class="odds-form bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-2 text-xs font-medium text-neutral-500">欧赔数值</label>
+      <div class="px-4 pb-4 space-y-3">
+        <!-- Home -->
+        <div class="flex items-center gap-3">
+          <span class="w-8 text-xs font-medium text-neutral-600 shrink-0">主胜</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" min="1" placeholder="1.85" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <!-- Draw -->
+        <div class="flex items-center gap-3">
+          <span class="w-8 text-xs font-medium text-neutral-600 shrink-0">平局</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" min="1" placeholder="3.40" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <!-- Away -->
+        <div class="flex items-center gap-3">
+          <span class="w-8 text-xs font-medium text-neutral-600 shrink-0">客胜</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" min="1" placeholder="4.20" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Asian Handicap Form (hidden) -->
+    <div id="form-asian" class="odds-form hidden bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-2 text-xs font-medium text-neutral-500">亚盘数值</label>
+      <div class="px-4 pb-4 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">主队盘</span>
+          <div class="flex-1 relative">
+            <input type="text" placeholder="-0.5" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">主队水</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" placeholder="0.95" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">客队水</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" placeholder="0.91" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Totals Form (hidden) -->
+    <div id="form-totals" class="odds-form hidden bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-2 text-xs font-medium text-neutral-500">大小球数值</label>
+      <div class="px-4 pb-4 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">盘口</span>
+          <div class="flex-1 relative">
+            <input type="text" placeholder="2.5" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">大球水</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" placeholder="1.90" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-10 text-xs font-medium text-neutral-600 shrink-0">小球水</span>
+          <div class="flex-1 relative">
+            <input type="number" step="0.01" placeholder="1.92" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm font-mono text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 min-h-[44px]" inputmode="decimal">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Source Tag -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-2 text-xs font-medium text-neutral-500">数据来源</label>
+      <div class="px-4 pb-4">
+        <div class="flex flex-wrap gap-2">
+          <label class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-primary-300 bg-primary-50 text-primary-700 text-xs font-medium cursor-pointer min-h-[36px] transition-colors">
+            <input type="radio" name="source" value="online" checked class="sr-only">
+            <span class="w-3.5 h-3.5 rounded-full border-2 border-primary-500 flex items-center justify-center">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary-500"></span>
+            </span>
+            在线采集
+          </label>
+          <label class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 text-xs font-medium cursor-pointer min-h-[36px] transition-colors">
+            <input type="radio" name="source" value="manual" class="sr-only">
+            <span class="w-3.5 h-3.5 rounded-full border-2 border-neutral-400 flex items-center justify-center">
+              <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+            </span>
+            手动录入
+          </label>
+          <label class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 text-xs font-medium cursor-pointer min-h-[36px] transition-colors">
+            <input type="radio" name="source" value="screenshot" class="sr-only">
+            <span class="w-3.5 h-3.5 rounded-full border-2 border-neutral-400 flex items-center justify-center">
+              <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+            </span>
+            截图录入
+          </label>
+          <label class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 text-xs font-medium cursor-pointer min-h-[36px] transition-colors">
+            <input type="radio" name="source" value="friend" class="sr-only">
+            <span class="w-3.5 h-3.5 rounded-full border-2 border-neutral-400 flex items-center justify-center">
+              <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+            </span>
+            朋友提供
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <label class="block px-4 pt-3 pb-2 text-xs font-medium text-neutral-500">备注（可选）</label>
+      <div class="px-4 pb-4">
+        <textarea placeholder="如：赔率变动较大，建议关注..." rows="3" class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 resize-none" style="min-height: 80px;"></textarea>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button data-dom-id="btn-submit" class="w-full py-3 rounded-xl bg-primary-600 text-white text-sm font-medium active:bg-primary-700 transition-colors flex items-center justify-center gap-2 min-h-[44px] shadow-sm">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      提交赔率数据
+    </button>
+
+    <!-- Recent Entries -->
+    <div class="mt-4 mb-4">
+      <div class="flex items-center justify-between px-1 mb-2">
+        <span class="text-xs font-medium text-neutral-500">最近录入</span>
+        <span class="text-[11px] text-neutral-400">共 3 条记录</span>
+      </div>
+
+      <!-- Entry 1 -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-2">
+        <div class="flex items-center px-4 py-3 gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-[13px] font-medium text-neutral-800 truncate">曼联 vs 利物浦</span>
+              <span class="shrink-0 px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-medium">在线采集</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-neutral-400">
+              <span>Bet365</span>
+              <span class="text-neutral-300">|</span>
+              <span class="font-mono">1.85 / 3.40 / 4.20</span>
+            </div>
+          </div>
+          <span class="text-[10px] text-neutral-400 shrink-0">2分钟前</span>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full active:bg-red-50 transition-colors shrink-0" aria-label="删除">
+            <svg class="w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <line x1="10" y1="11" x2="10" y2="17"/>
+              <line x1="14" y1="11" x2="14" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Entry 2 -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-2">
+        <div class="flex items-center px-4 py-3 gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-[13px] font-medium text-neutral-800 truncate">阿森纳 vs 切尔西</span>
+              <span class="shrink-0 px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 text-[10px] font-medium">手动录入</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-neutral-400">
+              <span>William Hill</span>
+              <span class="text-neutral-300">|</span>
+              <span class="font-mono">1.55 / 4.10 / 5.50</span>
+            </div>
+          </div>
+          <span class="text-[10px] text-neutral-400 shrink-0">15分钟前</span>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full active:bg-red-50 transition-colors shrink-0" aria-label="删除">
+            <svg class="w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <line x1="10" y1="11" x2="10" y2="17"/>
+              <line x1="14" y1="11" x2="14" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Entry 3 -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="flex items-center px-4 py-3 gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-[13px] font-medium text-neutral-800 truncate">曼城 vs 热刺</span>
+              <span class="shrink-0 px-1.5 py-0.5 rounded bg-purple-50 text-purple-600 text-[10px] font-medium">截图录入</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-neutral-400">
+              <span>Pinnacle</span>
+              <span class="text-neutral-300">|</span>
+              <span class="font-mono">1.40 / 4.80 / 6.50</span>
+            </div>
+          </div>
+          <span class="text-[10px] text-neutral-400 shrink-0">1小时前</span>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full active:bg-red-50 transition-colors shrink-0" aria-label="删除">
+            <svg class="w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <line x1="10" y1="11" x2="10" y2="17"/>
+              <line x1="14" y1="11" x2="14" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Bottom Navigation (fixed) ===== -->
+  <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40" style="height: 56px; padding-bottom: env(safe-area-inset-bottom, 0);">
+    <div class="flex items-center justify-around h-full">
+      <!-- 赛程 -->
+      <a href="schedule.html" data-dom-id="nav-schedule" data-nav-key="schedule" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">赛程</span>
+      </a>
+      <!-- 录入 (active) -->
+      <a href="odds-input.html" data-dom-id="nav-odds-input" data-nav-key="odds-input" class="flex flex-col items-center justify-center gap-0.5 text-primary-600 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">录入</span>
+      </a>
+      <!-- 因子 -->
+      <a href="#" data-dom-id="nav-factor" data-nav-key="factor" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">因子</span>
+      </a>
+      <!-- AI -->
+      <a href="#" data-dom-id="nav-ai" data-nav-key="ai" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">AI</span>
+      </a>
+    </div>
+  </nav>
+
+
+    <style>
+    :root {
+      --primary: #16a34a;
+      --primary-foreground: #ffffff;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --foreground: #171717;
+      --card: #ffffff;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    * { -webkit-tap-highlight-color: transparent; }
+    body { font-family: var(--font-body); overscroll-behavior: none; }
+    .font-mono { font-family: var(--font-mono); }
+
+    /* Hide scrollbar but keep scroll */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Hidden utility */
+    .hidden { display: none; }
+
+    /* Active bookmaker chip */
+    .bookmaker-chip.selected {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Active odds type toggle */
+    .odds-type-toggle.active {
+      background-color: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    /* Source radio active state */
+    label:has(input:checked) {
+      border-color: var(--primary) !important;
+      background-color: #f0fdf4 !important;
+      color: #15803d !important;
+    }
+    label:has(input:checked) .w-3\.5 {
+      border-color: var(--primary) !important;
+    }
+    label:has(input:checked) .w-1\.5 {
+      background-color: var(--primary) !important;
+    }
+  </style>
+
+  <script>
+    // Bookmaker chip selection
+    document.querySelectorAll('.bookmaker-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('.bookmaker-chip').forEach(c => {
+          c.classList.remove('selected');
+          c.className = c.className.replace(/bg-primary-600 text-white/g, 'bg-neutral-100 text-neutral-600 border border-neutral-200');
+        });
+        this.classList.add('selected');
+        this.className = this.className.replace(/bg-neutral-100 text-neutral-600 border border-neutral-200/g, 'bg-primary-600 text-white');
+      });
+    });
+
+    // Odds type toggle
+    document.querySelectorAll('.odds-type-toggle').forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        document.querySelectorAll('.odds-type-toggle').forEach(t => {
+          t.classList.remove('active');
+          t.style.backgroundColor = '';
+          t.style.boxShadow = 'none';
+          t.style.color = '#a3a3a3';
+          t.style.fontWeight = '500';
+        });
+        this.classList.add('active');
+        this.style.backgroundColor = 'white';
+        this.style.boxShadow = '0 1px 2px rgba(0,0,0,0.06)';
+        this.style.color = 'var(--primary)';
+
+        // Hide all forms
+        document.querySelectorAll('.odds-form').forEach(form => {
+          form.classList.add('hidden');
+        });
+        // Show target form
+        const type = this.getAttribute('data-odds-type');
+        const targetForm = document.getElementById('form-' + type);
+        if (targetForm) {
+          targetForm.classList.remove('hidden');
+        }
+      });
+    });
+
+    // Source radio pills
+    document.querySelectorAll('input[name="source"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Reset all labels
+        document.querySelectorAll('input[name="source"]').forEach(r => {
+          const label = r.closest('label');
+          label.style.borderColor = '';
+          label.style.backgroundColor = '';
+          label.style.color = '';
+        });
+        // Style selected
+        if (this.checked) {
+          const label = this.closest('label');
+          label.style.borderColor = 'var(--primary)';
+          label.style.backgroundColor = '#f0fdf4';
+          label.style.color = '#15803d';
+        }
+      });
+    });
+
+    // Back button
+    document.querySelector('[data-dom-id="btn-back"]').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'schedule.html';
+      }
+    });
+
+    // Submit button toast
+    document.querySelector('[data-dom-id="btn-submit"]').addEventListener('click', function() {
+      const btn = this;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> 提交中...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        btn.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 提交成功';
+        btn.style.opacity = '1';
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }, 1500);
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI足球预测中心 · V2.4</title>
+    <link rel="stylesheet" href="colors_and_type.css">
+
+    <!-- API 数据层 -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+
+    <style>
+        /* ========== 布局 ========== */
+        .dashboard-container {
+            position: relative; z-index: 1; max-width: 1280px;
+            margin: 0 auto; padding: 24px 20px 0;
+        }
+
+        /* ========== 头部 ========== */
+        .hero-section {
+            display: flex; flex-wrap: wrap; gap: 32px;
+            align-items: center; justify-content: space-between; margin-bottom: 48px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--pd-primary), var(--pd-accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .glow-primary { text-shadow: 0 0 40px rgba(34,197,94,0.3); }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .kpi-card {
+            position: relative; background: var(--pd-card); border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-lg); padding: 16px 20px; overflow: hidden;
+            transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: var(--pd-primary); transform: translateY(-2px); }
+        .kpi-trend {
+            display: flex; align-items: center; gap: 4px; color: var(--pd-primary);
+            font-size: 12px; font-weight: 600; margin-bottom: 8px;
+        }
+        .kpi-icon {
+            position: absolute; top: 16px; right: 16px;
+            color: var(--pd-primary); opacity: 0.15;
+        }
+        .kpi-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+        .kpi-label { font-size: 13px; color: var(--pd-muted-foreground); margin-top: 2px; }
+
+        /* ========== 联赛筛选 ========== */
+        .league-tab {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 6px 14px; border-radius: 20px; font-size: 13px;
+            border: 1px solid var(--pd-border); cursor: pointer;
+            transition: all 0.2s; color: var(--pd-muted-foreground);
+        }
+        .league-tab:hover { border-color: var(--pd-primary); color: var(--pd-foreground); }
+        .league-tab.active {
+            background: var(--pd-primary); color: var(--pd-primary-foreground);
+            border-color: var(--pd-primary);
+        }
+        .region-label {
+            font-size: 11px; color: var(--pd-muted-foreground);
+            padding: 2px 8px; margin-right: 4px;
+        }
+
+        /* ========== 玻璃卡片 ========== */
+        .glass-card {
+            background: var(--pd-card); border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-xl); transition: all 0.3s;
+        }
+        .glass-card:hover { border-color: var(--pd-border-light); }
+        .featured-card { border-color: rgba(249, 115, 22, 0.3); background: linear-gradient(135deg, rgba(249,115,22,0.05), var(--pd-card)); }
+
+        /* ========== 联赛徽章 ========== */
+        .league-badge {
+            display: inline-flex; align-items: center; padding: 2px 10px;
+            border-radius: 4px; font-size: 11px; font-weight: 700;
+        }
+        /* 欧洲五大 */
+        .league-premier { background: rgba(59,7,100,0.15); color: #a78bfa; }
+        .league-laliga { background: rgba(220,38,38,0.15); color: #f87171; }
+        .league-seriea { background: rgba(37,99,235,0.15); color: #60a5fa; }
+        .league-bundesliga { background: rgba(225,29,72,0.15); color: #fb7185; }
+        .league-ligue1 { background: rgba(29,78,216,0.15); color: #818cf8; }
+        /* 欧洲其他 */
+        .league-championship { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .league-eredivisie { background: rgba(249,115,22,0.15); color: #fb923c; }
+        .league-portugal { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .league-eliteserien { background: rgba(0,199,129,0.15); color: #00c781; }
+        .league-allsvenskan { background: rgba(250,204,21,0.15); color: #facc15; }
+        /* 亚洲 */
+        .league-csl { background: rgba(229,57,53,0.15); color: #e53935; }
+        .league-jleague { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .league-kleague { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .league-thai { background: rgba(6,182,212,0.15); color: #06b6d4; }
+        /* 大洋洲 */
+        .league-aleague { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        /* 拉美 */
+        .league-brazil { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .league-argentina { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+        .league-mexico { background: rgba(236,72,153,0.15); color: #ec4899; }
+        .league-chile { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .league-colombia { background: rgba(249,115,22,0.15); color: #f97316; }
+        .league-peru { background: rgba(234,179,8,0.15); color: #eab308; }
+
+        /* ========== 比赛卡片 ========== */
+        .match-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        }
+        .risk-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+        }
+        .risk-low { background: rgba(34,197,94,0.1); color: var(--pd-win); }
+        .risk-mid { background: rgba(251,191,36,0.1); color: var(--pd-draw); }
+        .risk-high { background: rgba(239,68,68,0.1); color: var(--pd-lose); }
+        .prediction-result {
+            display: inline-block; padding: 4px 16px; border-radius: 20px;
+            font-size: 13px; font-weight: 700;
+        }
+        .pred-win { background: rgba(34,197,94,0.15); color: var(--pd-win); }
+        .pred-draw { background: rgba(251,191,36,0.15); color: var(--pd-draw); }
+        .pred-lose { background: rgba(239,68,68,0.15); color: var(--pd-lose); }
+        .confidence-bar {
+            height: 6px; background: var(--pd-muted); border-radius: 3px; overflow: hidden;
+        }
+        .confidence-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+        .mini-tag {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 20px; font-size: 11px;
+            background: var(--pd-muted); color: var(--pd-muted-foreground);
+        }
+
+        /* ========== 统计区 ========== */
+        .stats-cell {
+            background: var(--pd-muted); border-radius: var(--pd-radius-md);
+            padding: 16px; text-align: center;
+        }
+        .stats-cell-label { font-size: 12px; color: var(--pd-muted-foreground); margin-bottom: 6px; }
+        .stats-cell-value { font-size: 28px; font-weight: 800; }
+        .stats-cell-sub { font-size: 12px; color: var(--pd-muted-foreground); margin-top: 4px; }
+        .stats-cell-bar {
+            height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;
+            margin-top: 8px; overflow: hidden;
+        }
+        .stats-cell-fill { height: 100%; border-radius: 2px; transition: width 0.6s; }
+
+        /* ========== 社交热点 ========== */
+        .social-scroll-wrapper {
+            position: relative; overflow: hidden; padding: 4px 0;
+        }
+        .social-scroll-track {
+            display: flex; gap: 16px; overflow-x: auto;
+            scrollbar-width: none; padding: 8px 4px;
+        }
+        .social-scroll-track::-webkit-scrollbar { display: none; }
+        .social-card {
+            flex: 0 0 auto; width: 320px; background: var(--pd-card);
+            border: 1px solid var(--pd-border); border-radius: var(--pd-radius-lg);
+            padding: 16px; transition: all 0.2s;
+        }
+        .social-card:hover { border-color: var(--pd-primary); }
+        .social-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .social-platform {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 12px; font-weight: 700; color: var(--pd-foreground);
+        }
+        .social-weibo { color: #e53935; }
+        .social-time { font-size: 11px; color: var(--pd-muted-foreground); }
+        .social-content { font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+        .social-content .highlight { color: var(--pd-primary); }
+        .social-footer { display: flex; gap: 16px; }
+        .social-stat {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 11px; color: var(--pd-muted-foreground);
+        }
+        .social-scroll-hint {
+            text-align: center; margin-top: 12px; font-size: 12px;
+            color: var(--pd-muted-foreground); display: flex; align-items: center;
+            justify-content: center; gap: 6px;
+        }
+        .live-dot {
+            width: 8px; height: 8px; background: var(--pd-primary);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ========== 表格 ========== */
+        .stats-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+        .stats-table th {
+            text-align: left; padding: 10px 16px; color: var(--pd-muted-foreground);
+            border-bottom: 1px solid var(--pd-border); font-weight: 500;
+        }
+        .stats-table td {
+            padding: 10px 16px; border-bottom: 1px solid var(--pd-border);
+        }
+        .stats-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* ========== 页脚 ========== */
+        .dashboard-footer {
+            text-align: center; padding: 32px 0; border-top: 1px solid var(--pd-border);
+            margin-top: 48px;
+        }
+
+        /* ========== 页面切换 Tab ========== */
+        .page-tabs {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            background: var(--pd-card); border: 1px solid var(--pd-border);
+            border-radius: var(--pd-radius-lg); padding: 8px 14px;
+        }
+        .page-tab {
+            padding: 8px 20px; border-radius: 20px; font-size: 15px; font-weight: 600;
+            border: 1px solid var(--pd-border); cursor: pointer;
+            color: var(--pd-muted-foreground); background: transparent;
+            transition: all 0.2s;
+        }
+        .page-tab:hover { border-color: var(--pd-primary); color: var(--pd-foreground); }
+        .page-tab.active {
+            background: var(--pd-primary); color: var(--pd-primary-foreground);
+            border-color: var(--pd-primary);
+        }
+        .page-tab-hint { font-size: 12.5px; color: var(--pd-muted-foreground); margin-left: auto; }
+
+        /* ========== 预测说明页 ========== */
+        .reasoning-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        }
+        .reason-card { padding: 22px 24px; }
+        .reason-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+        }
+        .reason-time { font-size: 13px; color: var(--pd-muted-foreground); }
+        .reason-idx { font-size: 13px; font-weight: 700; color: var(--pd-muted-foreground); }
+        .reason-teams {
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+            font-size: 20px; font-weight: 800; margin-bottom: 16px;
+        }
+        .reason-vs { font-size: 14px; color: var(--pd-muted-foreground); font-weight: 600; }
+        .reason-verdict {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 18px; padding: 10px; border-radius: var(--pd-radius-md);
+            background: var(--pd-muted);
+        }
+        .reason-confidence { font-size: 22px; font-weight: 800; }
+        .reason-verdict-text { font-size: 14px; color: var(--pd-muted-foreground); }
+        .reason-factor { margin-bottom: 14px; }
+        .reason-factor-head {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;
+        }
+        .reason-factor-key { font-size: 14px; font-weight: 700; color: var(--pd-foreground); }
+        .reason-factor-val { font-size: 14px; font-weight: 700; }
+        .reason-factor-bar {
+            height: 6px; background: var(--pd-muted); border-radius: 3px; overflow: hidden; margin-bottom: 5px;
+        }
+        .reason-factor-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+        .reason-factor-note { font-size: 13px; color: var(--pd-muted-foreground); line-height: 1.5; }
+        .reason-conclusion {
+            margin-top: 14px; padding: 12px 14px; border-radius: var(--pd-radius-md);
+            background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.15);
+            font-size: 14px; line-height: 1.6; color: var(--pd-foreground);
+        }
+        .reasoning-note {
+            margin-top: 24px; padding: 16px 18px; border-radius: var(--pd-radius-md);
+            background: var(--pd-card); border: 1px dashed var(--pd-border);
+            font-size: 13.5px; line-height: 1.7; color: var(--pd-muted-foreground);
+        }
+
+        /* ========== 盘口数据页 ========== */
+        .odds-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        }
+        .odds-card { padding: 22px 24px; }
+        .odds-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+        }
+        .odds-prob-row {
+            display: flex; justify-content: center; gap: 24px; margin-bottom: 16px;
+            padding: 10px; border-radius: var(--pd-radius-md); background: var(--pd-muted);
+        }
+        .odds-prob-cell { font-size: 15px; font-weight: 700; }
+        .odds-compare { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+        .odds-source {
+            padding: 12px 14px; border-radius: var(--pd-radius-md);
+            background: var(--pd-card); border: 1px solid var(--pd-border);
+        }
+        .odds-source-name {
+            display: inline-block; font-size: 13px; font-weight: 700; margin-bottom: 10px;
+            padding: 2px 10px; border-radius: 4px;
+            background: rgba(34,197,94,0.12); color: var(--pd-win);
+        }
+        .odds-source-name.odds-source-real {
+            background: rgba(59,130,246,0.15); color: #60a5fa;
+        }
+        .odds-euro {
+            display: flex; gap: 10px; margin-bottom: 10px;
+        }
+        .odds-euro-cell {
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+            padding: 8px 0; border-radius: 6px; background: var(--pd-muted);
+        }
+        .odds-euro-val { font-size: 19px; font-weight: 800; color: var(--pd-foreground); }
+        .odds-euro-label { font-size: 12.5px; color: var(--pd-muted-foreground); }
+        .odds-asian-row {
+            display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+            font-size: 13.5px; color: var(--pd-muted-foreground);
+        }
+        .odds-asian-line {
+            font-weight: 700; color: var(--pd-foreground);
+            padding: 3px 10px; border-radius: 4px; background: rgba(249,115,22,0.12); color: #fb923c;
+        }
+        .odds-water b { color: var(--pd-foreground); }
+        .odds-ou b { color: var(--pd-foreground); }
+        .odds-tip {
+            padding: 12px 14px; border-radius: var(--pd-radius-md);
+            background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.2);
+            font-size: 14px; line-height: 1.6;
+        }
+
+        /* ========== 密钥显示开关 ========== */
+        .show-keys-toggle {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 13px; color: var(--pd-muted-foreground); cursor: pointer;
+            user-select: none;
+        }
+        .show-keys-toggle input { cursor: pointer; accent-color: var(--pd-primary); }
+
+        /* ========== 演示数据角标 ========== */
+        .demo-badge {
+            display: inline-block; font-size: 11px; font-weight: 700;
+            padding: 2px 8px; border-radius: 4px;
+            background: rgba(249,115,22,0.15); color: #fb923c;
+            border: 1px dashed rgba(249,115,22,0.4);
+        }
+
+        /* ========== 卡片字体放大优化（V2.5） ========== */
+        .match-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+        .match-card .league-badge { font-size: 12.5px; padding: 3px 12px; }
+        .match-card .text-xs { font-size: 13px; }
+        .match-card .font-bold.text-base { font-size: 19px; }
+        .match-card .risk-badge { font-size: 12.5px; padding: 4px 12px; }
+        .match-card .prediction-result { font-size: 16px; padding: 5px 18px; }
+        .match-card .mini-tag { font-size: 12.5px; padding: 4px 12px; }
+        .match-card .confidence-bar { height: 8px; }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 1024px) {
+            .match-grid { grid-template-columns: repeat(2, 1fr); }
+            .reasoning-grid { grid-template-columns: 1fr; }
+            .odds-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .match-grid { grid-template-columns: 1fr; }
+            .reasoning-grid { grid-template-columns: 1fr; }
+            .odds-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .hero-section { flex-direction: column; }
+            .social-card { width: 280px; }
+            .page-tab-hint { display: none; }
+            .reason-teams { font-size: 17px; }
+        }
+
+        /* ========== 工具类 ========== */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .flex-wrap { flex-wrap: wrap; }
+        .flex-1 { flex: 1; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .gap-5 { gap: 20px; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .text-xs { font-size: 12px; }
+        .text-sm { font-size: 13px; }
+        .text-base { font-size: 15px; }
+        .text-lg { font-size: 18px; }
+        .text-xl { font-size: 20px; }
+        .text-2xl { font-size: 24px; }
+        .text-4xl { font-size: 36px; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-normal { font-weight: 400; }
+        .font-medium { font-weight: 500; }
+        .text-primary { color: var(--pd-primary); }
+        .text-foreground { color: var(--pd-foreground); }
+        .text-muted-foreground { color: var(--pd-muted-foreground); }
+        .mb-1 { margin-bottom: 4px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-5 { margin-bottom: 20px; }
+        .mb-6 { margin-bottom: 24px; }
+        .mb-8 { margin-bottom: 32px; }
+        .mb-10 { margin-bottom: 40px; }
+        .mb-12 { margin-bottom: 48px; }
+        .mb-16 { margin-bottom: 64px; }
+        .mt-2 { margin-top: 8px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-6 { margin-top: 24px; }
+        .mt-0\.5 { margin-top: 2px; }
+        .mr-2 { margin-right: 8px; }
+        .ml-1 { margin-left: 4px; }
+        .px-4 { padding-left: 16px; padding-right: 16px; }
+        .py-3 { padding-top: 12px; padding-bottom: 12px; }
+        .py-8 { padding-top: 32px; padding-bottom: 32px; }
+        .p-4 { padding: 16px; }
+        .p-5 { padding: 20px; }
+        .p-6 { padding: 24px; }
+        .rounded-lg { border-radius: var(--pd-radius-lg); }
+        .rounded-full { border-radius: 999px; }
+        .w-full { width: 100%; }
+        .tracking-tight { letter-spacing: -0.5px; }
+        .-space-x-2 > * + * { margin-left: -8px; }
+        .w-8 { width: 32px; }
+        .h-8 { height: 32px; }
+        .w-1 { width: 4px; }
+        .h-6 { height: 24px; }
+        .bg-muted\/50 { background: rgba(26,26,36,0.5); }
+        .bg-muted\/30 { background: rgba(26,26,36,0.3); }
+        .bg-primary { background: var(--pd-primary); }
+        .bg-csl { background: #e53935; }
+        .bg-eliteserien { background: #00c781; }
+        .bg-kleague { background: #3b82f6; }
+        .bg-allsvenskan { background: #fbbf24; }
+        .border-2 { border-width: 2px; border-style: solid; }
+        .border-border { border-color: var(--pd-border); }
+        .border-background { border-color: var(--pd-background); }
+        .rounded-full { border-radius: 999px; }
+        .overflow-x-auto { overflow-x: auto; }
+        .overflow-hidden { overflow: hidden; }
+        .grid { display: grid; }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .lg\:max-w-2xl { max-width: 672px; }
+        .lg\:text-3xl { font-size: 28px; }
+        .lg\:text-5xl { font-size: 44px; }
+        .sm\:flex-row { flex-direction: row; }
+        .md\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .inline-flex { display: inline-flex; }
+        .inline-block { display: inline-block; }
+        .block { display: block; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .max-w-2xl { max-width: 672px; }
+        .border-t { border-top: 1px solid; }
+        .border-border\/50 { border-color: rgba(30,30,46,0.5); }
+        .border-b { border-bottom: 1px solid; }
+        .bg-primary\/10 { background: rgba(34,197,94,0.1); }
+        .border-primary\/20 { border-color: rgba(34,197,94,0.2); }
+
+        /* ===== 刷新按钮旋转动画 ===== */
+        .btn-icon.spinning svg {
+            animation: pd-spin 0.8s linear infinite;
+        }
+        @keyframes pd-spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .font-mono { font-family: 'SF Mono', Consolas, Menlo, monospace; }
+        @media (max-width: 640px) {
+            .hidden.sm\:inline { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading 遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">正在加载数据...</div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- ===== 头部区域 ===== -->
+        <section class="mb-12">
+            <div class="hero-section">
+                <div>
+                    <h1 class="text-4xl lg:text-5xl font-bold mb-3 tracking-tight">
+                        <span class="gradient-text glow-primary">AI足球预测中心</span>
+                    </h1>
+                    <p class="text-lg text-muted-foreground">
+                        V2.4 · 基于 <span class="text-primary font-semibold" id="totalMatches">--</span> 场历史比赛数据训练
+                    </p>
+                    <div class="flex items-center gap-4 mt-6">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-csl flex items-center justify-center text-white text-xs font-bold border-2 border-background">亚</div>
+                            <div class="w-8 h-8 rounded-full bg-eliteserien flex items-center justify-center text-white text-xs font-bold border-2 border-background">欧</div>
+                            <div class="w-8 h-8 rounded-full bg-kleague flex items-center justify-center text-white text-xs font-bold border-2 border-background">美</div>
+                            <div class="w-8 h-8 rounded-full bg-allsvenskan flex items-center justify-center text-black text-xs font-bold border-2 border-background">澳</div>
+                        </div>
+                        <span class="text-sm text-muted-foreground">覆盖 22 大联赛 · 每日更新</span>
+                    </div>
+                </div>
+
+                <div class="kpi-grid flex-1 lg:max-w-2xl">
+                    <div class="kpi-card">
+                        <div class="kpi-trend">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                            <span>+3.2%</span>
+                        </div>
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        </div>
+                        <div class="kpi-value" id="kpiTotal">--<span class="text-base text-muted-foreground font-normal">场</span></div>
+                        <div class="kpi-label">累计预测</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-trend">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                            <span>+1.8%</span>
+                        </div>
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="kpi-value">62.9<span class="text-base text-muted-foreground font-normal">%</span></div>
+                        <div class="kpi-label">胜平负命中</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-trend">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                            <span>+2.5%</span>
+                        </div>
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </div>
+                        <div class="kpi-value">71.0<span class="text-base text-muted-foreground font-normal">%</span></div>
+                        <div class="kpi-label">大小球命中</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-trend">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                            <span>+0.8%</span>
+                        </div>
+                        <div class="kpi-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                        </div>
+                        <div class="kpi-value">69.4<span class="text-base text-muted-foreground font-normal">%</span></div>
+                        <div class="kpi-label">单双命中</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 页面切换 Tab ===== -->
+        <section class="mb-8">
+            <div class="page-tabs">
+                <button class="page-tab active" data-page="matches">⚽ 赛事预测</button>
+                <button class="page-tab" data-page="reasoning">🔬 预测说明</button>
+                <button class="page-tab" data-page="odds">📊 盘口数据</button>
+                <span class="page-tab-hint">预测说明展示推算过程 · 盘口页展示欧赔/亚盘/大小球</span>
+            </div>
+        </section>
+
+        <!-- ===== 页面：赛事预测 ===== -->
+        <div class="page-section" id="page-matches">
+
+        <!-- ===== 联赛筛选 ===== -->
+        <section class="mb-8">
+            <div class="glass-card p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-2 flex-wrap" id="leagueFilterTabs">
+                    <!-- 联赛标签由 JS 动态渲染 -->
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-muted-foreground">今日</span>
+                    <span class="text-primary font-bold text-lg" id="matchCount">--</span>
+                    <span class="text-muted-foreground">场比赛</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 比赛卡片 ===== -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold flex items-center gap-3">
+                    <span class="w-1 h-6 bg-primary rounded-full"></span>
+                    今日预测赛事
+                </h2>
+                <div class="flex items-center gap-3">
+                    <span class="text-sm text-muted-foreground hidden sm:inline">更新于 <span id="lastUpdateTime" class="text-foreground font-mono">--:--:--</span></span>
+                    <span id="dataStatus" class="data-status status-offline">离线数据</span>
+                    <button class="btn-icon" id="refreshBtn" title="刷新数据">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        刷新
+                    </button>
+                    <button class="btn-icon" id="apiSettingsBtn" title="API 设置">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        API
+                    </button>
+                </div>
+            </div>
+            <div class="match-grid" id="matchCardsContainer">
+                <!-- JS 动态渲染 -->
+            </div>
+        </section>
+
+        <!-- ===== 命中率统计 ===== -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold flex items-center gap-3">
+                    <span class="w-1 h-6 bg-primary rounded-full"></span>
+                    命中率统计
+                </h2>
+                <div class="text-sm text-muted-foreground">
+                    数据更新于 <span class="text-foreground">2026-08-08</span>
+                </div>
+            </div>
+            <div class="glass-card p-6 mb-5">
+                <h3 class="font-bold mb-5 flex items-center gap-2 text-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    过往全部比赛统计（共342场）
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="stats-cell">
+                        <div class="stats-cell-label">胜平负预测</div>
+                        <div class="stats-cell-value">217</div>
+                        <div class="stats-cell-sub">/ 342 场 · <span class="text-primary">63.5%</span></div>
+                        <div class="stats-cell-bar"><div class="stats-cell-fill" style="width:63.5%;background:var(--pd-primary);"></div></div>
+                    </div>
+                    <div class="stats-cell">
+                        <div class="stats-cell-label">大小球预测</div>
+                        <div class="stats-cell-value">245</div>
+                        <div class="stats-cell-sub">/ 342 场 · <span class="text-primary">71.6%</span></div>
+                        <div class="stats-cell-bar"><div class="stats-cell-fill" style="width:71.6%;background:var(--pd-primary);"></div></div>
+                    </div>
+                    <div class="stats-cell">
+                        <div class="stats-cell-label">单双预测</div>
+                        <div class="stats-cell-value">236</div>
+                        <div class="stats-cell-sub">/ 342 场 · <span class="text-primary">69.0%</span></div>
+                        <div class="stats-cell-bar"><div class="stats-cell-fill" style="width:69.0%;background:var(--pd-primary);"></div></div>
+                    </div>
+                    <div class="stats-cell">
+                        <div class="stats-cell-label">比分预测</div>
+                        <div class="stats-cell-value">74</div>
+                        <div class="stats-cell-sub">/ 342 场 · <span class="text-primary">21.6%</span></div>
+                        <div class="stats-cell-bar"><div class="stats-cell-fill" style="width:21.6%;background:var(--pd-primary);"></div></div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="stats-table" id="statsTable">
+                        <thead>
+                            <tr class="border-b border-border text-muted-foreground">
+                                <th class="text-left py-3 px-4">联赛</th>
+                                <th class="text-center py-3 px-4">场次</th>
+                                <th class="text-center py-3 px-4">WDL命中率</th>
+                                <th class="text-center py-3 px-4">大小球</th>
+                                <th class="text-center py-3 px-4">单双</th>
+                                <th class="text-center py-3 px-4">比分</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-premier">英超</span></td>
+                                <td class="text-center py-3 px-4">24</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">66.7%</span></td>
+                                <td class="text-center py-3 px-4">75.0%</td>
+                                <td class="text-center py-3 px-4">70.8%</td>
+                                <td class="text-center py-3 px-4">25.0%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-laliga">西甲</span></td>
+                                <td class="text-center py-3 px-4">20</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">65.0%</span></td>
+                                <td class="text-center py-3 px-4">70.0%</td>
+                                <td class="text-center py-3 px-4">65.0%</td>
+                                <td class="text-center py-3 px-4">20.0%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-seriea">意甲</span></td>
+                                <td class="text-center py-3 px-4">18</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">61.1%</span></td>
+                                <td class="text-center py-3 px-4">72.2%</td>
+                                <td class="text-center py-3 px-4">66.7%</td>
+                                <td class="text-center py-3 px-4">22.2%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-bundesliga">德甲</span></td>
+                                <td class="text-center py-3 px-4">16</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">62.5%</span></td>
+                                <td class="text-center py-3 px-4">68.8%</td>
+                                <td class="text-center py-3 px-4">75.0%</td>
+                                <td class="text-center py-3 px-4">18.8%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-ligue1">法甲</span></td>
+                                <td class="text-center py-3 px-4">14</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">57.1%</span></td>
+                                <td class="text-center py-3 px-4">64.3%</td>
+                                <td class="text-center py-3 px-4">71.4%</td>
+                                <td class="text-center py-3 px-4">14.3%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-championship">英冠</span></td>
+                                <td class="text-center py-3 px-4">12</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">58.3%</span></td>
+                                <td class="text-center py-3 px-4">66.7%</td>
+                                <td class="text-center py-3 px-4">58.3%</td>
+                                <td class="text-center py-3 px-4">16.7%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-eredivisie">荷甲</span></td>
+                                <td class="text-center py-3 px-4">10</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">60.0%</span></td>
+                                <td class="text-center py-3 px-4">70.0%</td>
+                                <td class="text-center py-3 px-4">60.0%</td>
+                                <td class="text-center py-3 px-4">20.0%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-portugal">葡超</span></td>
+                                <td class="text-center py-3 px-4">10</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">60.0%</span></td>
+                                <td class="text-center py-3 px-4">70.0%</td>
+                                <td class="text-center py-3 px-4">60.0%</td>
+                                <td class="text-center py-3 px-4">20.0%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-csl">中超</span></td>
+                                <td class="text-center py-3 px-4">68</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">64.7%</span></td>
+                                <td class="text-center py-3 px-4">72.1%</td>
+                                <td class="text-center py-3 px-4">70.6%</td>
+                                <td class="text-center py-3 px-4">22.1%</td>
+                            </tr>
+                            <tr class="border-b border-border/50 hover:bg-muted/30">
+                                <td class="py-3 px-4"><span class="league-badge league-eliteserien">挪威超</span></td>
+                                <td class="text-center py-3 px-4">45</td>
+                                <td class="text-center py-3 px-4"><span class="text-primary font-semibold">60.0%</span></td>
+                                <td class="text-center py-3 px-4">68.9%</td>
+                                <td class="text-center py-3 px-4">66.7%</td>
+                                <td class="text-center py-3 px-4">17.8%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 实时社交热点 ===== -->
+        <section class="mb-16" id="social-hotspots">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold flex items-center gap-3">
+                    <span class="w-1 h-6 bg-primary rounded-full"></span>
+                    实时社交热点
+                </h2>
+                <div class="flex items-center gap-2">
+                    <span class="live-dot"></span>
+                    <span class="text-sm text-primary font-medium">实时更新中</span>
+                </div>
+            </div>
+            <div class="social-scroll-wrapper">
+                <div class="social-scroll-track" id="socialTrack">
+                    <!-- JS 动态渲染 -->
+                </div>
+            </div>
+            <div class="social-scroll-hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                左右滑动查看更多热点
+            </div>
+        </section>
+
+        </div><!-- /page-matches -->
+
+        <!-- ===== 页面：预测说明 ===== -->
+        <div class="page-section" id="page-reasoning" style="display:none;">
+            <section class="mb-16">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        预测推算过程
+                    </h2>
+                    <span class="text-sm text-muted-foreground">共 <span id="reasonCount" class="text-primary font-bold text-lg">--</span> 场比赛 · 逐项因子打分推算</span>
+                </div>
+                <div class="reasoning-grid" id="reasoningContainer">
+                    <!-- JS 动态渲染 -->
+                </div>
+                <div class="reasoning-note">
+                    <strong>推算说明：</strong>每场比赛由 5 项因子加权打分（主场优势 / 近期状态 / 历史交锋 / 攻防对比 / 阵容深度），综合评分差决定预测方向，分差越大置信度越高、风险越低。数据基于球队历史表现建模，仅供观赛参考。
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== 页面：盘口数据 ===== -->
+        <div class="page-section" id="page-odds" style="display:none;">
+            <section class="mb-16">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <span class="w-1 h-6 bg-primary rounded-full"></span>
+                        主流盘口数据
+                    </h2>
+                    <span class="text-sm text-muted-foreground">欧赔 · 亚盘 · 大小球 · 内盘/外盘对比</span>
+                </div>
+                <div class="odds-grid" id="oddsContainer">
+                    <!-- JS 动态渲染 -->
+                </div>
+                <div class="reasoning-note">
+                    <strong>盘口说明：</strong>本页为参考盘口（基于模型评分推算），展示欧赔（1X2 及隐含概率）、亚盘（让球盘+水位）、大小球（大/小水位），并对比内盘（竞彩，抽水更高）与外盘（国际）差异。实时盘口请以主流博彩公司为准，数据仅供观赛参考，不构成投注建议。
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== 页脚 ===== -->
+        <footer class="dashboard-footer">
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+                    <span class="font-bold text-lg">AI预测模型 V2.4</span>
+                </div>
+                <p class="text-muted-foreground text-sm mb-2">数据仅供观赛参考，不构成投注建议</p>
+                <p class="text-muted-foreground text-xs">每日自动更新 · 模型持续迭代优化中</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===== API 设置面板 ===== -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+    <div class="api-settings-panel" id="apiSettingsPanel">
+        <div class="flex items-center justify-between mb-6">
+            <h3>API 数据源设置</h3>
+            <div class="flex items-center gap-3">
+                <label class="show-keys-toggle">
+                    <input type="checkbox" id="toggleShowKeys">
+                    <span>显示密钥</span>
+                </label>
+                <button class="btn-icon" id="closeSettingsBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="api-field">
+            <label>football-data.org API Key</label>
+            <input type="password" id="inputFootballKey" placeholder="输入你的 API Key..." autocomplete="off">
+            <div class="api-hint">覆盖：中超、J联赛、澳超、巴甲、阿甲等 10+ 联赛 · <a href="https://www.football-data.org/client/register" target="_blank">免费注册 →</a></div>
+        </div>
+        <div class="api-field">
+            <label>TheSportsDB API Key</label>
+            <input type="password" id="inputSportsDBKey" placeholder="输入你的 API Key（默认免费测试 Key: 3）..." autocomplete="off">
+            <div class="api-hint">覆盖：K联赛、泰超 · <a href="https://www.thesportsdb.com/free_sports_api" target="_blank">免费注册 →</a></div>
+        </div>
+        <div class="api-field">
+            <label>GNews API Key</label>
+            <input type="password" id="inputNewsKey" placeholder="输入你的 API Key..." autocomplete="off">
+            <div class="api-hint">覆盖：足球新闻/社交热点 · <a href="https://gnews.io/register" target="_blank">免费注册 →</a></div>
+        </div>
+        <div class="api-field">
+            <label>The Odds API Key（真实欧赔）</label>
+            <input type="password" id="inputOddsKey" placeholder="选填：填入后盘口页欧赔切换为真实数据" autocomplete="off">
+            <div class="api-hint">覆盖：英超/西甲/意甲/德甲/法甲等 10 联赛真实欧赔（免费版 500 credits/月）· <a href="https://the-odds-api.com/" target="_blank">免费注册 →</a> · 不填则使用模型推算盘口</div>
+        </div>
+        <div class="flex gap-3 mt-6">
+            <button class="btn-primary flex-1" id="saveSettingsBtn">保存设置</button>
+            <button class="btn-secondary" id="closeSettingsBtn2">取消</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+</body>
+</html>

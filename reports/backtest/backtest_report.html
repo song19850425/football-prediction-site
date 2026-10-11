@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V3.2 回测报告 — 五大联赛</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.7; padding: 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .header { text-align: center; padding: 36px 20px 28px; border-bottom: 1px solid #1f2e26; margin-bottom: 28px; }
+  .header h1 { font-size: 1.8rem; color: #4ecca3; font-weight: 700; margin-bottom: 8px; }
+  .header .subtitle { font-size: 0.9rem; color: #888; }
+
+  .stats-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .card { background: #141414; border: 1px solid #1e2a24; border-radius: 8px; padding: 18px 14px; text-align: center; }
+  .card .card-num { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+  .card .card-label { font-size: 0.78rem; color: #888; }
+  .card-green .card-num { color: #4ecca3; }
+  .card-yellow .card-num { color: #d4a835; }
+  .card-blue .card-num { color: #7a9cc6; }
+  .card-purple .card-num { color: #b080d0; }
+
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 1.05rem; font-weight: 600; color: #fff; padding: 10px 14px; background: #1a1a1a; border-left: 3px solid #4ecca3; border-radius: 4px; margin-bottom: 12px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #161616; color: #999; font-weight: 500; padding: 8px 6px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2a2a2a; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #1e1e1e; }
+  tbody tr:hover { background: #1a1a1a; }
+  tbody td { padding: 8px 6px; text-align: center; color: #ccc; }
+
+  .task-box { background: #111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .task-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .task-title .dot { width: 10px; height: 10px; border-radius: 50%; background: #4ecca3; }
+  .task-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .task-stat { text-align: center; }
+  .task-stat .num { font-size: 1.3rem; font-weight: 700; color: #4ecca3; }
+  .task-stat .label { font-size: 11px; color: #888; }
+
+  .footer { text-align: center; margin-top: 30px; padding-top: 16px; border-top: 1px solid #2a2a2a; color: #555; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>V3.2 XGBoost 回测报告</h1>
+  <div class="subtitle">五大联赛 · 赛季滚动回测 · XGBoost基线模型</div>
+</div>
+
+<div class="stats-cards">
+  <div class="card card-blue"><div class="card-num">10,763</div><div class="card-label">总场次</div></div>
+  <div class="card card-green"><div class="card-num">5</div><div class="card-label">联赛数</div></div>
+  <div class="card card-yellow"><div class="card-num">7</div><div class="card-label">赛季数</div></div>
+  <div class="card card-purple"><div class="card-num">99</div><div class="card-label">特征数</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">三项预测任务对比</div>
+  <table>
+    <thead>
+      <tr><th>预测任务</th><th>预测场次</th><th>准确率</th><th>Log Loss</th><th>随机基线</th><th>超越基线</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left;padding-left:12px;font-weight:600;">胜平负</td>
+        <td>6201</td>
+        <td style="color:#4ecca3;font-weight:600;font-size:14px;">50.31%</td>
+        <td>1.0456</td>
+        <td>~38%</td>
+        <td style="color:#4ecca3;">+12.31%</td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-left:12px;font-weight:600;">大小球(2.5)</td>
+        <td>6201</td>
+        <td style="color:#4ecca3;font-weight:600;font-size:14px;">54.77%</td>
+        <td>0.7209</td>
+        <td>~50%</td>
+        <td style="color:#4ecca3;">+4.77%</td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-left:12px;font-weight:600;">单双</td>
+        <td>6201</td>
+        <td style="color:#4ecca3;font-weight:600;font-size:14px;">50.25%</td>
+        <td>0.7441</td>
+        <td>~50%</td>
+        <td style="color:#4ecca3;">+0.25%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">胜平负详细分析</div>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot"></span> 各类别准确率</div>
+    <div class="task-stats">
+      <div class="task-stat">
+        <div class="num">72.0%</div>
+        <div class="label">主胜准确率</div>
+      </div>
+      <div class="task-stat">
+        <div class="num" style="color:#d4a835;">13.0%</div>
+        <div class="label">平局准确率</div>
+      </div>
+      <div class="task-stat">
+        <div class="num" style="color:#7a9cc6;">49.6%</div>
+        <div class="label">客胜准确率</div>
+      </div>
+      <div class="task-stat">
+        <div class="num" style="color:#b080d0;">50.3%</div>
+        <div class="label">总体准确率</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-box">
+    <div class="task-title"><span class="dot" style="background:#7a9cc6;"></span> 各联赛准确率</div>
+    <table>
+      <thead><tr><th>联赛</th><th>测试赛季数</th><th>平均准确率</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left;padding-left:12px;">E0</td><td>4</td><td style="color:#4ecca3;font-weight:600;">52.58%</td></tr><tr><td style="text-align:left;padding-left:12px;">SP1</td><td>4</td><td style="color:#4ecca3;font-weight:600;">51.17%</td></tr><tr><td style="text-align:left;padding-left:12px;">I1</td><td>4</td><td style="color:#4ecca3;font-weight:600;">50.25%</td></tr><tr><td style="text-align:left;padding-left:12px;">F1</td><td>4</td><td style="color:#4ecca3;font-weight:600;">49.09%</td></tr><tr><td style="text-align:left;padding-left:12px;">D1</td><td>4</td><td style="color:#4ecca3;font-weight:600;">47.79%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Top 15 重要特征 (胜平负)</div>
+  <table>
+    <thead><tr><th style="width:30%;">特征</th><th style="width:15%;">重要性</th><th>可视化</th></tr></thead>
+    <tbody>
+      
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_home_fair_prob</td>
+              <td>0.0342</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:100.0%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_away_fair_prob</td>
+              <td>0.0303</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:88.7%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">avg_home_implied</td>
+              <td>0.0296</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:86.7%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">diff_b365_implied</td>
+              <td>0.0288</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:84.5%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">avg_away_implied</td>
+              <td>0.0260</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:76.3%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_home_implied</td>
+              <td>0.0218</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:63.7%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">avg_away_odds</td>
+              <td>0.0208</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:61.1%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">avg_home_odds</td>
+              <td>0.0206</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:60.2%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_away_implied</td>
+              <td>0.0162</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:47.5%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_away_odds</td>
+              <td>0.0152</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:44.4%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_draw_fair_prob</td>
+              <td>0.0106</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:31.1%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_over_25_prob</td>
+              <td>0.0106</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:30.9%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_draw_implied</td>
+              <td>0.0101</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:29.6%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">avg_draw_odds</td>
+              <td>0.0100</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:29.4%;"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding-left:12px;">b365_home_odds</td>
+              <td>0.0100</td>
+              <td style="text-align:left;padding-left:8px;">
+                <div style="background:#1a1a1a;height:8px;border-radius:4px;width:100%;">
+                  <div style="background:#4ecca3;height:8px;border-radius:4px;width:29.3%;"></div>
+                </div>
+              </td>
+            </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">数据概览</div>
+  <table>
+    <thead><tr><th>指标</th><th>值</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:left;padding-left:12px;">时间范围</td><td>2019-08-30 00:00:00 ~ 2026-05-24 00:00:00</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">联赛数量</td><td>5 (英超/西甲/意甲/德甲/法甲)</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">赛季数量</td><td>7</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">总场次</td><td>10,763</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">特征数量</td><td>99</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">模型</td><td>XGBoost (multi:softprob)</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">回测方式</td><td>按赛季滚动 (前N赛季训练→预测第N+1赛季)</td></tr>
+      <tr><td style="text-align:left;padding-left:12px;">最少训练赛季</td><td>3个赛季</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>V3.2 回测引擎 | XGBoost基线模型 | 时间序列滚动验证 | football-data.co.uk</p>
+  <p>生成时间: 2026年9月</p>
+</div>
+
+</div>
+</body>
+</html>

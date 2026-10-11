@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预测偏差深度分析</title>
+    <style id="theme-vars">
+/* ==========================================================================
+   五大联赛原始数据分析报告 · 设计令牌
+   品牌前缀: rpt   |   单一品牌色相: 深青绿（球场语义）
+   ========================================================================== */
+
+:root {
+  /* ---- 品牌语义色（浅色模式）---- */
+  --rpt-background: #F5F7F6;
+  --rpt-foreground: #0F1A17;
+  --rpt-card: #FFFFFF;
+  --rpt-card-foreground: #0F1A17;
+  --rpt-popover: #FFFFFF;
+  --rpt-popover-foreground: #0F1A17;
+  --rpt-primary: #0E7C66;
+  --rpt-primary-foreground: #FFFFFF;
+  --rpt-muted: #EBF0EE;
+  --rpt-muted-foreground: #5B6B66;
+  --rpt-border: #DEE5E2;
+  --rpt-input: #DEE5E2;
+  --rpt-ring: #0E7C66;
+
+  /* ---- 表面层级（浅色模式）---- */
+  --rpt-surface: #FFFFFF;
+  --rpt-surface-2: #EDF2F0;
+  --rpt-ink-2: #4C5B56;
+  --rpt-ink-3: #87948F;
+  --rpt-line: #E4EAE7;
+
+  /* ---- 状态色（仅用于真实状态）---- */
+  --rpt-state-success: #157347;
+  --rpt-state-warning: #A9690A;
+  --rpt-state-error: #B2352B;
+  --rpt-state-info: #1E6BA8;
+
+  /* ---- 数据可视化（单一品牌色相派生 + 中性）---- */
+  --rpt-chart-1: #0E7C66;
+  --rpt-chart-2: #479582;
+  --rpt-chart-3: #7FB5A6;
+  --rpt-chart-4: #B4D2C9;
+  --rpt-chart-5: #7C8B86;
+
+  /* ---- 圆角 ---- */
+  --rpt-radius-sm: 4px;
+  --rpt-radius-md: 8px;
+  --rpt-radius-lg: 16px;
+
+  /* ---- 阴影（静态表面极轻）---- */
+  --rpt-shadow-1: 0 1px 2px rgba(15, 26, 23, 0.04), 0 1px 1px rgba(15, 26, 23, 0.03);
+
+  /* ---- 字体 ---- */
+  --rpt-font-sans: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --rpt-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--rpt-background);
+    --color-foreground: var(--rpt-foreground);
+    --color-card: var(--rpt-card);
+    --color-card-foreground: var(--rpt-card-foreground);
+    --color-popover: var(--rpt-popover);
+    --color-popover-foreground: var(--rpt-popover-foreground);
+    --color-primary: var(--rpt-primary);
+    --color-primary-foreground: var(--rpt-primary-foreground);
+    --color-muted: var(--rpt-muted);
+    --color-muted-foreground: var(--rpt-muted-foreground);
+    --color-border: var(--rpt-border);
+    --color-input: var(--rpt-input);
+    --color-ring: var(--rpt-ring);
+    --color-chart-1: var(--rpt-chart-1);
+    --color-chart-2: var(--rpt-chart-2);
+    --color-chart-3: var(--rpt-chart-3);
+    --color-chart-4: var(--rpt-chart-4);
+    --color-chart-5: var(--rpt-chart-5);
+    --radius-sm: var(--rpt-radius-sm);
+    --radius-md: var(--rpt-radius-md);
+    --radius-lg: var(--rpt-radius-lg);
+  }
+  @layer base {
+    body { background: var(--rpt-background); color: var(--rpt-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--rpt-background); }
+      .text-background { color: var(--rpt-background); }
+      .border-background { border-color: var(--rpt-background); }
+      .ring-background { --tw-ring-color: var(--rpt-background); }
+      .bg-foreground { background-color: var(--rpt-foreground); }
+      .text-foreground { color: var(--rpt-foreground); }
+      .border-foreground { border-color: var(--rpt-foreground); }
+      .ring-foreground { --tw-ring-color: var(--rpt-foreground); }
+      .bg-card { background-color: var(--rpt-card); }
+      .text-card { color: var(--rpt-card); }
+      .border-card { border-color: var(--rpt-card); }
+      .ring-card { --tw-ring-color: var(--rpt-card); }
+      .bg-card-foreground { background-color: var(--rpt-card-foreground); }
+      .text-card-foreground { color: var(--rpt-card-foreground); }
+      .border-card-foreground { border-color: var(--rpt-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--rpt-card-foreground); }
+      .bg-popover { background-color: var(--rpt-popover); }
+      .text-popover { color: var(--rpt-popover); }
+      .border-popover { border-color: var(--rpt-popover); }
+      .ring-popover { --tw-ring-color: var(--rpt-popover); }
+      .bg-popover-foreground { background-color: var(--rpt-popover-foreground); }
+      .text-popover-foreground { color: var(--rpt-popover-foreground); }
+      .border-popover-foreground { border-color: var(--rpt-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--rpt-popover-foreground); }
+      .bg-primary { background-color: var(--rpt-primary); }
+      .text-primary { color: var(--rpt-primary); }
+      .border-primary { border-color: var(--rpt-primary); }
+      .ring-primary { --tw-ring-color: var(--rpt-primary); }
+      .bg-primary-foreground { background-color: var(--rpt-primary-foreground); }
+      .text-primary-foreground { color: var(--rpt-primary-foreground); }
+      .border-primary-foreground { border-color: var(--rpt-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--rpt-primary-foreground); }
+      .bg-muted { background-color: var(--rpt-muted); }
+      .text-muted { color: var(--rpt-muted); }
+      .border-muted { border-color: var(--rpt-muted); }
+      .ring-muted { --tw-ring-color: var(--rpt-muted); }
+      .bg-muted-foreground { background-color: var(--rpt-muted-foreground); }
+      .text-muted-foreground { color: var(--rpt-muted-foreground); }
+      .border-muted-foreground { border-color: var(--rpt-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--rpt-muted-foreground); }
+      .bg-border { background-color: var(--rpt-border); }
+      .text-border { color: var(--rpt-border); }
+      .border-border { border-color: var(--rpt-border); }
+      .ring-border { --tw-ring-color: var(--rpt-border); }
+      .bg-input { background-color: var(--rpt-input); }
+      .text-input { color: var(--rpt-input); }
+      .border-input { border-color: var(--rpt-input); }
+      .ring-input { --tw-ring-color: var(--rpt-input); }
+      .bg-ring { background-color: var(--rpt-ring); }
+      .text-ring { color: var(--rpt-ring); }
+      .border-ring { border-color: var(--rpt-ring); }
+      .ring-ring { --tw-ring-color: var(--rpt-ring); }
+      .bg-chart-1 { background-color: var(--rpt-chart-1); }
+      .text-chart-1 { color: var(--rpt-chart-1); }
+      .border-chart-1 { border-color: var(--rpt-chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--rpt-chart-1); }
+      .bg-chart-2 { background-color: var(--rpt-chart-2); }
+      .text-chart-2 { color: var(--rpt-chart-2); }
+      .border-chart-2 { border-color: var(--rpt-chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--rpt-chart-2); }
+      .bg-chart-3 { background-color: var(--rpt-chart-3); }
+      .text-chart-3 { color: var(--rpt-chart-3); }
+      .border-chart-3 { border-color: var(--rpt-chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--rpt-chart-3); }
+      .bg-chart-4 { background-color: var(--rpt-chart-4); }
+      .text-chart-4 { color: var(--rpt-chart-4); }
+      .border-chart-4 { border-color: var(--rpt-chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--rpt-chart-4); }
+      .bg-chart-5 { background-color: var(--rpt-chart-5); }
+      .text-chart-5 { color: var(--rpt-chart-5); }
+      .border-chart-5 { border-color: var(--rpt-chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--rpt-chart-5); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <div class="rpt-frame">
+
+        <!-- Section 1 · 偏差总览 -->
+        <section id="ba-overview" class="rpt-sec rpt-sec--lead">
+          <header>
+            <h1 class="rpt-h1">预测偏差深度分析</h1>
+            <p class="rpt-body rpt-mt-6" style="max-width:76ch">基于 <strong>48 场已完赛数据（全量口径）</strong>，从方向结构、市场表现、置信度校准、联赛差异四个维度拆解本轮预测偏差的模式与成因。样本为 <strong>2026-09-12 ~ 09-13</strong> 五大联赛第 3-4 轮赛事。</p>
+          </header>
+
+          <div class="rpt-kpi-band rpt-mt-10">
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">已验证场次</div>
+              <div class="rpt-kpi-value"><span data-countup="48" data-decimals="0">48</span><span class="rpt-kpi-unit">场</span></div>
+              <div class="rpt-kpi-note">五大联赛 · 全部完赛</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">方向命中率</div>
+              <div class="rpt-kpi-value"><span data-countup="41.7" data-decimals="1">41.7</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">高于基线 33.3% · 低于测试 50.39%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">大小球命中率</div>
+              <div class="rpt-kpi-value"><span data-countup="35.4" data-decimals="1">35.4</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">低于基线 58.3% · 低于测试 57.58%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">角球命中率</div>
+              <div class="rpt-kpi-value"><span data-countup="56.3" data-decimals="1">56.3</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">高于基线 52.1% · 高于测试 51.94%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">牌数命中率</div>
+              <div class="rpt-kpi-value"><span data-countup="74.5" data-decimals="1">74.5</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">等于基线 74.5% · 高于测试 60.10%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">客胜漏判数</div>
+              <div class="rpt-kpi-value"><span data-countup="11" data-decimals="0">11</span><span class="rpt-kpi-unit">场</span></div>
+              <div class="rpt-kpi-note">预测仅 5 场 · 实际 16 场</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2 · 方向结构偏差 -->
+        <section id="ba-direction" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">方向结构偏差——客胜被系统性低估</h2>
+            <p class="rpt-meta">模型预测 48 场 · 实际赛果 48 场</p>
+          </div>
+
+          <div class="rpt-grid rpt-grid--chart-wide rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-ba-direction" role="img" aria-label="预测与实际赛果方向分布对比：模型预测 主胜 24 场(50.0%)、平局 19 场(39.6%)、客胜 5 场(10.4%)；实际 主胜 16 场(33.3%)、平局 16 场(33.3%)、客胜 16 场(33.3%)"></canvas>
+            </div>
+            <div class="rpt-tablewrap">
+              <table class="rpt-tbl">
+                <caption class="rpt-sr">方向偏差明细表：主胜、平局、客胜三类在模型预测与实际赛果中的场次、占比与偏差幅度</caption>
+                <thead>
+                  <tr>
+                    <th>方向</th>
+                    <th class="rpt-num">模型预测</th>
+                    <th class="rpt-num">实际赛果</th>
+                    <th class="rpt-num">偏差场次</th>
+                    <th class="rpt-num">偏差幅度</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row" class="rpt-rowhead">主胜</th><td class="rpt-num">24 (50.0%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">-8</td><td class="rpt-num">-16.7pp</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead">平局</th><td class="rpt-num">19 (39.6%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">-3</td><td class="rpt-num">-6.3pp</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead">客胜</th><td class="rpt-num">5 (10.4%)</td><td class="rpt-num">16 (33.3%)</td><td class="rpt-num">+11</td><td class="rpt-num">+22.9pp</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="rpt-grid rpt-grid--two rpt-mt-10">
+            <div class="rpt-note">
+              <div class="rpt-note-title"><i data-lucide="alert-triangle" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--rpt-state-error)"></i>核心问题</div>
+              <p>模型只给出 <strong>5 次客胜预测</strong>，而实际出现 <strong>16 场客胜</strong>，漏判率 <strong>69%</strong>。客胜占比 33.3% 远高于模型预期的 10.4%，是本轮方向偏差的最主要特征。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title"><i data-lucide="flame" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--rpt-state-error)"></i>英超极端化</div>
+              <p>英超 10 场<strong>仅 2 场主胜</strong>，主胜率 20% 远低于正常水平，是本轮方向偏差的最大来源。英超本轮客胜占比偏高。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title"><i data-lucide="trending-down" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--rpt-state-warning)"></i>主胜过度自信</div>
+              <p>预测主胜率 50%，实际仅 33.3%，模型对主场优势的估计在本轮失效。德甲与西甲同样出现主胜低于预期的情况。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title"><i data-lucide="minus" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--rpt-state-warning)"></i>罕见三等分布局</div>
+              <p>本轮主胜 / 平局 / 客胜各 16 场，呈<strong>完美三等分</strong>（各 33.3%），历史罕见。模型预测则严重向主胜倾斜。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3 · 五大市场偏差雷达 -->
+        <section id="ba-market-radar" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">五大市场偏差全景</h2>
+            <p class="rpt-meta">模型命中率 vs 多数类基线 vs 时间外测试</p>
+          </div>
+
+          <div class="rpt-chart-wrap rpt-chart-wrap--tall rpt-mt-8">
+            <canvas id="chart-ba-radar" role="img" aria-label="五大市场三组数据对比：胜平负 模型41.7% 基线33.3% 测试50.39%；大小球 35.4% 58.3% 57.58%；单双 50.0% 50.0% 48.70%；角球 56.3% 52.1% 51.94%；牌数 74.5% 74.5% 60.10%"></canvas>
+          </div>
+
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">五大市场偏差总表：胜平负、大小球 2.5、单双、总角球 9.5、总牌数 4.5 的模型命中率、多数类基线、与基线差异、时间外测试准确率</caption>
+              <thead>
+                <tr>
+                  <th>市场</th>
+                  <th class="rpt-num">模型命中率</th>
+                  <th class="rpt-num">多数类基线</th>
+                  <th class="rpt-num">与基线差</th>
+                  <th class="rpt-num">时间外测试</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead">胜平负</th><td class="rpt-num">41.7%</td><td class="rpt-num">33.3%</td><td class="rpt-num">+8.4pp</td><td class="rpt-num">50.39%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">大小球 2.5</th><td class="rpt-num">35.4%</td><td class="rpt-num">58.3%</td><td class="rpt-num">-22.9pp</td><td class="rpt-num">57.58%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">单双</th><td class="rpt-num">50.0%</td><td class="rpt-num">50.0%</td><td class="rpt-num">±0.0pp</td><td class="rpt-num">48.70%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">总角球 9.5</th><td class="rpt-num">56.3%</td><td class="rpt-num">52.1%</td><td class="rpt-num">+4.2pp</td><td class="rpt-num">51.94%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">总牌数 4.5</th><td class="rpt-num">74.5%</td><td class="rpt-num">74.5%</td><td class="rpt-num">±0.0pp</td><td class="rpt-num">60.10%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="rpt-grid rpt-grid--two rpt-mt-10">
+            <div class="rpt-note">
+              <div class="rpt-note-title">大小球是本轮最弱市场</div>
+              <p>比基线低 <strong>22.9pp</strong>，模型系统性偏"小"，但实际大 2.5 球占比 58.3%。模型保守倾向在大小球市场上暴露最明显。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">牌数是"虚高"市场</div>
+              <p>74.5% 命中率看似亮眼，但与"全押小 4.5"基线<strong>完全一致</strong>，无超额收益。模型本质上是在执行"始终押小"策略。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">角球是唯一正超额市场</div>
+              <p><strong>+4.2pp</strong>，说明角球模型在本轮有微弱的真实预测能力，同时也高于时间外测试水平。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">单双 = 随机</div>
+              <p>50.0% 完全等于基线，无预测价值。单双本身就是最难预测的市场之一，本轮表现与抛硬币无异。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4 · 大小球深度拆解 -->
+        <section id="ba-overunder" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">大小球偏差——保守倾向的集中体现</h2>
+            <p class="rpt-meta">48 场 · 大 2.5 / 小 2.5 分布</p>
+          </div>
+
+          <div class="rpt-grid rpt-grid--two rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-ba-goals" role="img" aria-label="大小球预测与实际分布对比：模型预测小2.5 35场(72.9%)、大2.5 13场(27.1%)；实际小2.5 20场(41.7%)、大2.5 28场(58.3%)"></canvas>
+            </div>
+            <div>
+              <h3 class="rpt-h3">偏差归因</h3>
+              <ol class="rpt-issues rpt-mt-6">
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">01</div>
+                  <div>
+                    <div class="rpt-issue-title">模型训练数据偏保守</div>
+                    <p class="rpt-issue-body">历史数据中小 2.5 占多数（约 55%），模型内化了这一倾向，对大球的预测阈值设置过高。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">02</div>
+                  <div>
+                    <div class="rpt-issue-title">本轮进球异常偏高</div>
+                    <p class="rpt-issue-body">大 2.5 占 58.3%，高于历史平均水平约 <strong>13pp</strong>，属于进攻端集中爆发的轮次。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">03</div>
+                  <div>
+                    <div class="rpt-issue-title">极端大比分拉高</div>
+                    <p class="rpt-issue-body">弗赖堡 5-0、莱比锡 5-0、考文垂 0-5 三场大比分贡献显著，单场 5+ 进球拉高整体分布。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">04</div>
+                  <div>
+                    <div class="rpt-issue-title">升班马防线不稳</div>
+                    <p class="rpt-issue-body">考文垂、桑坦德竞技、埃尔弗斯贝格等升班马参与的比赛进球数普遍偏高，防线质量不足。</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="rpt-note rpt-mt-10 rpt-pt-6">
+            <div class="rpt-note-title">关键洞察</div>
+            <p>大小球偏差与方向偏差<strong>同源</strong>——模型低估了客队取胜能力，而客胜往往伴随着更多进球（客队打反击开放场面）。两者共同指向模型对比赛开放性的整体估计偏保守。</p>
+          </div>
+        </section>
+
+        <!-- Section 5 · 牌数"高命中率"假象 -->
+        <section id="ba-cards" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">牌数命中率的真相——与基线完全重合</h2>
+            <p class="rpt-meta">47 场有效样本 · 小 4.5 / 大 4.5</p>
+          </div>
+
+          <div class="rpt-grid rpt-grid--chart-wide rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-ba-cards" role="img" aria-label="牌数预测与实际分布堆叠对比：实际小4.5 35场(74.5%)、大4.5 12场(25.5%)；模型预测小4.5 38场(80.9%)、大4.5 9场(19.1%)"></canvas>
+            </div>
+            <div>
+              <h3 class="rpt-h3">分析要点</h3>
+              <ol class="rpt-issues rpt-mt-6">
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">01</div>
+                  <div>
+                    <div class="rpt-issue-title">命中率 = 基线收益</div>
+                    <p class="rpt-issue-body"><strong>74.5% 命中率 = 全押小 4.5 的基线收益</strong>，模型没有贡献超额准确率，纯粹是搭了基线高的便车。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">02</div>
+                  <div>
+                    <div class="rpt-issue-title">模型极度偏"小"</div>
+                    <p class="rpt-issue-body">80.9% 的场次预测小 4.5，本质上是"始终押小"策略的变体，区分度极低，缺乏真正的预测价值。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">03</div>
+                  <div>
+                    <div class="rpt-issue-title">德甲 9/9 全中的真相</div>
+                    <p class="rpt-issue-body">德甲本轮<strong>全部小 4.5</strong>，全押小也会全中。德甲的"完美表现"不能证明模型能力。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">04</div>
+                  <div>
+                    <div class="rpt-issue-title">真实超额收益约为 0</div>
+                    <p class="rpt-issue-body">如果将基线扣除，牌数模型的真实超额收益约为 <strong>0pp</strong>，远低于时间外测试表现。</p>
+                  </div>
+                </li>
+                <li class="rpt-issue">
+                  <div class="rpt-issue-idx">05</div>
+                  <div>
+                    <div class="rpt-issue-title">风险提示</div>
+                    <p class="rpt-issue-body">下一轮牌数若回归均值（大 4.5 占比回升至 40%+），牌数命中率可能<strong>大幅回落</strong>。</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6 · 置信度校准失效 -->
+        <section id="ba-confidence" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">置信度校准——高置信 ≠ 高命中</h2>
+            <p class="rpt-meta">48 场 · 按胜平负置信度分箱</p>
+          </div>
+
+          <div class="rpt-chart-wrap rpt-chart-wrap--tall rpt-mt-8">
+            <canvas id="chart-ba-confidence" role="img" aria-label="置信度分箱柱状与折线组合图：60%以上 6场 命中2 命中率33.3%；50-60% 14场 命中5 命中率35.7%；45-50% 8场 命中4 命中率50.0%；45%以下 20场 命中9 命中率45.0%"></canvas>
+          </div>
+
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">置信度分箱明细表：四个置信度区间的场次、命中数与命中率</caption>
+              <thead>
+                <tr>
+                  <th>置信度分箱</th>
+                  <th class="rpt-num">场次</th>
+                  <th class="rpt-num">命中</th>
+                  <th class="rpt-num">命中率</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead">60% 以上</th><td class="rpt-num">6</td><td class="rpt-num">2</td><td class="rpt-num">33.3%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">50–60%</th><td class="rpt-num">14</td><td class="rpt-num">5</td><td class="rpt-num">35.7%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">45–50%</th><td class="rpt-num">8</td><td class="rpt-num">4</td><td class="rpt-num">50.0%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">45% 以下</th><td class="rpt-num">20</td><td class="rpt-num">9</td><td class="rpt-num">45.0%</td></tr>
+              </tbody>
+              <tfoot>
+                <tr class="rpt-total"><th scope="row" class="rpt-rowhead">合计</th><td class="rpt-num">48</td><td class="rpt-num">20</td><td class="rpt-num">41.7%</td></tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="rpt-grid rpt-grid--two rpt-mt-10">
+            <div class="rpt-note">
+              <div class="rpt-note-title">高置信仍偏低</div>
+              <p>60%+ 高置信分箱命中率仅 <strong>33.3%</strong>，远未达到置信度本身的标称值。高置信区严重高估，模型对自身判断的可靠性估计过于乐观。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">整体呈弱正相关</div>
+              <p>置信度与命中率仍呈<strong>弱正相关</strong>趋势——高置信优于低置信，但整体水平偏低。45–50% 区间表现最好（50.0%），45% 以下也有 45.0%。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">赛季初段状态不稳定</div>
+              <p>赛季第 3-4 轮，球队阵容磨合、战术调整因素导致预测难度高于赛季中后期，模型基于历史数据的置信度估计失真。</p>
+            </div>
+            <div class="rpt-note">
+              <div class="rpt-note-title">升班马置信度高估</div>
+              <p>考文垂、埃尔弗斯贝格、桑坦德竞技等升班马历史样本少，模型置信度估计不可靠，出现"样本不足但置信度高"的矛盾。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 7 · 偏差归因总结 -->
+        <section id="ba-summary" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">偏差归因与改进方向</h2>
+            <p class="rpt-meta">6 条核心归因 · 三层改进建议</p>
+          </div>
+
+          <ol class="rpt-issues rpt-mt-8">
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">01</div>
+              <div>
+                <div class="rpt-issue-title">主场优势假设过度</div>
+                <p class="rpt-issue-body">模型基于历史数据高估了主场优势，本轮主胜率仅 <span class="rpt-mono">33.3%</span>（正常约 45%），英超等联赛主胜率显著偏低。主场优势的季节性波动未被充分建模。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">02</div>
+              <div>
+                <div class="rpt-issue-title">赛季初段不稳定</div>
+                <p class="rpt-issue-body">第 3-4 轮球队状态波动大，模型历史数据权重偏高，对赛季初段阵容磨合、战术调整等动态因素捕捉不足。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">03</div>
+              <div>
+                <div class="rpt-issue-title">升班马样本不足</div>
+                <p class="rpt-issue-body">考文垂、桑坦德、埃尔弗斯贝格等升班马历史样本少，影响置信度估计。升班马参与场次的预测偏差显著大于非升班马场次。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">04</div>
+              <div>
+                <div class="rpt-issue-title">大小球与方向偏差同源</div>
+                <p class="rpt-issue-body">两者共同指向模型对比赛开放性的估计偏保守——低估客胜同时低估进球数。客胜往往伴随开放场面和更多进球，是同一偏差在两个市场的体现。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">05</div>
+              <div>
+                <div class="rpt-issue-title">牌数预测无超额能力</div>
+                <p class="rpt-issue-body">高命中率源于基线本身高，模型未提供增量价值。牌数模型需要提升区分度，避免沦为"始终押小"的简单策略。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">06</div>
+              <div>
+                <div class="rpt-issue-title">单轮样本限制</div>
+                <p class="rpt-issue-body">48 场的 95% 置信区间约 <span class="rpt-mono">±14pp</span>，本轮偏差很大程度上可能仍是随机波动。单轮数据不足以推翻模型在 1,544 场时间外测试中的表现。</p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="rpt-note rpt-mt-10 rpt-pt-6" style="background:var(--rpt-surface-2);border:1px solid var(--rpt-line);border-radius:var(--rpt-radius-md);padding:20px 24px;margin-top:2.5rem;">
+            <div class="rpt-note-title"><i data-lucide="lightbulb" style="width:16px;height:16px;vertical-align:-3px;margin-right:8px;color:var(--rpt-primary)"></i>改进建议</div>
+            <div class="rpt-grid rpt-grid--two rpt-mt-6">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--rpt-primary);margin-bottom:8px;">短期（1-2 轮内）</div>
+                <p style="font-size:13.5px;line-height:1.8;color:var(--rpt-ink-2);margin:0">降低高置信场次的权重，增加对客胜方向的关注，尤其是英超等客胜集中的联赛。</p>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--rpt-primary);margin-bottom:8px;">中期（本赛季内）</div>
+                <p style="font-size:13.5px;line-height:1.8;color:var(--rpt-ink-2);margin:0">引入赛季初段校准因子，对前 5 轮比赛降低历史数据权重，提升近期表现权重。</p>
+              </div>
+              <div style="grid-column:1/-1">
+                <div style="font-size:13px;font-weight:600;color:var(--rpt-primary);margin-bottom:8px;">长期（下赛季前）</div>
+                <p style="font-size:13.5px;line-height:1.8;color:var(--rpt-ink-2);margin:0">扩充升班马数据特征（如夏季转会投入、季前赛表现），提升牌数模型的区分度，避免"始终押小"的退化模式。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="rpt-foot">
+      <div class="rpt-frame">
+        <div class="rpt-grid rpt-grid--footer">
+          <div>
+            <div class="rpt-foot-title">预测偏差深度分析</div>
+            <p class="rpt-note-text rpt-mt-4">数据来源 football-data.co.uk / 各联赛官网 / 主流媒体多源交叉核验 · 生成于 2026-09-14</p>
+            <p class="rpt-note-text rpt-mt-2">仅供观赛参考，不构成投注建议</p>
+          </div>
+          <div>
+            <div class="rpt-foot-label">数据范围</div>
+            <ul class="rpt-foot-list">
+              <li>2026/27 赛季 第 3-4 轮 · 48 场全量</li>
+              <li>五大联赛全部已完赛</li>
+              <li>五大市场：胜平负 · 大小球 · 单双 · 角球 · 牌数</li>
+            </ul>
+          </div>
+          <div>
+            <div class="rpt-foot-label">分析维度</div>
+            <ul class="rpt-foot-list">
+              <li>方向结构偏差</li>
+              <li>五大市场对比</li>
+              <li>置信度校准 · 归因总结</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rpt-rule rpt-mt-10 rpt-pt-6 rpt-foot-bottom">
+          <p class="rpt-meta">仅供观赛参考，不构成投注建议</p>
+          <p class="rpt-meta rpt-mono">48 已完赛 · 全量口径 · 2026-09-14</p>
+        </div>
+      </div>
+    </footer>
+
+    <style id="critical-layout">
+/* ==========================================================================
+   页面关键布局：静态 CSS，不依赖运行时 Tailwind 编译
+   ========================================================================== */
+html, body { background: var(--rpt-background); color: var(--rpt-foreground); }
+body { font-family: var(--rpt-font-sans); }
+
+/* 根框架 */
+.rpt-frame { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
+
+/* 分区节奏：细线分隔 + 大间距 */
+.rpt-sec { border-top: 1px solid var(--rpt-line); padding-top: 4rem; padding-bottom: 4rem; }
+.rpt-sec--lead { border-top: 0; padding-top: 5rem; padding-bottom: 4rem; }
+.rpt-rule { border-top: 1px solid var(--rpt-line); }
+
+/* 栅格：桌面双列，窄屏单列 */
+.rpt-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 768px) {
+  .rpt-grid--footer { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); }
+  .rpt-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .rpt-grid--halves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rpt-grid--narrow-left { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); }
+  .rpt-grid--wide-left { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .rpt-grid--chart-wide { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+}
+
+/* 排版 */
+.rpt-h1 { font-size: 30px; font-weight: 600; line-height: 1.24; letter-spacing: -0.01em; color: var(--rpt-foreground); text-wrap: balance; overflow-wrap: break-word; word-break: normal; }
+.rpt-h2 { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+.rpt-h3 { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+@media (min-width: 768px) {
+  .rpt-h1 { font-size: 44px; }
+  .rpt-h2 { font-size: 26px; }
+}
+.rpt-body { font-size: 15px; line-height: 1.85; color: var(--rpt-ink-2); }
+.rpt-body + .rpt-body { margin-top: 1rem; }
+.rpt-meta { font-size: 12.5px; line-height: 1.7; color: var(--rpt-ink-3); }
+.rpt-note-text { font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-mono { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-lead { font-weight: 600; color: var(--rpt-primary); }
+.text-ink-2 { color: var(--rpt-ink-2); }
+.text-ink-3 { color: var(--rpt-ink-3); }
+
+/* 间距工具 */
+.rpt-mt-2 { margin-top: 0.5rem; }
+.rpt-mt-4 { margin-top: 1rem; }
+.rpt-mt-6 { margin-top: 1.5rem; }
+.rpt-mt-8 { margin-top: 2rem; }
+.rpt-mt-10 { margin-top: 2.5rem; }
+.rpt-mt-12 { margin-top: 3rem; }
+.rpt-pt-6 { padding-top: 1.5rem; }
+.rpt-pt-8 { padding-top: 2rem; }
+
+/* 微型布局工具 */
+.rpt-flex-between { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-flex-center { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.rpt-flex-baseline { display: inline-flex; align-items: baseline; gap: 14px; flex: none; }
+.rpt-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* 指标带 */
+.rpt-kpi-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--rpt-line); border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-md); overflow: hidden; }
+.rpt-kpi { background: var(--rpt-card); padding: 22px 20px; }
+.rpt-kpi-label { font-size: 12px; color: var(--rpt-ink-3); }
+.rpt-kpi-value { margin-top: 10px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 32px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-kpi-unit { font-size: 18px; color: var(--rpt-ink-3); margin-left: 2px; }
+.rpt-kpi-note { margin-top: 10px; font-size: 12px; line-height: 1.6; color: var(--rpt-ink-3); }
+
+/* 图表容器：固定响应式高度，绝不塌陷 */
+.rpt-chart-wrap { position: relative; width: 100%; height: 280px; }
+.rpt-chart-wrap--tall { height: 340px; }
+.rpt-chart-wrap > canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+
+/* 数据表 */
+.rpt-tablewrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rpt-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.rpt-tbl thead th { background: var(--rpt-surface-2); color: var(--rpt-ink-2); font-size: 12.5px; font-weight: 500; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); white-space: nowrap; }
+.rpt-tbl tbody th, .rpt-tbl tbody td { padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); color: var(--rpt-foreground); }
+.rpt-tbl tbody tr { transition: background-color 0.15s ease; }
+.rpt-tbl tbody tr:hover { background: var(--rpt-surface-2); }
+.rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 11px 14px; background: var(--rpt-surface-2); border-top: 1px solid var(--rpt-border); color: var(--rpt-foreground); }
+.rpt-tbl thead th.rpt-num,
+.rpt-tbl tbody td.rpt-num,
+.rpt-tbl tbody th.rpt-num,
+.rpt-tbl tfoot th.rpt-num,
+.rpt-tbl tfoot td.rpt-num { text-align: right; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-rowhead { font-weight: 500; text-align: left; white-space: nowrap; color: var(--rpt-foreground); }
+.rpt-total th, .rpt-total td { font-weight: 600; }
+.rpt-zero { color: var(--rpt-ink-3); }
+
+/* 定义列表 */
+.rpt-dl { border-top: 1px solid var(--rpt-line); margin: 0; }
+.rpt-dl-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-dl-row dt { font-size: 12.5px; color: var(--rpt-ink-3); flex: none; }
+.rpt-dl-row dd { margin: 0; font-size: 13.5px; color: var(--rpt-foreground); text-align: right; }
+
+/* 统计块 */
+.rpt-metric { padding: 18px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-metric:first-child { border-top: 1px solid var(--rpt-line); }
+.rpt-metric-label { font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-metric-value { margin-top: 8px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 34px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-metric-sub { margin-top: 8px; font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-rows { border-top: 1px solid var(--rpt-line); }
+.rpt-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-row-label { font-size: 14px; color: var(--rpt-ink-2); }
+.rpt-row-value { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; color: var(--rpt-foreground); }
+
+/* 字段名标签 */
+.rpt-codes { display: flex; flex-wrap: wrap; gap: 8px; }
+.rpt-code { display: inline-flex; align-items: center; justify-content: center; font-family: var(--rpt-font-mono); font-size: 12px; line-height: 1; padding: 6px 9px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-ink-2); white-space: nowrap; }
+.rpt-code-inline { display: inline-block; font-family: var(--rpt-font-mono); font-size: 12.5px; line-height: 1.5; padding: 1px 6px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-foreground); }
+
+/* 问题列表 */
+.rpt-issues { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rpt-line); }
+.rpt-issue { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-issue-idx { font-family: var(--rpt-font-mono); font-size: 13px; color: var(--rpt-ink-3); padding-top: 2px; }
+.rpt-issue-title { font-size: 14px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-issue-body { margin-top: 6px; font-size: 14px; line-height: 1.8; color: var(--rpt-ink-2); }
+
+/* 说明块 */
+.rpt-note { padding-top: 16px; border-top: 1px solid var(--rpt-line); }
+.rpt-note-title { font-size: 14px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-note p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-vig { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rpt-line); font-size: 14px; color: var(--rpt-foreground); }
+
+/* 页脚 */
+.rpt-foot { border-top: 1px solid var(--rpt-line); padding-top: 3.5rem; padding-bottom: 3.5rem; background: var(--rpt-background); }
+.rpt-foot-title { font-size: 15px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-foot-label { font-size: 13px; font-weight: 500; color: var(--rpt-foreground); }
+.rpt-foot-list { list-style: none; margin: 12px 0 0; padding: 0; font-size: 13px; line-height: 1.9; color: var(--rpt-ink-2); }
+.rpt-foot-bottom { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-foot-bottom p { margin: 0; }
+
+/* 状态色文字 */
+.rpt-hit { color: var(--rpt-state-success); font-weight: 600; }
+.rpt-miss { color: var(--rpt-state-error); font-weight: 600; }
+.rpt-flag { color: var(--rpt-state-warning); font-weight: 600; }
+
+@media (max-width: 1024px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+}
+@media (max-width: 640px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+  .rpt-sec { padding-top: 3rem; padding-bottom: 3rem; }
+  .rpt-sec--lead { padding-top: 3.5rem; padding-bottom: 3rem; }
+  .rpt-kpi-band { grid-template-columns: 1fr; }
+  .rpt-grid { gap: 2rem; }
+  .rpt-grid--footer, .rpt-grid--two, .rpt-grid--halves, .rpt-grid--narrow-left, .rpt-grid--wide-left, .rpt-grid--chart-wide { grid-template-columns: 1fr; }
+  .rpt-chart-wrap { height: 240px; }
+  .rpt-chart-wrap--tall { height: 300px; }
+  .rpt-kpi-value { font-size: 28px; }
+  .rpt-metric-value { font-size: 30px; }
+  .rpt-issue { grid-template-columns: 1fr; gap: 6px; }
+  .rpt-dl-row { flex-direction: column; gap: 4px; }
+  .rpt-dl-row dd { text-align: left; }
+  .rpt-tbl { font-size: 12.5px; min-width: 520px; }
+  .rpt-tbl thead th, .rpt-tbl tbody th, .rpt-tbl tbody td, .rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 9px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rpt-tbl tbody tr { transition: none; }
+}
+    </style>
+
+    <script>
+(function () {
+  var root = document.documentElement;
+  var cs = getComputedStyle(root);
+  var tok = function (name) { return (cs.getPropertyValue(name) || '').trim(); };
+
+  var c1 = tok('--rpt-chart-1'), c2 = tok('--rpt-chart-2'), c3 = tok('--rpt-chart-3');
+  var c4 = tok('--rpt-chart-4'), c5 = tok('--rpt-chart-5');
+  var lineColor = tok('--rpt-line') || tok('--rpt-border');
+  var ink2 = tok('--rpt-ink-2'), ink3 = tok('--rpt-ink-3');
+  var fontSans = tok('--rpt-font-sans');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* KPI 数字滚动 */
+  var counters = document.querySelectorAll('[data-countup]');
+  Array.prototype.forEach.call(counters, function (el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var render = function (v) {
+      return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    };
+    if (isNaN(target)) { return; }
+    if (reduce) { el.textContent = render(target); return; }
+    var duration = 900, start = null;
+    var step = function (ts) {
+      if (start === null) { start = ts; }
+      var p = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = render(target * eased);
+      if (p < 1) { requestAnimationFrame(step); }
+    };
+    requestAnimationFrame(step);
+  });
+
+  if (!window.Chart) { return; }
+  Chart.defaults.font.family = fontSans;
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = ink2;
+
+  var legendLabels = { color: ink2, boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle' };
+  var pctTick = function (v) { return Number(v).toFixed(0) + '%'; };
+
+  /* Chart 1 · 方向结构偏差（分组纵向条形） */
+  var directionEl = document.getElementById('chart-ba-direction');
+  if (directionEl) {
+    new Chart(directionEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['主胜', '平局', '客胜'],
+        datasets: [
+          { label: '模型预测', data: [24, 19, 5], backgroundColor: c1, hoverBackgroundColor: c1, borderRadius: 2, barThickness: 34 },
+          { label: '实际赛果', data: [16, 16, 16], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2, barThickness: 34 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) {
+            var total = 48;
+            var val = ctx.parsed.y;
+            var pct = (val / total * 100).toFixed(1);
+            return ctx.dataset.label + ' ' + val.toLocaleString('en-US') + ' 场 (' + pct + '%)';
+          } } }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            beginAtZero: true,
+            max: 28,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0); } }
+          }
+        }
+      }
+    });
+  }
+
+  /* Chart 2 · 五大市场偏差全景（分组横向条形） */
+  var radarEl = document.getElementById('chart-ba-radar');
+  if (radarEl) {
+    new Chart(radarEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['胜平负', '大小球 2.5', '单双', '总角球 9.5', '总牌数 4.5'],
+        datasets: [
+          { label: '模型命中率', data: [41.7, 35.4, 50.0, 56.3, 74.5], backgroundColor: c1, hoverBackgroundColor: c2, borderRadius: 2 },
+          { label: '多数类基线', data: [33.3, 58.3, 50.0, 52.1, 74.5], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2 },
+          { label: '时间外测试', data: [50.39, 57.58, 48.70, 51.94, 60.10], backgroundColor: c5, hoverBackgroundColor: c3, borderRadius: 2 }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ' ' + ctx.parsed.x.toFixed(1) + '%'; } } }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 80,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: pctTick }
+          },
+          y: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } }
+        }
+      }
+    });
+  }
+
+  /* Chart 3 · 大小球分布对比（分组纵向条形） */
+  var goalsEl = document.getElementById('chart-ba-goals');
+  if (goalsEl) {
+    new Chart(goalsEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['小 2.5', '大 2.5'],
+        datasets: [
+          { label: '模型预测', data: [35, 13], backgroundColor: c1, hoverBackgroundColor: c1, borderRadius: 2, barThickness: 50 },
+          { label: '实际赛果', data: [20, 28], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2, barThickness: 50 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) {
+            var total = 48;
+            var val = ctx.parsed.y;
+            var pct = (val / total * 100).toFixed(1);
+            return ctx.dataset.label + ' ' + val.toLocaleString('en-US') + ' 场 (' + pct + '%)';
+          } } }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            beginAtZero: true,
+            max: 40,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0); } }
+          }
+        }
+      }
+    });
+  }
+
+  /* Chart 4 · 牌数分布堆叠对比（堆叠横向条形） */
+  var cardsEl = document.getElementById('chart-ba-cards');
+  if (cardsEl) {
+    new Chart(cardsEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['模型预测', '实际赛果'],
+        datasets: [
+          { label: '小 4.5', data: [35, 30], backgroundColor: c2, hoverBackgroundColor: c1, borderRadius: 2, barThickness: 40 },
+          { label: '大 4.5', data: [6, 11], backgroundColor: c4, hoverBackgroundColor: c3, borderRadius: 2, barThickness: 40 }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: { callbacks: { label: function (ctx) {
+            var total = ctx.dataIndex === 0 ? 41 : 41;
+            var val = ctx.parsed.x;
+            var pct = (val / total * 100).toFixed(1);
+            return ctx.dataset.label + ' ' + val.toLocaleString('en-US') + ' 场 (' + pct + '%)';
+          } } }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            beginAtZero: true,
+            max: 42,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0); } }
+          },
+          y: {
+            stacked: true,
+            grid: { display: false },
+            border: { color: lineColor },
+            ticks: { color: ink2 }
+          }
+        }
+      }
+    });
+  }
+
+  /* Chart 5 · 置信度校准（柱+折线双Y轴） */
+  var confEl = document.getElementById('chart-ba-confidence');
+  if (confEl) {
+    var confCounts = [4, 10, 5, 23];
+    var confHits = [1, 2, 1, 11];
+    var confRates = [25.0, 20.0, 20.0, 47.8];
+    new Chart(confEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['60% 以上', '50–60%', '45–50%', '45% 以下'],
+        datasets: [
+          {
+            label: '场次',
+            data: confCounts,
+            backgroundColor: c3,
+            hoverBackgroundColor: c2,
+            borderRadius: 2,
+            barThickness: 44,
+            yAxisID: 'y'
+          },
+          {
+            label: '命中率',
+            data: confRates,
+            type: 'line',
+            borderColor: c1,
+            backgroundColor: c1,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: c1,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            tension: 0.25,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: legendLabels },
+          tooltip: {
+            callbacks: {
+              label: function (ctx) {
+                var idx = ctx.dataIndex;
+                if (ctx.dataset.label === '场次') {
+                  return '场次 ' + confCounts[idx] + ' 场 · 命中 ' + confHits[idx] + ' 场';
+                } else {
+                  return '命中率 ' + confRates[idx].toFixed(1) + '%';
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } },
+          y: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            max: 28,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0); } },
+            title: { display: true, text: '场次', color: ink3, font: { size: 11 } }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            max: 60,
+            grid: { display: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: pctTick },
+            title: { display: true, text: '命中率', color: ink3, font: { size: 11 } }
+          }
+        }
+      }
+    });
+  }
+
+  /* Lucide 图标初始化 */
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+})();
+    </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>韩国K联赛第28轮预测 - 2026年9月9日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; padding: 20px; }
+  .header { text-align: center; margin-bottom: 24px; padding: 20px 0; border-bottom: 1px solid #2a2a2a; }
+  .header h1 { font-size: 22px; color: #fff; margin-bottom: 6px; }
+  .header .subtitle { color: #888; font-size: 13px; }
+  .header .stats { display: flex; justify-content: center; gap: 32px; margin-top: 12px; }
+  .header .stat .num { font-size: 20px; font-weight: 700; color: #4ecca3; }
+  .header .stat .label { font-size: 11px; color: #666; margin-top: 2px; }
+
+  .summary-cards { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .card { flex: 1; min-width: 100px; background: #161616; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px; text-align: center; }
+  .card .card-num { font-size: 24px; font-weight: 700; }
+  .card .card-label { font-size: 11px; color: #777; margin-top: 4px; }
+  .card-green .card-num { color: #4ecca3; }
+  .card-yellow .card-num { color: #d4a835; }
+  .card-red .card-num { color: #cc6666; }
+  .card-blue .card-num { color: #7a9cc6; }
+
+  .picks-section { margin-bottom: 28px; background: #111; border: 1px solid #1e3a2a; border-radius: 8px; overflow: hidden; }
+  .picks-header { background: linear-gradient(135deg, #0d2818, #1a3a2a); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2a5a3a; }
+  .picks-header .title { font-size: 15px; font-weight: 600; color: #4ecca3; display: flex; align-items: center; gap: 8px; }
+  .picks-header .title .icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: #4ecca3; color: #0d2818; border-radius: 50%; font-size: 12px; font-weight: 700; }
+  .picks-header .count { font-size: 12px; color: #4ecca3; background: rgba(78,204,163,0.12); padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .picks-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .picks-table thead th { background: #0a1a10; color: #4a8a6a; font-weight: 500; padding: 8px 8px; text-align: center; font-size: 11px; letter-spacing: 0.5px; border-bottom: 1px solid #1e3a2a; white-space: nowrap; }
+  .picks-table tbody tr { border-bottom: 1px solid #141e1a; transition: background 0.15s; }
+  .picks-table tbody tr:hover { background: #0a1a10; }
+  .picks-table tbody td { padding: 9px 8px; text-align: center; color: #ccc; }
+  .picks-table tbody td.p-num { color: #2a6a4a; font-weight: 700; }
+  .picks-table tbody td.p-match { text-align: left; color: #e0e0e0; font-weight: 500; }
+  .picks-table tbody td.p-pred { color: #4ecca3; font-weight: 600; }
+  .picks-table tbody td.p-score { font-weight: 700; color: #fff; font-size: 14px; }
+
+  .league-section { margin-bottom: 28px; }
+  .league-title { font-size: 15px; font-weight: 600; color: #fff; padding: 8px 12px; background: #1a1a1a; border-left: 3px solid #4ecca3; margin-bottom: 0; display: flex; align-items: center; gap: 8px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #161616; color: #999; font-weight: 500; padding: 10px 6px; text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2a2a2a; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #1e1e1e; transition: background 0.15s; }
+  tbody tr:hover { background: #1a1a1a; }
+  tbody td { padding: 9px 6px; text-align: center; color: #ccc; }
+  tbody td.num { color: #555; font-size: 12px; }
+  tbody td.date { color: #888; font-size: 12px; }
+  tbody td.league { color: #aaa; font-size: 12px; }
+  tbody td.match { text-align: left; padding-left: 10px; color: #e0e0e0; font-size: 13px; }
+  tbody td.pred { font-size: 12px; color: #b0b0b0; }
+  tbody td.pred .wdl { color: #d0d0d0; }
+  tbody td.pred .ou { color: #c0a060; }
+  tbody td.pred .oe { color: #7a9cc6; }
+  tbody td.pred .conf { color: #888; font-size: 11px; }
+  tbody td.score { font-weight: 600; color: #fff; font-size: 14px; }
+  tbody td .badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: 600; margin-left: 3px; }
+  .badge-high { background: #1a3a2a; color: #4ecca3; border: 1px solid #2a5a3a; }
+  .badge-mid { background: #3a3a1a; color: #d4a835; border: 1px solid #5a5a2a; }
+  .badge-low { background: #2a1a1a; color: #cc6666; border: 1px solid #4a2a2a; }
+  tbody td.cards { color: #e07070; font-size: 12px; }
+  tbody td.corners { color: #70b0e0; font-size: 12px; }
+  tbody td.pending { color: #555; font-size: 11px; font-style: italic; }
+
+  .match-detail { margin-bottom: 24px; background: #111; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; }
+  .match-detail-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+  .match-detail-header .match-title { font-size: 15px; font-weight: 600; color: #fff; }
+  .match-detail-header .match-badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .detail-body { padding: 16px; }
+  .detail-row { display: flex; margin-bottom: 10px; gap: 16px; }
+  .detail-label { width: 100px; color: #666; font-size: 12px; flex-shrink: 0; }
+  .detail-value { color: #e0e0e0; font-size: 13px; }
+  .detail-value.green { color: #4ecca3; font-weight: 600; }
+  .detail-value.yellow { color: #d4a835; font-weight: 600; }
+  .detail-value.red { color: #cc6666; font-weight: 600; }
+  .analysis-box { margin-top: 12px; padding: 12px; background: #0d0d0d; border-left: 3px solid #4ecca3; border-radius: 4px; }
+  .analysis-box p { color: #aaa; font-size: 12px; line-height: 1.6; }
+
+  .footer { text-align: center; margin-top: 30px; padding-top: 16px; border-top: 1px solid #2a2a2a; color: #555; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>韩国K联赛第28轮预测 V3.0</h1>
+  <div class="subtitle">2026年9月9日 18:30 | K League 1 Round 28 | 4场同时开赛</div>
+  <div class="stats">
+    <div class="stat"><div class="num">4</div><div class="label">总场次</div></div>
+    <div class="stat"><div class="num">1</div><div class="label">高置信度</div></div>
+    <div class="stat"><div class="num">2</div><div class="label">中置信度</div></div>
+    <div class="stat"><div class="num">1</div><div class="label">低(观望)</div></div>
+  </div>
+</div>
+
+<div class="summary-cards">
+  <div class="card card-green"><div class="card-num">1</div><div class="card-label">高置信度</div></div>
+  <div class="card card-yellow"><div class="card-num">2</div><div class="card-label">中置信度</div></div>
+  <div class="card card-red"><div class="card-num">1</div><div class="card-label">低置信度(观望)</div></div>
+  <div class="card card-blue"><div class="card-num">3</div><div class="card-label">可预测场次</div></div>
+</div>
+
+<!-- 高置信度精选 -->
+<div class="picks-section">
+  <div class="picks-header">
+    <div class="title"><span class="icon">★</span> 高置信度精选（1场）</div>
+    <div class="count">置信度 68%</div>
+  </div>
+  <table class="picks-table">
+    <thead>
+      <tr><th>#</th><th>对阵</th><th>预测</th><th>比分</th><th>大小2.5</th><th>单双</th><th>红黄牌</th><th>角球</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="p-num">4</td><td class="p-match">大田市民 vs 安养FC</td><td class="p-pred">主胜</td><td class="p-score">2-0</td><td>小2.5</td><td>双</td><td>3黄0红</td><td>8</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 全部预测 -->
+<div class="league-section">
+  <div class="league-title">K联赛第28轮 — 全部4场</div>
+  <table>
+    <thead><tr><th>#</th><th>时间</th><th>对阵</th><th class="pred">V3.0预测</th><th>比分</th><th>大小2.5</th><th>单双</th><th>红黄牌</th><th>角球</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td><td class="date">18:30</td>
+        <td class="match">江原FC vs 全北现代</td>
+        <td class="pred"><span class="wdl">平局(防主胜)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">48%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-1</td><td>小</td><td>双</td><td class="cards">3黄1红</td><td class="corners">9</td>
+      </tr>
+      <tr>
+        <td class="num">2</td><td class="date">18:30</td>
+        <td class="match">光州FC vs 济州SK</td>
+        <td class="pred"><span class="wdl">客胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">45%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">0-1</td><td>小</td><td>单</td><td class="cards">3黄0红</td><td class="corners">8</td>
+      </tr>
+      <tr>
+        <td class="num">3</td><td class="date">18:30</td>
+        <td class="match">浦项制铁 vs 金泉尚武</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">55%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-0</td><td>小</td><td>双</td><td class="cards">2黄1红</td><td class="corners">8</td>
+      </tr>
+      <tr>
+        <td class="num">4</td><td class="date">18:30</td>
+        <td class="match">大田市民 vs 安养FC</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">68%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td>小</td><td>双</td><td class="cards">3黄0红</td><td class="corners">8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 详细分析 -->
+<div class="match-detail">
+  <div class="match-detail-header">
+    <div class="match-title">1. 江原FC vs 全北现代 (18:30)</div>
+    <div class="match-badge badge-mid">中置信度 48%</div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-row"><div class="detail-label">排名</div><div class="detail-value">江原FC 第4 (40分) vs 全北现代 第3 (42分) — 仅差2分</div></div>
+    <div class="detail-row"><div class="detail-label">盘口</div><div class="detail-value">平手盘 — 势均力敌</div></div>
+    <div class="detail-row"><div class="detail-label">预测</div><div class="detail-value yellow">平局(防主胜) 1-1</div></div>
+    <div class="detail-row"><div class="detail-label">大小球</div><div class="detail-value">小2.5 (盘口2/2.5)</div></div>
+    <div class="detail-row"><div class="detail-label">单双</div><div class="detail-value">双</div></div>
+    <div class="detail-row"><div class="detail-label">红黄牌</div><div class="detail-value" style="color:#e07070;">3黄1红</div></div>
+    <div class="detail-row"><div class="detail-label">角球</div><div class="detail-value" style="color:#70b0e0;">9个</div></div>
+    <div class="analysis-box">
+      <p>争冠组卡位战，两队仅差2分。江原主场稳定性好但全北传控占优，典型"平局体质叠加"闷战。盘口开平手，模型预测平局概率最高。双方近期半场进球率偏低，上半场大概率胶着。全北客场+磨合期不确定性，建议防主胜。进球数偏低，2/2.5盘口看好小球。</p>
+    </div>
+  </div>
+</div>
+
+<div class="match-detail">
+  <div class="match-detail-header">
+    <div class="match-title">2. 光州FC vs 济州SK (18:30)</div>
+    <div class="match-badge badge-low">低置信度(观望) 45%</div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-row"><div class="detail-label">排名</div><div class="detail-value">光州FC 第12 vs 济州SK 第5 — 实力差距明显</div></div>
+    <div class="detail-row"><div class="detail-label">盘口</div><div class="detail-value">半球盘 — 济州客让半球</div></div>
+    <div class="detail-row"><div class="detail-label">预测</div><div class="detail-value red">客胜(防平) 0-1 — 建议观望</div></div>
+    <div class="detail-row"><div class="detail-label">大小球</div><div class="detail-value">小2.5 (盘口2.5)</div></div>
+    <div class="detail-row"><div class="detail-label">单双</div><div class="detail-value">单</div></div>
+    <div class="detail-row"><div class="detail-label">红黄牌</div><div class="detail-value" style="color:#e07070;">3黄0红</div></div>
+    <div class="detail-row"><div class="detail-label">角球</div><div class="detail-value" style="color:#70b0e0;">8个</div></div>
+    <div class="analysis-box">
+      <p>光州联赛垫底，主场防守质量差。济州SK排名第5，客场让半球盘口反映实力优势。但光州保级压力大，主场拼劲不可低估。Elo差 180，处于中低边界，模型置信度不足。建议观望，如必须预测则倾向客胜但需防平局。</p>
+    </div>
+  </div>
+</div>
+
+<div class="match-detail">
+  <div class="match-detail-header">
+    <div class="match-title">3. 浦项制铁 vs 金泉尚武 (18:30)</div>
+    <div class="match-badge badge-mid">中置信度 55%</div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-row"><div class="detail-label">排名</div><div class="detail-value">浦项制铁 第8 vs 金泉尚武 第11</div></div>
+    <div class="detail-row"><div class="detail-label">盘口</div><div class="detail-value">平/半盘 — 浦项主让平/半</div></div>
+    <div class="detail-row"><div class="detail-label">预测</div><div class="detail-value yellow">主胜(防平) 2-0</div></div>
+    <div class="detail-row"><div class="detail-label">大小球</div><div class="detail-value">小2.5 (盘口2/2.5)</div></div>
+    <div class="detail-row"><div class="detail-label">单双</div><div class="detail-value">双</div></div>
+    <div class="detail-row"><div class="detail-label">红黄牌</div><div class="detail-value" style="color:#e07070;">2黄1红</div></div>
+    <div class="detail-row"><div class="detail-label">角球</div><div class="detail-value" style="color:#70b0e0;">8个</div></div>
+    <div class="analysis-box">
+      <p>浦项制铁排名第8，主场让平/半反映微弱优势。金泉尚武(军队球队)排名第11，客场作战能力有限。Elo差 210，属于可预测范围但需防平。浦项主场防守稳固，金泉客场进攻乏力。预测主胜但防守端可能零封，2-0合理。注意金泉尚武纪律性好，红黄牌可能偏少。</p>
+    </div>
+  </div>
+</div>
+
+<div class="match-detail">
+  <div class="match-detail-header">
+    <div class="match-title">4. 大田市民 vs 安养FC (18:30) — ★ 高置信度</div>
+    <div class="match-badge badge-high">高置信度 68%</div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-row"><div class="detail-label">排名</div><div class="detail-value">大田市民 中游 vs 安养FC 下游</div></div>
+    <div class="detail-row"><div class="detail-label">盘口</div><div class="detail-value">半/一盘 — 大田主让半/一</div></div>
+    <div class="detail-row"><div class="detail-label">预测</div><div class="detail-value green">主胜 2-0</div></div>
+    <div class="detail-row"><div class="detail-label">大小球</div><div class="detail-value">小2.5</div></div>
+    <div class="detail-row"><div class="detail-label">单双</div><div class="detail-value">双</div></div>
+    <div class="detail-row"><div class="detail-label">红黄牌</div><div class="detail-value" style="color:#e07070;">3黄0红</div></div>
+    <div class="detail-row"><div class="detail-label">角球</div><div class="detail-value" style="color:#70b0e0;">8个</div></div>
+    <div class="analysis-box">
+      <p>大田市民主场让半/一，盘口力度充足。安养FC上轮客场 0-3 惨败江原，状态低迷。大田主场K联赛中上水平，安养客场防守联赛倒数。Elo差 320，达到高置信度门槛。大田主场进攻稳定，安养客场进球能力极差，2-0 比分合理。预测主胜为今日最稳场次。</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>V3.0 模型 | K联赛参数：次级联赛进球系数×0.85 | 主场系数 B级+65 / A级+90</p>
+  <p>4场 | 1高置信度 | 2中置信度 | 1低置信度(观望) | 仅供参考</p>
+</div>
+
+</body>
+</html>

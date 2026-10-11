@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛程日历</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="padding: 24px 20px 8px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Football icon SVG -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/>
+          <path d="M12 2a8 8 0 0 1 5 3M12 22a8 8 0 0 0 5-3M2 12a8 8 0 0 1 3-5M22 12a8 8 0 0 0-3-5"/>
+        </svg>
+        <span style="font-size: 16px; font-weight: 700; color: var(--foreground);">赔率分析</span>
+      </div>
+    </div>
+
+    <nav style="margin-top: 20px;">
+      <a href="schedule.html" class="nav-item active">
+        <!-- Calendar icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        赛程日历
+      </a>
+      <a href="odds-input.html" class="nav-item" data-dom-id="nav-odds-input">
+        <!-- Plus/edit icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        赔率录入
+      </a>
+      <a href="factor-analysis.html" class="nav-item" data-dom-id="nav-factor">
+        <!-- Chart icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        影响因子
+      </a>
+      <a href="ai-analysis.html" class="nav-item" data-dom-id="nav-ai">
+        <!-- AI/brain icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M12 18v4"/><path d="M8 22h8"/><path d="M5 8a7 7 0 0 0 14 0"/></svg>
+        AI 分析
+      </a>
+    </nav>
+
+    <!-- Bottom user section -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- User avatar -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--muted)" stroke="none"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" fill="var(--muted)"/></svg>
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--foreground);">用户</div>
+          <div style="font-size: 11px; color: var(--muted-foreground);">专业版</div>
+        </div>
+      </div>
+      <!-- Settings icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- Date picker -->
+      <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--foreground); cursor: pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        2026-07-25 周六
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+
+      <!-- League filter -->
+      <select class="filter-input" style="min-width: 120px; cursor: pointer;">
+        <option>全部联赛</option>
+        <option>英超</option>
+        <option>西甲</option>
+        <option>德甲</option>
+        <option>意甲</option>
+        <option>法甲</option>
+      </select>
+
+      <!-- Spacer -->
+      <div style="flex: 1;"></div>
+
+      <!-- Search -->
+      <div style="position: relative; display: flex; align-items: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="搜索球队或联赛..." class="filter-input" style="padding-left: 32px; min-width: 220px;">
+      </div>
+    </div>
+
+    <!-- Content area -->
+    <div style="padding: 24px 32px;">
+
+      <!-- Stats summary row -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div class="stat-card">
+          <div class="stat-value">12</div>
+          <div class="stat-label">今日比赛</div>
+        </div>
+        <div class="stat-card">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg class="follow-star" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div class="stat-value">3</div>
+          </div>
+          <div class="stat-label">关注比赛</div>
+        </div>
+        <div class="stat-card">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+            <div class="stat-value" style="color: var(--state-success); font-size: 20px;">在线</div>
+          </div>
+          <div class="stat-label">数据源在线</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">5</div>
+          <div class="stat-label">AI 待分析</div>
+        </div>
+      </div>
+
+      <!-- Match Table -->
+      <div style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden;">
+        <table class="match-table">
+          <thead>
+            <tr>
+              <th style="width: 110px;">联赛</th>
+              <th style="width: 70px;">时间</th>
+              <th style="min-width: 260px;">对阵</th>
+              <th style="width: 170px;">赔率概览</th>
+              <th style="width: 150px;">数据完整度</th>
+              <th style="width: 180px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- Row 1: followed -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #3d195b;"></span>
+                  <span>英超</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">21:00</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg class="follow-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span style="font-weight: 600;">曼城</span>
+                    <span class="rank">[3]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">利物浦</span>
+                    <span class="rank">[1]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.85</span>
+                  <span class="odds-num">3.40</span>
+                  <span class="odds-num">4.20</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 60%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 60%</span>
+                    <span>手动 20%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm" data-dom-id="btn-match-detail">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm" data-dom-id="btn-odds-entry">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #ee8707;"></span>
+                  <span>西甲</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">19:00</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg class="follow-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span style="font-weight: 600;">皇家马德里</span>
+                    <span class="rank">[2]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">巴塞罗那</span>
+                    <span class="rank">[1]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num">2.30</span>
+                  <span class="odds-num odds-low">3.10</span>
+                  <span class="odds-num">3.15</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 80%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 80%</span>
+                    <span>手动 15%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 15%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #3d195b;"></span>
+                  <span>英超</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">23:30</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">阿森纳</span>
+                    <span class="rank">[2]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">切尔西</span>
+                    <span class="rank">[6]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.65</span>
+                  <span class="odds-num">3.80</span>
+                  <span class="odds-num">5.50</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 60%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 60%</span>
+                    <span>手动 0%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #ee8707;"></span>
+                  <span>西甲</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">21:00</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">马德里竞技</span>
+                    <span class="rank">[4]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">塞维利亚</span>
+                    <span class="rank">[8]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.90</span>
+                  <span class="odds-num">3.25</span>
+                  <span class="odds-num">4.50</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 45%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 45%</span>
+                    <span>手动 10%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 10%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #3d195b;"></span>
+                  <span>英超</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">17:30</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">托特纳姆</span>
+                    <span class="rank">[5]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">纽卡斯尔</span>
+                    <span class="rank">[4]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num">2.15</span>
+                  <span class="odds-num">3.30</span>
+                  <span class="odds-num odds-low">3.45</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 60%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 60%</span>
+                    <span>手动 25%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 25%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 6 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #d20515;"></span>
+                  <span>德甲</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">21:30</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">拜仁慕尼黑</span>
+                    <span class="rank">[1]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">多特蒙德</span>
+                    <span class="rank">[3]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.55</span>
+                  <span class="odds-num">4.20</span>
+                  <span class="odds-num">6.00</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 50%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 50%</span>
+                    <span>手动 0%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 7 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #024494;"></span>
+                  <span>意甲</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">18:00</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg class="follow-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span style="font-weight: 600;">国际米兰</span>
+                    <span class="rank">[1]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">AC米兰</span>
+                    <span class="rank">[5]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.95</span>
+                  <span class="odds-num">3.30</span>
+                  <span class="odds-num">4.10</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 70%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 70%</span>
+                    <span>手动 20%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 8 -->
+            <tr>
+              <td>
+                <div class="league-badge">
+                  <span class="league-dot" style="background: #091c3e;"></span>
+                  <span>法甲</span>
+                </div>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 500;">03:00</td>
+              <td>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">巴黎圣日耳曼</span>
+                    <span class="rank">[1]</span>
+                  </div>
+                  <span style="color: var(--muted-foreground); font-size: 12px; font-weight: 500; margin: 0 12px;">VS</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 600;">马赛</span>
+                    <span class="rank">[4]</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="odds-num odds-low">1.40</span>
+                  <span class="odds-num">4.50</span>
+                  <span class="odds-num">7.80</span>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="progress-track">
+                    <div class="progress-fill progress-online" style="width: 55%;"></div>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                    <span>在线 55%</span>
+                    <span>手动 5%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill progress-manual" style="width: 5%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="match-detail.html" class="btn-sm">查看详情</a>
+                  <a href="odds-input.html" class="btn-sm btn-primary-sm">录入赔率</a>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="page-btn" style="cursor: default; opacity: 0.4;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+        <div class="page-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+    <style>
+    :root {
+      --color-primary-50: #f0fdf4;
+      --color-primary-100: #dcfce7;
+      --color-primary-200: #bbf7d0;
+      --color-primary-300: #86efac;
+      --color-primary-400: #4ade80;
+      --color-primary-500: #22c55e;
+      --color-primary-600: #16a34a;
+      --color-primary-700: #15803d;
+      --color-primary-800: #166534;
+      --color-primary-900: #14532d;
+      --color-neutral-50: #fafafa;
+      --color-neutral-100: #f5f5f5;
+      --color-neutral-200: #e5e5e5;
+      --color-neutral-300: #d4d4d4;
+      --color-neutral-400: #a3a3a3;
+      --color-neutral-500: #737373;
+      --color-neutral-600: #525252;
+      --color-neutral-700: #404040;
+      --color-neutral-800: #262626;
+      --color-neutral-900: #171717;
+      --state-success: #16a34a;
+      --state-success-light: #dcfce7;
+      --state-warning: #ea580c;
+      --state-warning-light: #fff7ed;
+      --state-error: #dc2626;
+      --state-error-light: #fef2f2;
+      --state-info: #2563eb;
+      --state-info-light: #eff6ff;
+      --background: #ffffff;
+      --foreground: #171717;
+      --card: #ffffff;
+      --card-foreground: #171717;
+      --popover: #ffffff;
+      --popover-foreground: #171717;
+      --primary: #16a34a;
+      --primary-foreground: #ffffff;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --input: #e5e5e5;
+      --ring: #16a34a;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .dark {
+      --background: #0a0a0a;
+      --foreground: #fafafa;
+      --card: #141414;
+      --card-foreground: #fafafa;
+      --popover: #141414;
+      --popover-foreground: #fafafa;
+      --primary: #22c55e;
+      --primary-foreground: #052e16;
+      --muted: #262626;
+      --muted-foreground: #a3a3a3;
+      --border: #262626;
+      --input: #262626;
+      --ring: #22c55e;
+      --color-primary-50: #052e16;
+      --color-primary-100: #052e16;
+      --color-primary-200: #14532d;
+      --color-primary-300: #166534;
+      --color-primary-400: #15803d;
+      --color-primary-500: #16a34a;
+      --color-primary-600: #22c55e;
+      --color-primary-700: #4ade80;
+      --color-primary-800: #86efac;
+      --color-primary-900: #bbf7d0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .font-heading { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; }
+
+    body { background: var(--background); color: var(--foreground); font-family: var(--font-body); }
+
+    /* Sidebar */
+    .sidebar { width: 240px; min-height: 100vh; border-right: 1px solid var(--border); background: var(--card); position: fixed; left: 0; top: 0; z-index: 10; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--muted-foreground); font-size: 14px; font-weight: 500; border-left: 3px solid transparent; cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-item:hover { background: var(--muted); color: var(--foreground); }
+    .nav-item.active { color: var(--primary); border-left-color: var(--primary); background: var(--color-primary-50); }
+
+    /* Main */
+    .main-content { margin-left: 240px; min-height: 100vh; }
+
+    /* Top bar */
+    .top-bar { border-bottom: 1px solid var(--border); padding: 16px 32px; background: var(--card); display: flex; align-items: center; gap: 16px; }
+
+    /* Filter controls */
+    .filter-input { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; background: var(--background); color: var(--foreground); outline: none; transition: border-color 0.15s; }
+    .filter-input:focus { border-color: var(--ring); }
+
+    /* Stats cards */
+    .stat-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; background: var(--card); }
+    .stat-value { font-size: 24px; font-weight: 700; color: var(--foreground); line-height: 1.2; }
+    .stat-label { font-size: 12px; color: var(--muted-foreground); margin-top: 4px; }
+
+    /* Table */
+    .match-table { width: 100%; border-collapse: collapse; }
+    .match-table thead th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--muted); }
+    .match-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    .match-table tbody tr:hover { background: var(--muted); }
+    .match-table tbody td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
+
+    /* Odds numbers */
+    .odds-num { font-family: var(--font-mono); font-size: 13px; font-weight: 500; padding: 2px 6px; border-radius: var(--radius-sm); }
+    .odds-low { color: var(--primary); background: var(--color-primary-50); }
+
+    /* Progress bar */
+    .progress-track { width: 100%; height: 6px; background: var(--muted); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: var(--radius-full); }
+    .progress-online { background: var(--primary); }
+    .progress-manual { background: var(--state-info); }
+
+    /* Action buttons */
+    .btn-sm { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; border: 1px solid var(--border); background: var(--card); color: var(--foreground); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-sm:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-primary-sm { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+    .btn-primary-sm:hover { background: var(--color-primary-700); color: var(--primary-foreground); border-color: var(--color-primary-700); }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 20px 0; }
+    .page-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; background: var(--card); color: var(--foreground); transition: all 0.15s; }
+    .page-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .page-btn.active { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+
+    /* League badge */
+    .league-badge { display: inline-flex; align-items: center; gap: 8px; }
+    .league-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Rank number */
+    .rank { font-size: 11px; color: var(--muted-foreground); font-weight: 500; }
+
+    /* Star/follow icon */
+    .follow-star { color: var(--state-warning); }
+  </style>
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛程日历 - 赔率分析 MVP</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 max-w-mobile mx-auto relative" style="padding-bottom: 56px;">
+
+  <!-- ===== Sticky Header ===== -->
+  <header class="sticky top-0 z-30 bg-white border-b border-neutral-200 px-4 py-3 flex items-center justify-between" style="padding-top: env(safe-area-inset-top, 0);">
+    <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 text-primary-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+        <path d="M2 12h20"/>
+      </svg>
+      <h1 class="text-base font-semibold tracking-tight">赔率分析</h1>
+    </div>
+    <button class="w-9 h-9 flex items-center justify-center rounded-full active:bg-neutral-100 transition-colors" aria-label="筛选">
+      <svg class="w-5 h-5 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ===== Date Selector ===== -->
+  <div class="bg-white px-4 pt-3 pb-2">
+    <div class="flex gap-2 overflow-x-auto scrollbar-hide">
+      <!-- 周四 07-23 -->
+      <button class="shrink-0 flex flex-col items-center px-3.5 py-2 rounded-full border border-neutral-200 text-neutral-500 text-xs font-medium min-w-[68px] transition-colors">
+        <span class="text-[11px]">周四</span>
+        <span class="font-mono text-[13px] mt-0.5">07-23</span>
+      </button>
+      <!-- 周五 07-24 -->
+      <button class="shrink-0 flex flex-col items-center px-3.5 py-2 rounded-full border border-neutral-200 text-neutral-500 text-xs font-medium min-w-[68px] transition-colors">
+        <span class="text-[11px]">周五</span>
+        <span class="font-mono text-[13px] mt-0.5">07-24</span>
+      </button>
+      <!-- 周六 07-25 (active) -->
+      <button class="shrink-0 flex flex-col items-center px-3.5 py-2 rounded-full bg-primary-600 text-white text-xs font-medium min-w-[68px] shadow-sm transition-colors">
+        <span class="text-[11px]">周六</span>
+        <span class="font-mono text-[13px] mt-0.5">07-25</span>
+      </button>
+      <!-- 周日 07-26 -->
+      <button class="shrink-0 flex flex-col items-center px-3.5 py-2 rounded-full border border-neutral-200 text-neutral-500 text-xs font-medium min-w-[68px] transition-colors">
+        <span class="text-[11px]">周日</span>
+        <span class="font-mono text-[13px] mt-0.5">07-26</span>
+      </button>
+      <!-- 周一 07-27 -->
+      <button class="shrink-0 flex flex-col items-center px-3.5 py-2 rounded-full border border-neutral-200 text-neutral-500 text-xs font-medium min-w-[68px] transition-colors">
+        <span class="text-[11px]">周一</span>
+        <span class="font-mono text-[13px] mt-0.5">07-27</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Filter Chips ===== -->
+  <div class="bg-white px-4 pb-3">
+    <div class="flex gap-2 overflow-x-auto scrollbar-hide">
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-600 text-white transition-colors">全部</button>
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-600 text-white transition-colors">英超</button>
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-600 text-white transition-colors">西甲</button>
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors">德甲</button>
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors">意甲</button>
+      <button class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 border border-neutral-200 transition-colors">法甲</button>
+    </div>
+  </div>
+
+  <!-- ===== Quick Stats ===== -->
+  <div class="px-4 py-2 flex gap-2">
+    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 text-[11px] font-medium">
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      12场比赛
+    </span>
+    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-medium">
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      3场关注
+    </span>
+  </div>
+
+  <!-- ===== Match List ===== -->
+  <div class="px-0 mt-1">
+
+    <!-- Match 1: 英超 - 曼联 vs 利物浦 (starred) -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative" data-dom-id="btn-match-detail">
+      <!-- Star button -->
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <!-- League row -->
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">英超</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">21:00</span>
+      </div>
+      <!-- Teams -->
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">曼联 <span class="text-[11px] text-neutral-400 font-normal">#3</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">利物浦 <span class="text-[11px] text-neutral-400 font-normal">#1</span></span>
+      </div>
+      <!-- Odds row -->
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">1.85</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.40</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">4.20</div>
+        </div>
+      </div>
+      <!-- Data status -->
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 80%; background: linear-gradient(90deg, #16a34a 60%, #f59e0b 20%, #e5e5e5 20%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 60% | 手动 20%</span>
+      </div>
+      <!-- Chevron -->
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 2: 英超 - 阿森纳 vs 切尔西 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">英超</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">23:30</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">阿森纳 <span class="text-[11px] text-neutral-400 font-normal">#2</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">切尔西 <span class="text-[11px] text-neutral-400 font-normal">#6</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">1.55</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">4.10</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">5.50</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 70%; background: linear-gradient(90deg, #16a34a 70%, #e5e5e5 30%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 70%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 3: 西甲 - 皇马 vs 巴萨 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">西甲</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">02:00</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">皇马 <span class="text-[11px] text-neutral-400 font-normal">#1</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">巴萨 <span class="text-[11px] text-neutral-400 font-normal">#2</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">2.10</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.25</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.20</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 90%; background: linear-gradient(90deg, #16a34a 90%, #e5e5e5 10%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 90%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 4: 英超 - 曼城 vs 热刺 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">英超</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">01:00</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">曼城 <span class="text-[11px] text-neutral-400 font-normal">#4</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">热刺 <span class="text-[11px] text-neutral-400 font-normal">#5</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">1.40</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">4.80</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">6.50</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 50%; background: linear-gradient(90deg, #16a34a 30%, #f59e0b 20%, #e5e5e5 50%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 30% | 手动 20%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 5: 西甲 - 马竞 vs 塞维利亚 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">西甲</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">04:00</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">马竞 <span class="text-[11px] text-neutral-400 font-normal">#3</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">塞维利亚 <span class="text-[11px] text-neutral-400 font-normal">#8</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">1.65</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.70</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">5.00</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 65%; background: linear-gradient(90deg, #16a34a 65%, #e5e5e5 35%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 65%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 6: 英超 - 纽卡斯尔 vs 阿斯顿维拉 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">英超</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">19:00</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">纽卡斯尔 <span class="text-[11px] text-neutral-400 font-normal">#7</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">阿斯顿维拉 <span class="text-[11px] text-neutral-400 font-normal">#9</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">2.30</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">3.15</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">2.90</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 40%; background: linear-gradient(90deg, #16a34a 20%, #f59e0b 20%, #e5e5e5 60%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 20% | 手动 20%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 7: 西甲 - 皇家社会 vs 比利亚雷亚尔 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">西甲</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">22:00</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">皇家社会 <span class="text-[11px] text-neutral-400 font-normal">#6</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">比利亚雷亚尔 <span class="text-[11px] text-neutral-400 font-normal">#4</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">2.05</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.35</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">3.40</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 75%; background: linear-gradient(90deg, #16a34a 75%, #e5e5e5 25%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 75%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <!-- Match 8: 英超 - 布莱顿 vs 西汉姆 -->
+    <div class="match-card bg-white px-4 py-3 border-b border-neutral-100 cursor-pointer relative">
+      <button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full active:bg-neutral-100" aria-label="关注">
+        <svg class="w-4.5 h-4.5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+        <span class="text-[11px] text-neutral-500 font-medium">英超</span>
+        <span class="text-[11px] text-neutral-400 font-mono ml-1">17:30</span>
+      </div>
+      <div class="flex items-center justify-between mb-2.5 pr-8">
+        <span class="text-[15px] font-semibold">布莱顿 <span class="text-[11px] text-neutral-400 font-normal">#10</span></span>
+        <span class="text-xs text-neutral-300 font-medium">VS</span>
+        <span class="text-[15px] font-semibold">西汉姆 <span class="text-[11px] text-neutral-400 font-normal">#12</span></span>
+      </div>
+      <div class="flex gap-1.5 mb-2">
+        <div class="flex-1 text-center py-1.5 rounded-md bg-primary-50 border border-primary-200">
+          <div class="text-[10px] text-primary-600 font-medium">主</div>
+          <div class="font-mono text-[13px] font-semibold text-primary-700">1.90</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">平</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.50</div>
+        </div>
+        <div class="flex-1 text-center py-1.5 rounded-md bg-neutral-50 border border-neutral-200">
+          <div class="text-[10px] text-neutral-400 font-medium">客</div>
+          <div class="font-mono text-[13px] font-semibold text-neutral-700">3.80</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="flex-1">
+          <div class="data-bar bg-neutral-100">
+            <div class="data-bar-fill" style="width: 55%; background: linear-gradient(90deg, #16a34a 45%, #f59e0b 10%, #e5e5e5 45%);"></div>
+          </div>
+        </div>
+        <span class="text-[10px] text-neutral-400 shrink-0">在线 45% | 手动 10%</span>
+      </div>
+      <svg class="absolute right-4 bottom-3 w-4 h-4 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+  </div><!-- end match list -->
+
+  <!-- ===== Bottom Navigation (fixed) ===== -->
+  <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-neutral-200 z-40" style="height: 56px; padding-bottom: env(safe-area-inset-bottom, 0);">
+    <div class="flex items-center justify-around h-full">
+      <!-- 赛程 (active) -->
+      <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-primary-600 w-16 h-full" data-dom-id="nav-schedule" data-nav-key="schedule">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">赛程</span>
+      </a>
+      <!-- 录入 -->
+      <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full" data-dom-id="nav-odds-input" data-nav-key="odds-input">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">录入</span>
+      </a>
+      <!-- 因子 -->
+      <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full" data-dom-id="nav-factor" data-nav-key="factor">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">因子</span>
+      </a>
+      <!-- AI -->
+      <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-neutral-400 w-16 h-full" data-dom-id="nav-ai" data-nav-key="ai">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span class="text-[10px] font-medium whitespace-nowrap">AI</span>
+      </a>
+    </div>
+  </nav>
+
+
+    <style>
+    :root {
+      --primary: #16a34a;
+      --primary-foreground: #ffffff;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --foreground: #171717;
+      --card: #ffffff;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    * { -webkit-tap-highlight-color: transparent; }
+    body { font-family: var(--font-body); overscroll-behavior: none; }
+    .font-mono { font-family: var(--font-mono); }
+
+    /* Hide scrollbar but keep scroll */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Smooth active press on cards */
+    .match-card:active { background-color: #fafafa; }
+
+    /* Subtle progress bar */
+    .data-bar { height: 3px; border-radius: 2px; overflow: hidden; }
+    .data-bar-fill { height: 100%; border-radius: 2px; }
+  </style>
+</body>
+</html>

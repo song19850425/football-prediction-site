@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>足球预测 V2.0 - 2026年8月28日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: #0d0d0d;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .header h1 {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .header .subtitle {
+    color: #888;
+    font-size: 13px;
+  }
+
+  .header .stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 12px;
+  }
+
+  .header .stat {
+    text-align: center;
+  }
+
+  .header .stat .num {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ecca3;
+  }
+
+  .header .stat .label {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  /* League section */
+  .league-section {
+    margin-bottom: 28px;
+  }
+
+  .league-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    padding: 8px 12px;
+    background: #1a1a1a;
+    border-left: 3px solid #4ecca3;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .league-flag {
+    font-size: 18px;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    background: #161616;
+    color: #999;
+    font-weight: 500;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #2a2a2a;
+    white-space: nowrap;
+  }
+
+  thead th:first-child { width: 30px; }
+  thead th.date-col { width: 55px; }
+  thead th.league-col { width: 60px; }
+  thead th.match-col { width: 160px; }
+  thead th.pred-col { width: 200px; }
+  thead th.score-col { width: 70px; }
+  thead th.result-col { width: 80px; }
+  thead th.ou-col { width: 80px; }
+  thead th.oe-col { width: 70px; }
+  thead th.exact-col { width: 100px; }
+
+  tbody tr {
+    border-bottom: 1px solid #1e1e1e;
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover {
+    background: #1a1a1a;
+  }
+
+  tbody td {
+    padding: 9px 8px;
+    text-align: center;
+    color: #ccc;
+  }
+
+  tbody td.num {
+    color: #555;
+    font-size: 12px;
+  }
+
+  tbody td.date {
+    color: #888;
+    font-size: 12px;
+  }
+
+  tbody td.league {
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  tbody td.match {
+    text-align: left;
+    padding-left: 12px;
+    color: #e0e0e0;
+    font-size: 13px;
+  }
+
+  tbody td.pred {
+    font-size: 12px;
+    color: #b0b0b0;
+  }
+
+  tbody td.pred .wdl { color: #d0d0d0; }
+  tbody td.pred .ou { color: #c0a060; }
+  tbody td.pred .oe { color: #7a9cc6; }
+  tbody td.pred .conf { color: #888; font-size: 11px; }
+
+  tbody td.score {
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  /* Confidence badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  .badge-high { background: #1a3a2a; color: #4ecca3; border: 1px solid #2a5a3a; }
+  .badge-mid { background: #3a3a1a; color: #d4a835; border: 1px solid #5a5a2a; }
+  .badge-low { background: #2a1a1a; color: #cc6666; border: 1px solid #4a2a2a; }
+
+  /* Result indicators */
+  .correct { color: #4ecca3; font-weight: 600; }
+  .wrong { color: #cc4444; font-weight: 600; }
+  .pending { color: #666; }
+  .hedge { color: #d4a835; font-size: 11px; }
+
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #2a2a2a;
+    color: #555;
+    font-size: 11px;
+  }
+
+  /* Summary cards */
+  .summary-cards {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 140px;
+    background: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .card .card-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .card .card-label {
+    font-size: 11px;
+    color: #777;
+    margin-top: 4px;
+  }
+
+  .card-green .card-num { color: #4ecca3; }
+  .card-yellow .card-num { color: #d4a835; }
+  .card-red .card-num { color: #cc6666; }
+  .card-blue .card-num { color: #7a9cc6; }
+
+  /* High confidence picks */
+  .picks-section {
+    margin-bottom: 28px;
+    background: #111;
+    border: 1px solid #1e3a2a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .picks-header {
+    background: linear-gradient(135deg, #0d2818, #1a3a2a);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #2a5a3a;
+  }
+
+  .picks-header .title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4ecca3;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .picks-header .title .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: #4ecca3;
+    color: #0d2818;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .picks-header .count {
+    font-size: 12px;
+    color: #4ecca3;
+    background: rgba(78, 204, 163, 0.12);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+
+  .picks-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .picks-table thead th {
+    background: #0a1a10;
+    color: #4a8a6a;
+    font-weight: 500;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #1e3a2a;
+    white-space: nowrap;
+  }
+
+  .picks-table thead th:first-child { width: 30px; }
+  .picks-table thead th.p-date { width: 55px; }
+  .picks-table thead th.p-league { width: 55px; }
+  .picks-table thead th.p-match { text-align: left; width: auto; }
+  .picks-table thead th.h-pred { width: 100px; }
+  .picks-table thead th.h-score { width: 65px; }
+  .picks-table thead th.h-conf { width: 70px; }
+  .picks-table thead th.h-ou { width: 75px; }
+  .picks-table thead th.h-oe { width: 55px; }
+
+  .picks-table tbody tr {
+    border-bottom: 1px solid #141e1a;
+    transition: background 0.15s;
+  }
+
+  .picks-table tbody tr:hover {
+    background: #0a1a10;
+  }
+
+  .picks-table tbody td {
+    padding: 10px;
+    text-align: center;
+    color: #ccc;
+  }
+
+  .picks-table tbody td.p-num {
+    color: #2a6a4a;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .picks-table tbody td.p-date-cell {
+    color: #6a9a7a;
+    font-size: 12px;
+  }
+
+  .picks-table tbody td.p-league-cell {
+    color: #888;
+    font-size: 12px;
+  }
+
+  .picks-table tbody td.p-match-cell {
+    text-align: left;
+    color: #e0e0e0;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .picks-table tbody td.p-pred-cell {
+    color: #4ecca3;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .picks-table tbody td.p-score-cell {
+    font-weight: 700;
+    color: #fff;
+    font-size: 15px;
+  }
+
+  .picks-table tbody td.p-conf-cell {
+    font-weight: 600;
+    color: #4ecca3;
+    font-size: 14px;
+  }
+
+  .picks-table tbody td.p-ou-cell {
+    color: #c0a060;
+    font-size: 12px;
+  }
+
+  .picks-table tbody td.p-oe-cell {
+    color: #7a9cc6;
+    font-size: 12px;
+  }
+
+  .picks-table tbody td.pending {
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>足球预测 V2.0</h1>
+  <div class="subtitle">2026年8月28日 | 英超R3 · 西甲R3 · 意甲R2 · 德甲R1 · 法甲R2</div>
+  <div class="stats">
+    <div class="stat"><div class="num">36</div><div class="label">总场次</div></div>
+    <div class="stat"><div class="num">12</div><div class="label">高置信度</div></div>
+    <div class="stat"><div class="num">11</div><div class="label">中置信度</div></div>
+    <div class="stat"><div class="num">13</div><div class="label">不建议预测</div></div>
+  </div>
+</div>
+
+<div class="summary-cards">
+  <div class="card card-green">
+    <div class="card-num">12</div>
+    <div class="card-label">高置信度场次</div>
+  </div>
+  <div class="card card-yellow">
+    <div class="card-num">11</div>
+    <div class="card-label">中置信度场次</div>
+  </div>
+  <div class="card card-red">
+    <div class="card-num">13</div>
+    <div class="card-label">低置信度(观望)</div>
+  </div>
+  <div class="card card-blue">
+    <div class="card-num">23</div>
+    <div class="card-label">可预测场次</div>
+  </div>
+</div>
+
+<!-- 高置信度精选 -->
+<div class="picks-section">
+  <div class="picks-header">
+    <div class="title"><span class="icon">★</span> 高置信度精选（12场）</div>
+    <div class="count">置信度 80%+</div>
+  </div>
+  <table class="picks-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th class="p-date">日期</th>
+        <th class="p-league">联赛</th>
+        <th class="p-match">对阵</th>
+        <th class="h-pred">预测</th>
+        <th class="h-score">预测比分</th>
+        <th class="h-conf">置信度</th>
+        <th class="h-ou">大小2.5</th>
+        <th class="h-oe">单双</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="p-num">1</td><td class="p-date-cell">8/28</td><td class="p-league-cell">英超</td><td class="p-match-cell">水晶宫 vs 曼城</td>
+        <td class="p-pred-cell">客胜</td><td class="p-score-cell">0-3</td><td class="p-conf-cell">87%</td><td class="p-ou-cell">大2.5</td><td class="p-oe-cell">单</td>
+      </tr>
+      <tr>
+        <td class="p-num">2</td><td class="p-date-cell">8/30</td><td class="p-league-cell">英超</td><td class="p-match-cell">埃弗顿 vs 阿森纳</td>
+        <td class="p-pred-cell">客胜</td><td class="p-score-cell">0-2</td><td class="p-conf-cell">70%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">3</td><td class="p-date-cell">8/31</td><td class="p-league-cell">英超</td><td class="p-match-cell">利物浦 vs 伯恩茅斯</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">3-0</td><td class="p-conf-cell">86%</td><td class="p-ou-cell">大2.5</td><td class="p-oe-cell">单</td>
+      </tr>
+      <tr>
+        <td class="p-num">4</td><td class="p-date-cell">8/30</td><td class="p-league-cell">西甲</td><td class="p-match-cell">皇家马德里 vs 马拉加</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">3-0</td><td class="p-conf-cell">88%</td><td class="p-ou-cell">大2.5</td><td class="p-oe-cell">单</td>
+      </tr>
+      <tr>
+        <td class="p-num">5</td><td class="p-date-cell">8/29</td><td class="p-league-cell">德甲</td><td class="p-match-cell">拜仁 vs 斯图加特</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">3-0</td><td class="p-conf-cell">85%</td><td class="p-ou-cell">大2.5</td><td class="p-oe-cell">单</td>
+      </tr>
+      <tr>
+        <td class="p-num">6</td><td class="p-date-cell">8/30</td><td class="p-league-cell">德甲</td><td class="p-match-cell">多特蒙德 vs 汉堡</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">2-0</td><td class="p-conf-cell">72%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">7</td><td class="p-date-cell">8/29</td><td class="p-league-cell">意甲</td><td class="p-match-cell">AC米兰 vs 威尼斯</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">3-0</td><td class="p-conf-cell">85%</td><td class="p-ou-cell">大2.5</td><td class="p-oe-cell">单</td>
+      </tr>
+      <tr>
+        <td class="p-num">8</td><td class="p-date-cell">8/29</td><td class="p-league-cell">意甲</td><td class="p-match-cell">佛罗伦萨 vs 弗罗西诺内</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">2-0</td><td class="p-conf-cell">82%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">9</td><td class="p-date-cell">8/29</td><td class="p-league-cell">意甲</td><td class="p-match-cell">尤文图斯 vs 帕尔马</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">2-0</td><td class="p-conf-cell">86%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">10</td><td class="p-date-cell">8/31</td><td class="p-league-cell">意甲</td><td class="p-match-cell">那不勒斯 vs 科莫</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">2-0</td><td class="p-conf-cell">80%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">11</td><td class="p-date-cell">8/29</td><td class="p-league-cell">法甲</td><td class="p-match-cell">里尔 vs 巴黎圣日耳曼</td>
+        <td class="p-pred-cell">客胜</td><td class="p-score-cell">0-2</td><td class="p-conf-cell">70%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+      <tr>
+        <td class="p-num">12</td><td class="p-date-cell">8/29</td><td class="p-league-cell">法甲</td><td class="p-match-cell">里昂 vs 勒阿弗尔</td>
+        <td class="p-pred-cell">主胜</td><td class="p-score-cell">2-0</td><td class="p-conf-cell">78%</td><td class="p-ou-cell">小2.5</td><td class="p-oe-cell">双</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 英超 -->
+<div class="league-section">
+  <div class="league-title"><span class="league-flag">🏴</span> 英格兰超级联赛 第3轮</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th class="date-col">日期</th>
+        <th class="league-col">联赛</th>
+        <th class="match-col">对阵</th>
+        <th class="pred-col">V2.0预测</th>
+        <th class="score-col">预测比分</th>
+        <th class="result-col">胜平负</th>
+        <th class="ou-col">大小球2.5</th>
+        <th class="oe-col">单双</th>
+        <th class="exact-col">精确比分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="date">8/28</td>
+        <td class="league">英超</td>
+        <td class="match">水晶宫 vs 曼城</td>
+        <td class="pred"><span class="wdl">客胜</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">87%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">0-3</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td class="date">8/29</td>
+        <td class="league">英超</td>
+        <td class="match">考文垂 vs 赫尔城</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">36%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">埃弗顿 vs 阿森纳</td>
+        <td class="pred"><span class="wdl">客胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">70%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">0-2</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">热刺 vs 纽卡斯尔</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">42%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">切尔西 vs 布莱顿</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">45%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">6</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">利兹联 vs 布伦特福德</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">40%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">7</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">桑德兰 vs 富勒姆</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">38%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">8</td>
+        <td class="date">8/30</td>
+        <td class="league">英超</td>
+        <td class="match">曼联 vs 伊普斯维奇</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">62%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-1</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">9</td>
+        <td class="date">8/31</td>
+        <td class="league">英超</td>
+        <td class="match">利物浦 vs 伯恩茅斯</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">86%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">3-0</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+        <td class="pending">待赛</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 西甲 -->
+<div class="league-section">
+  <div class="league-title"><span class="league-flag">🇪🇸</span> 西班牙甲级联赛 第3轮</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th class="date-col">日期</th><th class="league-col">联赛</th><th class="match-col">对阵</th><th class="pred-col">V2.0预测</th><th class="score-col">预测比分</th><th class="result-col">胜平负</th><th class="ou-col">大小球2.5</th><th class="oe-col">单双</th><th class="exact-col">精确比分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">10</td><td class="date">8/29</td><td class="league">西甲</td><td class="match">桑坦德 vs 埃尔切</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">42%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">11</td><td class="date">8/29</td><td class="league">西甲</td><td class="match">塞维利亚 vs 马德里竞技</td>
+        <td class="pred"><span class="wdl">客胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">60%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-2</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">12</td><td class="date">8/30</td><td class="league">西甲</td><td class="match">皇家马德里 vs 马拉加</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">88%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">3-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">13</td><td class="date">8/30</td><td class="league">西甲</td><td class="match">拉科鲁尼亚 vs 瓦伦西亚</td>
+        <td class="pred"><span class="wdl">客胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">45%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">14</td><td class="date">8/30</td><td class="league">西甲</td><td class="match">塞尔塔 vs 毕尔巴鄂</td>
+        <td class="pred"><span class="wdl">客胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">40%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-2</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">15</td><td class="date">8/31</td><td class="league">西甲</td><td class="match">奥萨苏纳 vs 赫塔费</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">52%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 德甲 -->
+<div class="league-section">
+  <div class="league-title"><span class="league-flag">🇩🇪</span> 德国甲级联赛 第1轮</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th class="date-col">日期</th><th class="league-col">联赛</th><th class="match-col">对阵</th><th class="pred-col">V2.0预测</th><th class="score-col">预测比分</th><th class="result-col">胜平负</th><th class="ou-col">大小球2.5</th><th class="oe-col">单双</th><th class="exact-col">精确比分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">16</td><td class="date">8/29</td><td class="league">德甲</td><td class="match">拜仁 vs 斯图加特</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">85%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">3-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">17</td><td class="date">8/29</td><td class="league">德甲</td><td class="match">艾禾斯堡 vs 勒沃库森</td>
+        <td class="pred"><span class="wdl">客胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">68%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">0-2</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">18</td><td class="date">8/29</td><td class="league">德甲</td><td class="match">柏林联合 vs 法兰克福</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">38%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">19</td><td class="date">8/30</td><td class="league">德甲</td><td class="match">多特蒙德 vs 汉堡</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">72%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">20</td><td class="date">8/30</td><td class="league">德甲</td><td class="match">奥格斯堡 vs 沙尔克04</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">48%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 意甲 -->
+<div class="league-section">
+  <div class="league-title"><span class="league-flag">🇮🇹</span> 意大利甲级联赛 第2轮</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th class="date-col">日期</th><th class="league-col">联赛</th><th class="match-col">对阵</th><th class="pred-col">V2.0预测</th><th class="score-col">预测比分</th><th class="result-col">胜平负</th><th class="ou-col">大小球2.5</th><th class="oe-col">单双</th><th class="exact-col">精确比分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">21</td><td class="date">8/29</td><td class="league">意甲</td><td class="match">AC米兰 vs 威尼斯</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">85%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">3-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">22</td><td class="date">8/29</td><td class="league">意甲</td><td class="match">佛罗伦萨 vs 弗罗西诺内</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">82%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">23</td><td class="date">8/29</td><td class="league">意甲</td><td class="match">蒙扎 vs 乌迪内斯</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">38%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">24</td><td class="date">8/29</td><td class="league">意甲</td><td class="match">萨索洛 vs 都灵</td>
+        <td class="pred"><span class="wdl">客胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">39%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">25</td><td class="date">8/29</td><td class="league">意甲</td><td class="match">尤文图斯 vs 帕尔马</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">86%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">26</td><td class="date">8/31</td><td class="league">意甲</td><td class="match">那不勒斯 vs 科莫</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">80%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 法甲 -->
+<div class="league-section">
+  <div class="league-title"><span class="league-flag">🇫🇷</span> 法国甲级联赛 第2轮</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th class="date-col">日期</th><th class="league-col">联赛</th><th class="match-col">对阵</th><th class="pred-col">V2.0预测</th><th class="score-col">预测比分</th><th class="result-col">胜平负</th><th class="ou-col">大小球2.5</th><th class="oe-col">单双</th><th class="exact-col">精确比分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">27</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">里尔 vs 巴黎圣日耳曼</td>
+        <td class="pred"><span class="wdl">客胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">70%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">0-2</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">28</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">欧塞尔 vs 昂热</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">45%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">29</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">布雷斯特 vs 图卢兹</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">40%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">30</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">洛里昂 vs 特鲁瓦</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">52%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">1-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">31</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">里昂 vs 勒阿弗尔</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">78%</span> <span class="badge badge-high">高</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">32</td><td class="date">8/29</td><td class="league">法甲</td><td class="match">斯特拉斯堡 vs 朗斯</td>
+        <td class="pred"><span class="wdl">平局</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">38%</span> <span class="badge badge-low">观望</span></td>
+        <td class="score">1-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">33</td><td class="date">8/30</td><td class="league">法甲</td><td class="match">巴黎FC vs 尼斯</td>
+        <td class="pred"><span class="wdl">客胜</span> / <span class="ou">小2.5</span> / <span class="oe">单</span> / <span class="conf">43%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">0-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">34</td><td class="date">8/30</td><td class="league">法甲</td><td class="match">摩纳哥 vs 马赛</td>
+        <td class="pred"><span class="wdl">主胜(防平)</span> / <span class="ou">大2.5</span> / <span class="oe">单</span> / <span class="conf">46%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-1</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+      <tr>
+        <td class="num">35</td><td class="date">8/31</td><td class="league">法甲</td><td class="match">雷恩 vs 南特</td>
+        <td class="pred"><span class="wdl">主胜</span> / <span class="ou">小2.5</span> / <span class="oe">双</span> / <span class="conf">62%</span> <span class="badge badge-mid">中</span></td>
+        <td class="score">2-0</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td><td class="pending">待赛</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>模型版本 V2.0 | 差异化主场系数 + 赛季初不确定性系数 + 泊松进球数模型 | 仅供参考</p>
+</div>
+
+</body>
+</html>

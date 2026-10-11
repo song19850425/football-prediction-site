@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V3.0 预测系统提示词指令集</title>
+    <style id="theme-vars">
+/* V3.0 预测系统 - 产品说明书 Brand CSS */
+/* 专业科技文档风格 · 深色主题 */
+
+:root {
+  /* --- Brand Primary --- */
+  --v3-brand: #059669;
+  --v3-brand-50: #ecfdf5;
+  --v3-brand-100: #d1fae5;
+  --v3-brand-200: #a7f3d0;
+  --v3-brand-300: #6ee7b7;
+  --v3-brand-400: #34d399;
+  --v3-brand-500: #10b981;
+  --v3-brand-600: #059669;
+  --v3-brand-700: #047857;
+  --v3-brand-800: #065f46;
+  --v3-brand-900: #064e3b;
+  --v3-brand-ink: #ffffff;
+
+  /* --- Surface / Background --- */
+  --v3-bg: #0a0a0f;
+  --v3-surface: #111118;
+  --v3-surface-2: #18181f;
+  --v3-surface-3: #1f1f28;
+
+  /* --- Ink --- */
+  --v3-ink: #e8e8ed;
+  --v3-ink-2: #9ca3af;
+  --v3-ink-3: #6b7280;
+
+  /* --- Line / Border --- */
+  --v3-line: #27272a;
+  --v3-line-2: #3f3f46;
+
+  /* --- Radius --- */
+  --v3-radius-sm: 4px;
+  --v3-radius-md: 8px;
+  --v3-radius-lg: 16px;
+  --v3-radius-full: 9999px;
+
+  /* --- Shadow --- */
+  --v3-shadow-1: 0 1px 2px rgba(0,0,0,.3);
+  --v3-shadow-2: 0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* --- State --- */
+  --v3-state-success: #10b981;
+  --v3-state-warning: #f59e0b;
+  --v3-state-error: #ef4444;
+  --v3-state-info: #3b82f6;
+
+  /* --- Semantic Aliases --- */
+  --v3-background: var(--v3-bg);
+  --v3-foreground: var(--v3-ink);
+  --v3-card: var(--v3-surface);
+  --v3-card-foreground: var(--v3-ink);
+  --v3-popover: var(--v3-surface-2);
+  --v3-popover-foreground: var(--v3-ink);
+  --v3-primary: var(--v3-brand-500);
+  --v3-primary-foreground: var(--v3-brand-ink);
+  --v3-muted: var(--v3-surface-2);
+  --v3-muted-foreground: var(--v3-ink-2);
+  --v3-border: var(--v3-line);
+  --v3-input: var(--v3-surface-2);
+  --v3-ring: var(--v3-brand-500);
+  --v3-radius: var(--v3-radius-md);
+}
+
+/* --- Typography --- */
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v3-ink);
+  background: var(--v3-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: clamp(28px, 3.5vw, 48px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+
+.caption { font-size: 13px; line-height: 1.5; color: var(--v3-ink-3); }
+.mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+
+/* --- Layout --- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 768px) { .container { padding: 0 16px; } }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--v3-bg); }
+::-webkit-scrollbar-thumb { background: var(--v3-line-2); border-radius: 3px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--v3-background);
+    --color-foreground: var(--v3-foreground);
+    --color-card: var(--v3-card);
+    --color-card-foreground: var(--v3-card-foreground);
+    --color-popover: var(--v3-popover);
+    --color-popover-foreground: var(--v3-popover-foreground);
+    --color-primary: var(--v3-primary);
+    --color-primary-foreground: var(--v3-primary-foreground);
+    --color-muted: var(--v3-muted);
+    --color-muted-foreground: var(--v3-muted-foreground);
+    --color-border: var(--v3-border);
+    --color-input: var(--v3-input);
+    --color-ring: var(--v3-ring);
+    --radius-sm: var(--v3-radius-sm);
+    --radius-md: var(--v3-radius-md);
+    --radius-lg: var(--v3-radius-lg);
+  }
+  @layer base {
+    body { background: var(--v3-background); color: var(--v3-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--v3-background); }
+      .text-background { color: var(--v3-background); }
+      .border-background { border-color: var(--v3-background); }
+      .ring-background { --tw-ring-color: var(--v3-background); }
+      .bg-foreground { background-color: var(--v3-foreground); }
+      .text-foreground { color: var(--v3-foreground); }
+      .border-foreground { border-color: var(--v3-foreground); }
+      .ring-foreground { --tw-ring-color: var(--v3-foreground); }
+      .bg-card { background-color: var(--v3-card); }
+      .text-card { color: var(--v3-card); }
+      .border-card { border-color: var(--v3-card); }
+      .ring-card { --tw-ring-color: var(--v3-card); }
+      .bg-card-foreground { background-color: var(--v3-card-foreground); }
+      .text-card-foreground { color: var(--v3-card-foreground); }
+      .border-card-foreground { border-color: var(--v3-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--v3-card-foreground); }
+      .bg-popover { background-color: var(--v3-popover); }
+      .text-popover { color: var(--v3-popover); }
+      .border-popover { border-color: var(--v3-popover); }
+      .ring-popover { --tw-ring-color: var(--v3-popover); }
+      .bg-popover-foreground { background-color: var(--v3-popover-foreground); }
+      .text-popover-foreground { color: var(--v3-popover-foreground); }
+      .border-popover-foreground { border-color: var(--v3-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--v3-popover-foreground); }
+      .bg-primary { background-color: var(--v3-primary); }
+      .text-primary { color: var(--v3-primary); }
+      .border-primary { border-color: var(--v3-primary); }
+      .ring-primary { --tw-ring-color: var(--v3-primary); }
+      .bg-primary-foreground { background-color: var(--v3-primary-foreground); }
+      .text-primary-foreground { color: var(--v3-primary-foreground); }
+      .border-primary-foreground { border-color: var(--v3-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--v3-primary-foreground); }
+      .bg-muted { background-color: var(--v3-muted); }
+      .text-muted { color: var(--v3-muted); }
+      .border-muted { border-color: var(--v3-muted); }
+      .ring-muted { --tw-ring-color: var(--v3-muted); }
+      .bg-muted-foreground { background-color: var(--v3-muted-foreground); }
+      .text-muted-foreground { color: var(--v3-muted-foreground); }
+      .border-muted-foreground { border-color: var(--v3-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--v3-muted-foreground); }
+      .bg-border { background-color: var(--v3-border); }
+      .text-border { color: var(--v3-border); }
+      .border-border { border-color: var(--v3-border); }
+      .ring-border { --tw-ring-color: var(--v3-border); }
+      .bg-input { background-color: var(--v3-input); }
+      .text-input { color: var(--v3-input); }
+      .border-input { border-color: var(--v3-input); }
+      .ring-input { --tw-ring-color: var(--v3-input); }
+      .bg-ring { background-color: var(--v3-ring); }
+      .text-ring { color: var(--v3-ring); }
+      .border-ring { border-color: var(--v3-ring); }
+      .ring-ring { --tw-ring-color: var(--v3-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+    <style id="critical-layout">
+      /* === Prompt Library Page-Local CSS === */
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        background: var(--v3-bg);
+        color: var(--v3-ink);
+        font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* === Header === */
+      .page-header {
+        padding: 80px 0 48px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(ellipse at center, rgba(5,150,105,0.06) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: rgba(5,150,105,0.15);
+        border: 1px solid rgba(5,150,105,0.3);
+        border-radius: var(--v3-radius-full);
+        color: var(--v3-brand-400);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 20px;
+      }
+
+      .page-header h1 {
+        font-size: clamp(28px, 3.5vw, 44px);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--v3-ink);
+        margin-bottom: 12px;
+        position: relative;
+      }
+
+      .page-header .subtitle {
+        font-size: 16px;
+        color: var(--v3-ink-2);
+        font-weight: 400;
+        position: relative;
+      }
+
+      .header-line {
+        width: 60px;
+        height: 3px;
+        background: var(--v3-brand);
+        border-radius: 2px;
+        margin: 20px auto 0;
+      }
+
+      /* === Section === */
+      .section {
+        padding: 32px 0;
+      }
+
+      .section-header {
+        margin-bottom: 24px;
+      }
+
+      .section-header h2 {
+        font-size: clamp(20px, 2.2vw, 28px);
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--v3-ink);
+        margin-bottom: 6px;
+      }
+
+      .section-header .section-desc {
+        font-size: 14px;
+        color: var(--v3-ink-3);
+      }
+
+      /* === Prompt Card === */
+      .prompt-card {
+        background: var(--v3-surface);
+        border-radius: var(--v3-radius-lg);
+        border: 1px solid var(--v3-line);
+        border-left: 4px solid var(--v3-brand);
+        overflow: hidden;
+        box-shadow: var(--v3-shadow-1);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .prompt-card:hover {
+        border-color: var(--v3-line-2);
+        box-shadow: var(--v3-shadow-2);
+      }
+
+      .prompt-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px 0;
+      }
+
+      .prompt-card-header .command-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(5,150,105,0.12);
+        border-radius: var(--v3-radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--v3-brand-400);
+        flex-shrink: 0;
+      }
+
+      .prompt-card-header .command-name {
+        font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--v3-brand-400);
+        letter-spacing: 0.02em;
+      }
+
+      .prompt-card-header .command-label {
+        font-size: 14px;
+        color: var(--v3-ink-2);
+        margin-left: auto;
+        font-weight: 500;
+      }
+
+      .prompt-card-body {
+        padding: 16px 24px 20px;
+      }
+
+      .prompt-card-body pre {
+        background: var(--v3-surface-2);
+        border: 1px solid var(--v3-line);
+        border-radius: var(--v3-radius-md);
+        padding: 20px;
+        overflow-x: auto;
+        font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--v3-ink);
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .prompt-card-body pre code {
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        background: none;
+        padding: 0;
+      }
+
+      .prompt-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px 20px;
+        border-top: 1px solid var(--v3-line);
+        margin: 0 24px;
+        padding-top: 14px;
+      }
+
+      .prompt-card-footer .copy-hint {
+        font-size: 12px;
+        color: var(--v3-ink-3);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .prompt-card-footer .copy-btn {
+        font-size: 13px;
+        color: var(--v3-brand-400);
+        background: rgba(5,150,105,0.1);
+        border: 1px solid rgba(5,150,105,0.2);
+        border-radius: var(--v3-radius-sm);
+        padding: 6px 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 500;
+        transition: all 0.15s ease;
+      }
+
+      .prompt-card-footer .copy-btn:hover {
+        background: rgba(5,150,105,0.2);
+        border-color: rgba(5,150,105,0.35);
+      }
+
+      /* === Footer === */
+      .page-footer {
+        padding: 48px 0 40px;
+        text-align: center;
+        border-top: 1px solid var(--v3-line);
+        margin-top: 32px;
+      }
+
+      .page-footer .footer-text {
+        font-size: 13px;
+        color: var(--v3-ink-3);
+        margin-bottom: 8px;
+      }
+
+      .page-footer .footer-disclaimer {
+        font-size: 12px;
+        color: var(--v3-ink-3);
+        opacity: 0.6;
+      }
+
+      /* === Divider === */
+      .section-divider {
+        height: 1px;
+        background: var(--v3-line);
+        margin: 8px 0;
+      }
+
+      /* === Inline code in table === */
+      .prompt-card-body table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0;
+        font-size: 13px;
+      }
+
+      .prompt-card-body table th,
+      .prompt-card-body table td {
+        padding: 8px 12px;
+        text-align: left;
+        border: 1px solid var(--v3-line);
+      }
+
+      .prompt-card-body table th {
+        background: var(--v3-surface-3);
+        color: var(--v3-brand-400);
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .prompt-card-body table td {
+        color: var(--v3-ink-2);
+      }
+
+      @media (max-width: 768px) {
+        .container { padding: 0 16px; }
+        .page-header { padding: 48px 0 32px; }
+        .prompt-card-header { padding: 16px 16px 0; }
+        .prompt-card-body { padding: 12px 16px 16px; }
+        .prompt-card-body pre { padding: 14px; font-size: 12px; }
+        .prompt-card-footer { margin: 0 16px; padding: 0 16px 16px; padding-top: 12px; }
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+
+      <!-- ====== HEADER ====== -->
+      <header class="page-header">
+        <div class="container">
+          <div class="badge">V3.0</div>
+          <h1 id="prompt-title">V3.0 预测系统提示词指令集</h1>
+          <p class="subtitle">复制以下提示词，直接发送给 AI 即可使用</p>
+          <div class="header-line"></div>
+        </div>
+      </header>
+
+      <div class="container">
+
+        <!-- ====== SECTION: 核心改动提示词 ====== -->
+        <section class="section" id="prompt-core-changes">
+          <div class="section-header">
+            <h2>核心改动提示词</h2>
+            <p class="section-desc">了解 V3.0 相比 V2.x 的核心架构升级</p>
+          </div>
+
+          <article class="prompt-card">
+            <div class="prompt-card-header">
+              <div class="command-icon">
+                <i data-lucide="git-branch" style="width:18px;height:18px;"></i>
+              </div>
+              <span class="command-name">/v3-changes</span>
+              <span class="command-label">对比分析</span>
+            </div>
+            <div class="prompt-card-body">
+              <pre><code>你是一个足球比赛预测专家。请用中文回答。
+
+以下是 V3.0 预测系统的核心架构升级说明，请帮我理解以下改动：
+
+1. 架构升级：从 V2.x 单模型架构升级为多模型融合架构（Stacking / Blending / Voting）
+2. 因子系统：新增场外因子模块，覆盖天气、裁判、伤病、赛程密度、球队状态 5 大类 30+ 指标
+3. 特征工程：引入时间序列交叉验证（TimeSeriesSplit）和滚动窗口特征（Rolling Window Features）
+4. 模型升级：新增 XGBoost、LightGBM、CatBoost 三大梯度提升模型
+5. 预测输出：从单一胜平负扩展为胜平负 + 大小球 + 单双 + 比分四维预测
+6. 回测系统：新增完整回测框架，支持历史数据滚动验证、策略收益评估、夏普比率计算
+
+请用表格对比 V2.x 和 V3.0 的核心差异，并说明每个改动对预测精度的提升。</code></pre>
+            </div>
+            <div class="prompt-card-footer">
+              <span class="copy-hint">
+                <i data-lucide="clipboard" style="width:14px;height:14px;"></i>
+                选中上方文本即可复制
+              </span>
+            </div>
+          </article>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ====== SECTION: 预测框架提示词 ====== -->
+        <section class="section" id="prompt-framework">
+          <div class="section-header">
+            <h2>预测框架提示词</h2>
+            <p class="section-desc">V3.0 五层流水线架构详解</p>
+          </div>
+
+          <article class="prompt-card">
+            <div class="prompt-card-header">
+              <div class="command-icon">
+                <i data-lucide="layers" style="width:18px;height:18px;"></i>
+              </div>
+              <span class="command-name">/v3-pipeline</span>
+              <span class="command-label">架构分析</span>
+            </div>
+            <div class="prompt-card-body">
+              <pre><code>你是一个足球比赛预测专家。请用中文回答。
+
+V3.0 预测系统采用五层流水线架构：
+
+1. 数据采集层：多源数据接入（历史赛果、赔率数据、球队/球员统计、场外因子）
+2. 特征工程层：时间窗口特征构建、特征交叉、缺失值处理、标准化
+3. 模型训练层：基学习器训练（LR, XGBoost, LightGBM, CatBoost）+ 元学习器训练
+4. 预测推理层：多模型预测、概率校准、集成融合
+5. 输出层：四维预测结果 + 置信度 + 推荐策略
+
+请绘制一个流程图描述这五层架构的数据流向，并说明每层的输入输出。</code></pre>
+            </div>
+            <div class="prompt-card-footer">
+              <span class="copy-hint">
+                <i data-lucide="clipboard" style="width:14px;height:14px;"></i>
+                选中上方文本即可复制
+              </span>
+            </div>
+          </article>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ====== SECTION: 核心算法提示词 ====== -->
+        <section class="section" id="prompt-algorithm">
+          <div class="section-header">
+            <h2>核心算法提示词</h2>
+            <p class="section-desc">多模型集成算法详解与选型分析</p>
+          </div>
+
+          <article class="prompt-card">
+            <div class="prompt-card-header">
+              <div class="command-icon">
+                <i data-lucide="cpu" style="width:18px;height:18px;"></i>
+              </div>
+              <span class="command-name">/v3-algorithm</span>
+              <span class="command-label">算法分析</span>
+            </div>
+            <div class="prompt-card-body">
+              <pre><code>你是一个机器学习专家，专精足球预测。请用中文回答。
+
+V3.0 预测系统使用以下核心算法进行多模型集成：
+
+| 算法 | 类型 | 核心特性 |
+|------|------|----------|
+| XGBoost | 梯度提升决策树 | 正则化目标函数，特征重要性排序 |
+| LightGBM | 直方图梯度提升 | Leaf-wise 生长策略，类别特征原生支持 |
+| CatBoost | 有序提升 | Ordered Boosting，对称树结构，自动处理类别特征 |
+| Stacking | 集成策略 | 基学习器产出概率 → 元学习器（LR）融合 |
+| Platt Scaling | 概率校准 | 确保预测概率与实际频率一致 |
+
+请分析每种算法在足球预测场景中的优劣势，并给出模型选择建议。</code></pre>
+            </div>
+            <div class="prompt-card-footer">
+              <span class="copy-hint">
+                <i data-lucide="clipboard" style="width:14px;height:14px;"></i>
+                选中上方文本即可复制
+              </span>
+            </div>
+          </article>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ====== SECTION: 场外因子提示词 ====== -->
+        <section class="section" id="prompt-factors">
+          <div class="section-header">
+            <h2>场外因子提示词</h2>
+            <p class="section-desc">5 大类 30+ 场外因子系统说明</p>
+          </div>
+
+          <article class="prompt-card">
+            <div class="prompt-card-header">
+              <div class="command-icon">
+                <i data-lucide="database" style="width:18px;height:18px;"></i>
+              </div>
+              <span class="command-name">/v3-factors</span>
+              <span class="command-label">因子分析</span>
+            </div>
+            <div class="prompt-card-body">
+              <pre><code>你是一个足球数据分析专家。请用中文回答。
+
+V3.0 新增了场外因子（Off-Field Factors）系统，包含以下 5 大类 30+ 指标：
+
+| 因子类别 | 指标数 | 典型指标 | 更新频率 |
+|---------|-------|---------|---------|
+| 天气因子 | 6 | 温度、湿度、风速、降水概率、气压、场地状况 | 赛前24h |
+| 裁判因子 | 5 | 场均黄牌、场均红牌、主队胜率、场均点球、执法历史 | 赛季更新 |
+| 伤病因子 | 8 | 主力缺阵数、伤病严重度、复出概率、阵容完整度、核心球员状态 | 实时更新 |
+| 赛程因子 | 7 | 休息天数、连续客场、周中比赛、赛程密度、对手强度、旅途距离 | 赛前更新 |
+| 状态因子 | 6 | 近期胜率、进球趋势、失球趋势、盘路表现、主客场差异、交锋记录 | 赛后更新 |
+
+请分析每个因子类别对比赛结果的影响权重，并给出因子组合策略建议。</code></pre>
+            </div>
+            <div class="prompt-card-footer">
+              <span class="copy-hint">
+                <i data-lucide="clipboard" style="width:14px;height:14px;"></i>
+                选中上方文本即可复制
+              </span>
+            </div>
+          </article>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ====== SECTION: 预测输出提示词 ====== -->
+        <section class="section" id="prompt-output">
+          <div class="section-header">
+            <h2>预测输出提示词</h2>
+            <p class="section-desc">四维预测输出模板，填入比赛信息即可使用</p>
+          </div>
+
+          <article class="prompt-card">
+            <div class="prompt-card-header">
+              <div class="command-icon">
+                <i data-lucide="target" style="width:18px;height:18px;"></i>
+              </div>
+              <span class="command-name">/v3-predict</span>
+              <span class="command-label">预测执行</span>
+            </div>
+            <div class="prompt-card-body">
+              <pre><code>你是一个足球预测系统。请用中文回答。
+
+请根据以下比赛数据进行 V3.0 四维预测分析：
+
+【比赛信息】
+- 主队：[填写主队名称]
+- 客队：[填写客队名称]
+- 联赛：[填写联赛名称]
+- 开赛时间：[填写时间]
+
+【预测输出要求】
+1. 胜平负预测：主胜/平局/客胜概率 + 推荐方向
+2. 大小球预测：大球/小球概率 + 推荐盘口
+3. 单双预测：总进球单数/双数概率
+4. 比分预测：最可能比分 top-3 + 对应概率
+5. 置信度评分：A/B/C/D 四级
+6. 推荐策略：保守型/均衡型/进取型
+
+请以结构化 JSON 格式输出预测结果，并在每个维度附上置信度说明。</code></pre>
+            </div>
+            <div class="prompt-card-footer">
+              <span class="copy-hint">
+                <i data-lucide="clipboard" style="width:14px;height:14px;"></i>
+                选中上方文本即可复制
+              </span>
+            </div>
+          </article>
+        </section>
+
+      </div>
+
+      <!-- ====== FOOTER ====== -->
+      <footer class="page-footer">
+        <div class="container">
+          <p class="footer-text">V3.0 预测系统提示词指令集 · 复制即用 · 持续更新</p>
+          <p class="footer-disclaimer">提示词仅供 AI 对话场景使用，预测结果仅供参考，不构成投注建议。</p>
+        </div>
+      </footer>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

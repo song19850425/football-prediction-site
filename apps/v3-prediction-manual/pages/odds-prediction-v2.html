@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赔率系统预测 V2 | 8.14-17</title>
+    <style id="theme-vars">
+/* V3.0 预测系统 - 产品说明书 Brand CSS */
+/* 专业科技文档风格 · 深色主题 */
+
+:root {
+  /* --- Brand Primary --- */
+  --v3-brand: #059669;
+  --v3-brand-50: #ecfdf5;
+  --v3-brand-100: #d1fae5;
+  --v3-brand-200: #a7f3d0;
+  --v3-brand-300: #6ee7b7;
+  --v3-brand-400: #34d399;
+  --v3-brand-500: #10b981;
+  --v3-brand-600: #059669;
+  --v3-brand-700: #047857;
+  --v3-brand-800: #065f46;
+  --v3-brand-900: #064e3b;
+  --v3-brand-ink: #ffffff;
+
+  /* --- Surface / Background --- */
+  --v3-bg: #0a0a0f;
+  --v3-surface: #111118;
+  --v3-surface-2: #18181f;
+  --v3-surface-3: #1f1f28;
+
+  /* --- Ink --- */
+  --v3-ink: #e8e8ed;
+  --v3-ink-2: #9ca3af;
+  --v3-ink-3: #6b7280;
+
+  /* --- Line / Border --- */
+  --v3-line: #27272a;
+  --v3-line-2: #3f3f46;
+
+  /* --- Radius --- */
+  --v3-radius-sm: 4px;
+  --v3-radius-md: 8px;
+  --v3-radius-lg: 16px;
+  --v3-radius-full: 9999px;
+
+  /* --- Shadow --- */
+  --v3-shadow-1: 0 1px 2px rgba(0,0,0,.3);
+  --v3-shadow-2: 0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* --- State --- */
+  --v3-state-success: #10b981;
+  --v3-state-warning: #f59e0b;
+  --v3-state-error: #ef4444;
+  --v3-state-info: #3b82f6;
+
+  /* --- Semantic Aliases --- */
+  --v3-background: var(--v3-bg);
+  --v3-foreground: var(--v3-ink);
+  --v3-card: var(--v3-surface);
+  --v3-card-foreground: var(--v3-ink);
+  --v3-popover: var(--v3-surface-2);
+  --v3-popover-foreground: var(--v3-ink);
+  --v3-primary: var(--v3-brand-500);
+  --v3-primary-foreground: var(--v3-brand-ink);
+  --v3-muted: var(--v3-surface-2);
+  --v3-muted-foreground: var(--v3-ink-2);
+  --v3-border: var(--v3-line);
+  --v3-input: var(--v3-surface-2);
+  --v3-ring: var(--v3-brand-500);
+  --v3-radius: var(--v3-radius-md);
+}
+
+/* --- Typography --- */
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v3-ink);
+  background: var(--v3-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: clamp(28px, 3.5vw, 48px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+
+.caption { font-size: 13px; line-height: 1.5; color: var(--v3-ink-3); }
+.mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px; }
+
+/* --- Layout --- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 768px) { .container { padding: 0 16px; } }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--v3-bg); }
+::-webkit-scrollbar-thumb { background: var(--v3-line-2); border-radius: 3px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--v3-background);
+    --color-foreground: var(--v3-foreground);
+    --color-card: var(--v3-card);
+    --color-card-foreground: var(--v3-card-foreground);
+    --color-popover: var(--v3-popover);
+    --color-popover-foreground: var(--v3-popover-foreground);
+    --color-primary: var(--v3-primary);
+    --color-primary-foreground: var(--v3-primary-foreground);
+    --color-muted: var(--v3-muted);
+    --color-muted-foreground: var(--v3-muted-foreground);
+    --color-border: var(--v3-border);
+    --color-input: var(--v3-input);
+    --color-ring: var(--v3-ring);
+    --radius-sm: var(--v3-radius-sm);
+    --radius-md: var(--v3-radius-md);
+    --radius-lg: var(--v3-radius-lg);
+  }
+  @layer base {
+    body { background: var(--v3-background); color: var(--v3-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--v3-background); }
+      .text-background { color: var(--v3-background); }
+      .border-background { border-color: var(--v3-background); }
+      .ring-background { --tw-ring-color: var(--v3-background); }
+      .bg-foreground { background-color: var(--v3-foreground); }
+      .text-foreground { color: var(--v3-foreground); }
+      .border-foreground { border-color: var(--v3-foreground); }
+      .ring-foreground { --tw-ring-color: var(--v3-foreground); }
+      .bg-card { background-color: var(--v3-card); }
+      .text-card { color: var(--v3-card); }
+      .border-card { border-color: var(--v3-card); }
+      .ring-card { --tw-ring-color: var(--v3-card); }
+      .bg-card-foreground { background-color: var(--v3-card-foreground); }
+      .text-card-foreground { color: var(--v3-card-foreground); }
+      .border-card-foreground { border-color: var(--v3-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--v3-card-foreground); }
+      .bg-popover { background-color: var(--v3-popover); }
+      .text-popover { color: var(--v3-popover); }
+      .border-popover { border-color: var(--v3-popover); }
+      .ring-popover { --tw-ring-color: var(--v3-popover); }
+      .bg-popover-foreground { background-color: var(--v3-popover-foreground); }
+      .text-popover-foreground { color: var(--v3-popover-foreground); }
+      .border-popover-foreground { border-color: var(--v3-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--v3-popover-foreground); }
+      .bg-primary { background-color: var(--v3-primary); }
+      .text-primary { color: var(--v3-primary); }
+      .border-primary { border-color: var(--v3-primary); }
+      .ring-primary { --tw-ring-color: var(--v3-primary); }
+      .bg-primary-foreground { background-color: var(--v3-primary-foreground); }
+      .text-primary-foreground { color: var(--v3-primary-foreground); }
+      .border-primary-foreground { border-color: var(--v3-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--v3-primary-foreground); }
+      .bg-muted { background-color: var(--v3-muted); }
+      .text-muted { color: var(--v3-muted); }
+      .border-muted { border-color: var(--v3-muted); }
+      .ring-muted { --tw-ring-color: var(--v3-muted); }
+      .bg-muted-foreground { background-color: var(--v3-muted-foreground); }
+      .text-muted-foreground { color: var(--v3-muted-foreground); }
+      .border-muted-foreground { border-color: var(--v3-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--v3-muted-foreground); }
+      .bg-border { background-color: var(--v3-border); }
+      .text-border { color: var(--v3-border); }
+      .border-border { border-color: var(--v3-border); }
+      .ring-border { --tw-ring-color: var(--v3-border); }
+      .bg-input { background-color: var(--v3-input); }
+      .text-input { color: var(--v3-input); }
+      .border-input { border-color: var(--v3-input); }
+      .ring-input { --tw-ring-color: var(--v3-input); }
+      .bg-ring { background-color: var(--v3-ring); }
+      .text-ring { color: var(--v3-ring); }
+      .border-ring { border-color: var(--v3-ring); }
+      .ring-ring { --tw-ring-color: var(--v3-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main class="container py-10">
+      <!-- ===== Header Section ===== -->
+      <header class="mb-10 text-center">
+        <div class="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(5,150,105,.12);color:#059669;">
+          <i data-lucide="zap" class="w-3.5 h-3.5"></i> V3.0
+        </div>
+        <h1 class="text-3xl md:text-5xl font-semibold tracking-tight mb-3" style="letter-spacing:-0.02em;">V3.0 赔率系统预测</h1>
+        <p class="text-base md:text-lg mb-2" style="color:var(--v3-ink-2);">2026年8月14日-17日 | 全球热门联赛</p>
+        <p class="text-sm max-w-2xl mx-auto" style="color:var(--v3-ink-3);">基于泊松分布 + Dixon-Coles 模型的统计预测，结合赔率市场双视角分析</p>
+      </header>
+
+      <!-- ===== Summary Statistics ===== -->
+      <section class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10">
+        <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="bar-chart-3" class="w-4 h-4" style="color:var(--v3-brand-400);"></i>
+            <span class="text-xs font-medium" style="color:var(--v3-ink-3);">总预测场次</span>
+          </div>
+          <div class="text-2xl font-bold" style="color:var(--v3-ink);">23</div>
+        </div>
+        <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="trending-up" class="w-4 h-4" style="color:#10b981;"></i>
+            <span class="text-xs font-medium" style="color:var(--v3-ink-3);">主胜预测</span>
+          </div>
+          <div class="text-2xl font-bold" style="color:#10b981;">14<span class="text-sm font-normal ml-1" style="color:var(--v3-ink-2);">场 (61%)</span></div>
+        </div>
+        <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="trending-down" class="w-4 h-4" style="color:#3b82f6;"></i>
+            <span class="text-xs font-medium" style="color:var(--v3-ink-3);">客胜预测</span>
+          </div>
+          <div class="text-2xl font-bold" style="color:#3b82f6;">7<span class="text-sm font-normal ml-1" style="color:var(--v3-ink-2);">场 (30%)</span></div>
+        </div>
+        <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="minus" class="w-4 h-4" style="color:#f59e0b;"></i>
+            <span class="text-xs font-medium" style="color:var(--v3-ink-3);">平局预测</span>
+          </div>
+          <div class="text-2xl font-bold" style="color:#f59e0b;">2<span class="text-sm font-normal ml-1" style="color:var(--v3-ink-2);">场 (9%)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== League: Championship 英冠 ===== -->
+      <section class="mb-10">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="trophy" class="w-5 h-5" style="color:var(--v3-brand-400);"></i>
+          <h2 class="text-xl md:text-2xl font-semibold">Championship <span class="text-base font-normal" style="color:var(--v3-ink-2);">英冠 · 10场 · Aug 14-16</span></h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Match 1: Wolves vs Blackburn -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/14</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Wolves <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Blackburn</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:75%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">75%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 0.84/1.55</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">0-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">黑马布莱克本客场战力强劲，狼队主场进攻乏力</p>
+          </div>
+
+          <!-- Match 2: Norwich vs West Brom -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Norwich <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> West Brom</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:71%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">71%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#f59e0b;"></i> 冷门预警</span>
+              <span class="mono text-xs">xG 1.13/0.91</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">诺维奇主场优势微弱，西布朗客场韧性足</p>
+          </div>
+
+          <!-- Match 3: Bristol City vs Millwall -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Bristol City <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Millwall</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:74%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">74%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 0.97/1.49</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">0-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">米尔沃尔攻防均衡，布城主场难有作为</p>
+          </div>
+
+          <!-- Match 4: Stoke vs Swansea -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Stoke <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Swansea</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:70%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">70%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#eab308;"></i> 中度防冷</span>
+              <span class="mono text-xs">xG 1.32/1.06</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">斯托克城略占上风但斯旺西客场防守稳固</p>
+          </div>
+
+          <!-- Match 5: Charlton vs Derby -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Charlton <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Derby</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:74%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">74%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 0.87/1.44</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">0-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">德比郡状态正佳，查尔顿攻防均有短板</p>
+          </div>
+
+          <!-- Match 6: Portsmouth vs QPR -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Portsmouth <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> QPR</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:70%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">70%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#eab308;"></i> 中度防冷</span>
+              <span class="mono text-xs">xG 1.16/0.71</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">朴茨茅斯主场防守出色，QPR客场进攻乏力</p>
+          </div>
+
+          <!-- Match 7: Sheffield Utd vs Birmingham -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Sheffield Utd <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Birmingham</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:75%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">75%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.51/0.86</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">谢菲联主场强势，伯明翰客场难有突破</p>
+          </div>
+
+          <!-- Match 8: Watford vs Southampton -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Watford <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Southampton</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:72%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">72%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.25/1.98</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-2</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">南安普顿攻击力碾压，沃特福德防线漏洞多</p>
+          </div>
+
+          <!-- Match 9: Burnley vs West Ham -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Burnley <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> West Ham</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:71%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">71%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#f59e0b;"></i> 冷门预警</span>
+              <span class="mono text-xs">xG 1.07/1.18</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">0-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">实力接近的对决，西汉姆联客场经验更丰富</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== League: La Liga 西甲 ===== -->
+      <section class="mb-10">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="trophy" class="w-5 h-5" style="color:var(--v3-brand-400);"></i>
+          <h2 class="text-xl md:text-2xl font-semibold">La Liga <span class="text-base font-normal" style="color:var(--v3-ink-2);">西甲 · 4场 · Aug 15-16</span></h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Match 1: Alaves vs Getafe -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(245,158,11,.12);color:#f59e0b;">平局</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Alaves <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Getafe</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:72%;background:#f59e0b;"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:#f59e0b;">72%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#f59e0b;"></i> 冷门预警</span>
+              <span class="mono text-xs">xG 1.0/0.8</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">0-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">两队攻防风格相似，闷平概率极高</p>
+          </div>
+
+          <!-- Match 2: Sevilla vs Rayo -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Sevilla <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Rayo</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:72%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">72%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#eab308;"></i> 中度防冷</span>
+              <span class="mono text-xs">xG 1.32/1.01</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">塞维利亚主场优势明显但巴列卡诺不容小觑</p>
+          </div>
+
+          <!-- Match 3: Espanyol vs Levante -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Espanyol <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Levante</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:71%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">71%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3" style="color:#eab308;"></i> 中度防冷</span>
+              <span class="mono text-xs">xG 1.24/1.11</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">西班牙人主场略占优，莱万特客场韧性强</p>
+          </div>
+
+          <!-- Match 4: Celta Vigo vs Osasuna -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Celta Vigo <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Osasuna</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:72%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">72%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.38/0.75</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">塞尔塔主场进攻犀利，奥萨苏纳客场乏力</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== League: Brasileirao 巴甲 ===== -->
+      <section class="mb-10">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="trophy" class="w-5 h-5" style="color:var(--v3-brand-400);"></i>
+          <h2 class="text-xl md:text-2xl font-semibold">Brasileirao <span class="text-base font-normal" style="color:var(--v3-ink-2);">巴甲 · 9场 · Aug 15-17</span></h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Match 1: Fluminense vs Palmeiras -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Fluminense <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Palmeiras</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:74%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">74%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.43/0.91</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">弗鲁米嫩塞主场强势，帕尔梅拉斯客场有隐患</p>
+          </div>
+
+          <!-- Match 2: Athletico PR vs Bragantino -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/15</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Athletico PR <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Bragantino</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:80%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">80%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 2.05/0.44</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">2-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">巴拉纳竞技主场统治力极强，红牛客场进球困难</p>
+          </div>
+
+          <!-- Match 3: Sao Paulo vs Coritiba -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Sao Paulo <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Coritiba</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:74%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">74%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.84/0.86</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">圣保罗攻防俱佳，科里蒂巴客场疲软</p>
+          </div>
+
+          <!-- Match 4: Chapecoense vs Bahia -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Chapecoense <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Bahia</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:70%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">70%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.56/1.85</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-2</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">巴伊亚客场攻击力强，沙佩科恩斯防守漏洞大</p>
+          </div>
+
+          <!-- Match 5: Atletico Mineiro vs Gremio -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Atletico Mineiro <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Gremio</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:73%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">73%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.72/1.01</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">米内罗竞技主场优势明显，格雷米奥客场不稳</p>
+          </div>
+
+          <!-- Match 6: Vasco da Gama vs Santos -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Vasco da Gama <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Santos</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:73%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">73%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.96/1.5</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">2-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">达伽马进攻火力强劲，桑托斯客场有进球但难取胜</p>
+          </div>
+
+          <!-- Match 7: Mirassol vs Flamengo -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Mirassol <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Flamengo</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:72%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">72%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.37/1.69</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-2</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">弗拉门戈实力碾压，米拉索尔主场难阻</p>
+          </div>
+
+          <!-- Match 8: Vitoria vs Botafogo -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/16</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Vitoria <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Botafogo</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:73%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">73%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.44/0.65</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">1-0</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">小2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(5,150,105,.08);color:var(--v3-brand-400);">双</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">维多利亚主场防守稳固，博塔弗戈客场乏力</p>
+          </div>
+
+          <!-- Match 9: Internacional vs Remo -->
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:var(--v3-surface-2);color:var(--v3-ink-2);">8/17</span>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+            </div>
+            <div class="text-base font-semibold mb-2">Internacional <span class="text-xs font-normal" style="color:var(--v3-ink-3);">vs</span> Remo</div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background:var(--v3-surface-2);">
+                <div class="h-full rounded-full" style="width:75%;background:var(--v3-brand-500);"></div>
+              </div>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">75%</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs mb-2" style="color:var(--v3-ink-2);">
+              <span class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3" style="color:#10b981;"></i> 低风险</span>
+              <span class="mono text-xs">xG 1.92/1.1</span>
+              <span class="mono text-xs font-semibold" style="color:var(--v3-ink);">2-1</span>
+            </div>
+            <div class="flex gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">大2.5</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(59,130,246,.08);color:#3b82f6;">单</span>
+            </div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">国际队实力占优，雷莫客场难有作为</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Value Betting ===== -->
+      <section class="mb-10">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="target" class="w-5 h-5" style="color:var(--v3-brand-400);"></i>
+          <h2 class="text-xl md:text-2xl font-semibold">价值投注推荐</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(16,185,129,.12);color:#10b981;">主胜</span>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">80% 置信</span>
+            </div>
+            <div class="text-sm font-semibold mb-1">Athletico PR vs 红牛</div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-2);">模型与市场一致看好主胜，主胜赔率仍有价值</p>
+          </div>
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(59,130,246,.12);color:#3b82f6;">客胜</span>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">75% 置信</span>
+            </div>
+            <div class="text-sm font-semibold mb-1">Wolves vs Blackburn</div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-2);">市场低估布莱克本客场战力，客胜赔率偏高</p>
+          </div>
+          <div class="rounded-lg border p-4" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(245,158,11,.12);color:#f59e0b;">平局</span>
+              <span class="text-xs font-semibold" style="color:var(--v3-brand-400);">72% 置信</span>
+            </div>
+            <div class="text-sm font-semibold mb-1">Alaves vs Getafe</div>
+            <p class="text-xs leading-relaxed" style="color:var(--v3-ink-2);">平局赔率通常被低估，两队实力接近</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Dual-Perspective Analysis ===== -->
+      <section class="mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="rounded-lg border p-5" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="building-2" class="w-4 h-4" style="color:var(--v3-ink-2);"></i>
+              <h3 class="text-base font-semibold">机构视角</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color:var(--v3-ink-2);">赔率市场倾向于主队优势，英冠和巴甲主胜赔率普遍偏低</p>
+          </div>
+          <div class="rounded-lg border p-5" style="background:var(--v3-surface);border-color:var(--v3-line);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="cpu" class="w-4 h-4" style="color:var(--v3-ink-2);"></i>
+              <h3 class="text-base font-semibold">模型视角</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color:var(--v3-ink-2);">泊松分布模型显示多场比赛存在主客场实力错配，客胜价值被低估</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Methodology Note ===== -->
+      <section class="mb-6">
+        <div class="rounded-lg border p-5" style="background:var(--v3-surface);border-color:var(--v3-line);">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="info" class="w-4 h-4" style="color:var(--v3-ink-3);"></i>
+            <span class="text-xs font-semibold uppercase tracking-wide" style="color:var(--v3-ink-3);">方法论说明</span>
+          </div>
+          <p class="text-xs leading-relaxed" style="color:var(--v3-ink-3);">基于180支球队、2875场历史数据的泊松分布 + Dixon-Coles 修正模型。置信度综合数据量、近期状态一致性、预测优势幅度计算。赔率数据参考多家主流博彩机构。预测仅供参考，不构成投注建议。</p>
+        </div>
+      </section>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

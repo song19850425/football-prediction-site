@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本周末预测验证 (9.19-21) - 五大联赛命中率复盘</title>
+    <style id="theme-vars">
+/* ===== Football Odds MVP - Brand CSS (Minimal Tool Style) ===== */
+
+:root {
+  /* Primary: Football green */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  /* State colors */
+  --state-success: #16a34a;
+  --state-success-light: #dcfce7;
+  --state-warning: #ea580c;
+  --state-warning-light: #fff7ed;
+  --state-error: #dc2626;
+  --state-error-light: #fef2f2;
+  --state-info: #2563eb;
+  --state-info-light: #eff6ff;
+
+  /* Semantic aliases */
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #16a34a;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Surface depth: border-first, shadow alpha <= 0.05 for static */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #052e16;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --input: #262626;
+  --ring: #22c55e;
+
+  --color-primary-50: #052e16;
+  --color-primary-100: #052e16;
+  --color-primary-200: #14532d;
+  --color-primary-300: #166534;
+  --color-primary-400: #15803d;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #22c55e;
+  --color-primary-700: #4ade80;
+  --color-primary-800: #86efac;
+  --color-primary-900: #bbf7d0;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Utility classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-foreground); }
+.text-success { color: var(--state-success); }
+.text-warning { color: var(--state-warning); }
+.text-error { color: var(--state-error); }
+.text-info { color: var(--state-info); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-muted { background-color: var(--muted); }
+.bg-card { background-color: var(--card); }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="padding: 24px 20px 8px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Football icon SVG -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/>
+          <path d="M12 2a8 8 0 0 1 5 3M12 22a8 8 0 0 0 5-3M2 12a8 8 0 0 1 3-5M22 12a8 8 0 0 0-3-5"/>
+        </svg>
+        <span style="font-size: 16px; font-weight: 700; color: var(--foreground);">赔率分析</span>
+      </div>
+    </div>
+
+    <nav style="margin-top: 20px;">
+      <a href="schedule.html" class="nav-item" data-dom-id="nav-schedule">
+        <!-- Calendar icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        赛程日历
+      </a>
+      <a href="odds-input.html" class="nav-item" data-dom-id="nav-odds-input">
+        <!-- Plus/edit icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        赔率录入
+      </a>
+      <a href="factor-analysis.html" class="nav-item" data-dom-id="nav-factor">
+        <!-- Chart icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        影响因子
+      </a>
+      <a href="ai-analysis.html" class="nav-item" data-dom-id="nav-ai">
+        <!-- AI/brain icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M12 18v4"/><path d="M8 22h8"/><path d="M5 8a7 7 0 0 0 14 0"/></svg>
+        AI 分析
+      </a>
+      <a href="weekly-prediction-v2.html" class="nav-item active" data-dom-id="nav-prediction">
+        <!-- Trending up / prediction icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        本周预测
+      </a>
+    </nav>
+
+    <!-- Bottom user section -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- User avatar -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--muted)" stroke="none"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" fill="var(--muted)"/></svg>
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--foreground);">用户</div>
+          <div style="font-size: 11px; color: var(--muted-foreground);">专业版</div>
+        </div>
+      </div>
+      <!-- Settings icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- Date display -->
+      <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--foreground);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        2026-09-19 至 09-21 · 验证报告
+      </div>
+
+      <!-- League filter -->
+      <select class="filter-input" style="min-width: 120px; cursor: pointer;">
+        <option>全部联赛</option>
+        <option>英超</option>
+        <option>德甲</option>
+        <option>西甲</option>
+        <option>意甲</option>
+        <option>法甲</option>
+      </select>
+
+      <!-- Spacer -->
+      <div style="flex: 1;"></div>
+
+      <!-- Search -->
+      <div style="position: relative; display: flex; align-items: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="搜索球队或联赛..." class="filter-input" style="padding-left: 32px; min-width: 220px;">
+      </div>
+    </div>
+
+    <!-- Content area -->
+    <div class="content-wrap">
+
+      <!-- Section 1: Verification Overview -->
+      <section class="section-block" aria-labelledby="verify-overview-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-overview-title">预测验证总览</h2>
+            <p class="section-sub">五大联赛 · 数据截至 2026-09-21</p>
+          </div>
+          <span class="section-note">数据源：公开赛果 · 预测留档</span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <div class="stat-value">37 / 46</div>
+            </div>
+            <div class="stat-label">已验证场次</div>
+            <div class="stat-meta">覆盖英超 / 德甲 / 西甲 / 意甲 / 法甲</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--state-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div class="stat-value">9</div>
+            </div>
+            <div class="stat-label">待验证场次</div>
+            <div class="stat-meta">待复核 7 场 · 未开赛 2 场</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              <div class="stat-value">56.8%</div>
+            </div>
+            <div class="stat-label">胜平负命中</div>
+            <div class="stat-meta">21/37 · 多数类基线 56.8%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+              <div class="stat-value">70.3%</div>
+            </div>
+            <div class="stat-label">大小球 2.5 命中</div>
+            <div class="stat-meta">26/37 · 全押大基线 54.1%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <div class="stat-value">59.5%</div>
+            </div>
+            <div class="stat-label">单双命中</div>
+            <div class="stat-meta">22/37 · 全押单基线 56.8%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div class="stat-value stat-value--text">待接入</div>
+            </div>
+            <div class="stat-label">角球 / 牌数</div>
+            <div class="stat-meta">暂无权威数据源，本报告不计入命中率</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Hit Rate by Market -->
+      <section class="section-block" aria-labelledby="verify-market-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-market-title">分市场命中率</h2>
+            <p class="section-sub">5 个市场 · 与朴素基线逐项对照</p>
+          </div>
+          <span class="section-note">基线取本轮样本的多数类比例</span>
+        </div>
+
+        <div class="table-scroll">
+          <table class="match-table table--market">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 150px;">市场</th>
+                <th scope="col" style="width: 96px;">命中</th>
+                <th scope="col" style="width: 96px;">命中率</th>
+                <th scope="col" style="width: 190px;">基线对比</th>
+                <th scope="col" style="min-width: 300px;">结论</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="league-name">胜平负</span></td>
+                <td class="cell-mono">21/37</td>
+                <td class="cell-mono rate-flat">56.8%</td>
+                <td><span class="cell-note">多数类基线 56.8%</span><span class="delta delta-flat">超额 0.0pp</span></td>
+                <td class="cell-note">与基线持平，方向判断无明显超额</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">大小球 2.5</span></td>
+                <td class="cell-mono">26/37</td>
+                <td class="cell-mono rate-strong">70.3%</td>
+                <td><span class="cell-note">全押大基线 54.1%</span><span class="delta delta-up">超额 +16.2pp</span></td>
+                <td class="cell-note">本轮大球集中，模型跟随正确</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">单双</span></td>
+                <td class="cell-mono">22/37</td>
+                <td class="cell-mono rate-flat">59.5%</td>
+                <td><span class="cell-note">全押单基线 56.8%</span><span class="delta delta-flat">超额 +2.7pp</span></td>
+                <td class="cell-note">超额 +2.7pp，接近随机</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">总角球 9.5</span></td>
+                <td class="cell-mono rate-pending">待验证</td>
+                <td class="cell-mono rate-pending">—</td>
+                <td><span class="cell-note rate-pending">—</span></td>
+                <td class="cell-note">缺少权威角球数据源</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">总牌数 4.5</span></td>
+                <td class="cell-mono rate-pending">待验证</td>
+                <td class="cell-mono rate-pending">—</td>
+                <td><span class="cell-note rate-pending">—</span></td>
+                <td class="cell-note">缺少权威牌数数据源</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 3: Performance by League -->
+      <section class="section-block" aria-labelledby="verify-league-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-league-title">分联赛表现</h2>
+            <p class="section-sub">5 个联赛 · 37 场已验证场次</p>
+          </div>
+          <span class="section-note">括号内为命中率</span>
+        </div>
+
+        <div class="table-scroll">
+          <table class="match-table table--league">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 110px;">联赛</th>
+                <th scope="col" style="width: 96px;">已验证</th>
+                <th scope="col" style="min-width: 160px;">胜平负</th>
+                <th scope="col" style="min-width: 160px;">大小球</th>
+                <th scope="col" style="min-width: 160px;">单双</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">10</td>
+                <td><span class="metric-hits">5/10</span><span class="metric-rate">(50.0%)</span></td>
+                <td><span class="metric-hits">8/10</span><span class="metric-rate">(80.0%)</span></td>
+                <td><span class="metric-hits">6/10</span><span class="metric-rate">(60.0%)</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">9</td>
+                <td><span class="metric-hits">5/9</span><span class="metric-rate">(55.6%)</span></td>
+                <td><span class="metric-hits">5/9</span><span class="metric-rate">(55.6%)</span></td>
+                <td><span class="metric-hits">4/9</span><span class="metric-rate">(44.4%)</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">6</td>
+                <td><span class="metric-hits">2/6</span><span class="metric-rate">(33.3%)</span></td>
+                <td><span class="metric-hits">5/6</span><span class="metric-rate">(83.3%)</span></td>
+                <td><span class="metric-hits">4/6</span><span class="metric-rate">(66.7%)</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">8</td>
+                <td><span class="metric-hits">6/8</span><span class="metric-rate">(75.0%)</span></td>
+                <td><span class="metric-hits">6/8</span><span class="metric-rate">(75.0%)</span></td>
+                <td><span class="metric-hits">6/8</span><span class="metric-rate">(75.0%)</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono cell-center">4</td>
+                <td><span class="metric-hits">3/4</span><span class="metric-rate">(75.0%)</span></td>
+                <td><span class="metric-hits">2/4</span><span class="metric-rate">(50.0%)</span></td>
+                <td><span class="metric-hits">2/4</span><span class="metric-rate">(50.0%)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Match-by-Match Verification -->
+      <section class="section-block" aria-labelledby="verify-detail-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-detail-title">逐场验证明细</h2>
+            <p class="section-sub">37 场已验证 · ✓ 命中，✗ 未命中</p>
+          </div>
+          <span class="section-note">宽表可横向滚动查看</span>
+        </div>
+
+        <div class="table-scroll">
+          <table class="match-table table--verify">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 60px;">联赛</th>
+                <th scope="col" style="width: 60px;">日期</th>
+                <th scope="col" style="min-width: 200px;">对阵</th>
+                <th scope="col" style="width: 56px;">比分</th>
+                <th scope="col" style="width: 76px;">实际结果</th>
+                <th scope="col" style="width: 76px;">预测方向</th>
+                <th scope="col" style="width: 44px;">方向</th>
+                <th scope="col" style="width: 82px;">大小球预测</th>
+                <th scope="col" style="width: 78px;">实际总进球</th>
+                <th scope="col" style="width: 50px;">大小球</th>
+                <th scope="col" style="width: 68px;">单双预测</th>
+                <th scope="col" style="width: 68px;">实际单双</th>
+                <th scope="col" style="width: 44px;">单双</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ===== 英超 (10场) ===== -->
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">布伦特福德</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">切尔西</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">热刺</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">阿斯顿维拉</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-3</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">5</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">布莱顿</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">阿森纳</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">埃弗顿</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">伊普斯维奇</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">纽卡斯尔</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">赫尔城</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">诺丁汉森林</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">考文垂</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-1</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">伯恩茅斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">利物浦</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-1</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">利兹联</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">水晶宫</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-0</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">0</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">曼城</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">桑德兰</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">5-3</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">8</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">英超</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">富勒姆</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">曼联</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-1</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <!-- ===== 德甲 (9场) ===== -->
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">拜仁慕尼黑</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">柏林联合</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">7-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">7</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">云达不莱梅</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">奥格斯堡</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-2</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">5</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">汉堡</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">科隆</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">门兴格拉德巴赫</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">美因茨</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-4</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">7</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">法兰克福</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">弗赖堡</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-2</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">4</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">斯图加特</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">多特蒙德</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-1</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">勒沃库森</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">莱比锡红牛</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">沙尔克04</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">埃尔弗斯贝格</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-0</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">0</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">德甲</span></td>
+                <td class="cell-mono cell-center">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">帕德博恩</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">霍芬海姆</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">4</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <!-- ===== 西甲 (6场) ===== -->
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">奥萨苏纳</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">巴列卡诺</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-1</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">毕尔巴鄂竞技</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">阿拉维斯</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-0</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">0</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">塞尔塔</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">桑坦德竞技</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">5-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">5</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">赫塔费</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">马拉加</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">马德里竞技</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">皇家马德里</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono cell-center">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">塞维利亚</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">巴塞罗那</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-3</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">4</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <!-- ===== 意甲 (8场) ===== -->
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">蒙扎</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">萨索洛</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">博洛尼亚</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">都灵</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">1-1</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">乌迪内斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">卡利亚里</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-1</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">1</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">罗马</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">国际米兰</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-2</td>
+                <td class="cell-center result-cell">平局</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">4</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">威尼斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">拉齐奥</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">0-2</td>
+                <td class="cell-center result-cell">客胜</td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">弗罗西诺内</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">科莫</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">尤文图斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">亚特兰大</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">2</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono cell-center">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">AC米兰</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">莱切</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">3-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <!-- ===== 法甲 (4场) ===== -->
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">摩纳哥</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">朗斯</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono cell-center">09-19</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">巴黎FC</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">斯特拉斯堡</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">勒芒</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">洛里昂</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">2-1</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell ou-under">小2.5</td>
+                <td class="cell-mono cell-center">3</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+                <td class="market-cell oe-even">双</td>
+                <td class="cell-center">单</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono cell-center">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">里昂</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">雷恩</span>
+                  </div>
+                </td>
+                <td class="cell-mono cell-center">4-0</td>
+                <td class="cell-center result-cell">主胜</td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell ou-over">大2.5</td>
+                <td class="cell-mono cell-center">4</td>
+                <td class="cell-center"><span class="hit hit-yes" role="img" aria-label="命中">✓</span></td>
+                <td class="market-cell oe-odd">单</td>
+                <td class="cell-center">双</td>
+                <td class="cell-center"><span class="hit hit-no" role="img" aria-label="未命中">✗</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Section 5: Pending Matches -->
+      <section class="section-block" aria-labelledby="verify-pending-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-pending-title">待验证场次</h2>
+            <p class="section-sub">9 场 · 未计入命中率统计</p>
+          </div>
+          <span class="section-note">待复核 7 场 · 未开赛 2 场</span>
+        </div>
+
+        <div class="table-scroll">
+          <table class="match-table table--pending">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 90px;">联赛</th>
+                <th scope="col" style="width: 90px;">日期</th>
+                <th scope="col" style="min-width: 240px;">对阵</th>
+                <th scope="col" style="width: 110px;">预测方向</th>
+                <th scope="col" style="min-width: 300px;">说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">皇家贝蒂斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">埃尔切</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">西甲</span></td>
+                <td class="cell-mono">09-22</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">比利亚雷亚尔</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">瓦伦西亚</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">未开赛</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">热那亚</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">佛罗伦萨</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">意甲</span></td>
+                <td class="cell-mono">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">那不勒斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">帕尔马</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">昂热</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">特鲁瓦</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono">09-20</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">图卢兹</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">勒阿弗尔</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">尼斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">马赛</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-draw">平局</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono">09-21</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">巴黎圣日耳曼</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">布雷斯特</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-home">主胜</span></td>
+                <td class="notes-cell">赛程与公开赛果无法对齐，待复核</td>
+              </tr>
+              <tr>
+                <td><span class="league-name">法甲</span></td>
+                <td class="cell-mono">09-22</td>
+                <td>
+                  <div class="fixture">
+                    <span class="team team-home">兰斯</span>
+                    <span class="vs">VS</span>
+                    <span class="team team-away">里尔</span>
+                  </div>
+                </td>
+                <td><span class="prediction-badge prediction-away">客胜</span></td>
+                <td class="notes-cell">未开赛</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 6: Deviation Conclusions -->
+      <section class="section-block" aria-labelledby="verify-conclusion-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="verify-conclusion-title">偏差结论</h2>
+            <p class="section-sub">4 条结论 · 基于 37 场已验证样本</p>
+          </div>
+          <span class="section-note">命中率仅覆盖胜平负 / 大小球 / 单双</span>
+        </div>
+
+        <div class="conclusion-grid">
+          <div class="conclusion-card">
+            <h3 class="conclusion-title">本轮方向表现回到基线</h3>
+            <p class="conclusion-text">56.8% 与多数类基线一致，较上轮 41.7% 明显回升，主胜判断基本可靠。</p>
+          </div>
+          <div class="conclusion-card">
+            <h3 class="conclusion-title">大小球是本轮最大亮点</h3>
+            <p class="conclusion-text">70.3% 命中，超额 +16.2pp；本轮五大联赛总进球偏高，模型的大球跟随正确。</p>
+          </div>
+          <div class="conclusion-card">
+            <h3 class="conclusion-title">平局仍被系统性低估</h3>
+            <p class="conclusion-text">实际平局 8/37 (21.6%)，模型仅预测 6 场；预测主胜却打成平局共 5 场，是最大失误类型。</p>
+          </div>
+          <div class="conclusion-card">
+            <h3 class="conclusion-title">角球与牌数暂缺验证数据</h3>
+            <p class="conclusion-text">两项市场缺少权威数据源，本轮不给出命中率，避免用基线冒充预测能力。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <span>足球赔率分析 MVP · 预测验证报告</span>
+      <span>数据窗口 2026-09-19 至 2026-09-21 · 生成于 2026-09-21</span>
+    </footer>
+
+  </main>
+
+
+    <style>
+    :root {
+      --color-primary-50: #f0fdf4;
+      --color-primary-100: #dcfce7;
+      --color-primary-200: #bbf7d0;
+      --color-primary-300: #86efac;
+      --color-primary-400: #4ade80;
+      --color-primary-500: #22c55e;
+      --color-primary-600: #16a34a;
+      --color-primary-700: #15803d;
+      --color-primary-800: #166534;
+      --color-primary-900: #14532d;
+      --color-neutral-50: #fafafa;
+      --color-neutral-100: #f5f5f5;
+      --color-neutral-200: #e5e5e5;
+      --color-neutral-300: #d4d4d4;
+      --color-neutral-400: #a3a3a3;
+      --color-neutral-500: #737373;
+      --color-neutral-600: #525252;
+      --color-neutral-700: #404040;
+      --color-neutral-800: #262626;
+      --color-neutral-900: #171717;
+      --state-success: #16a34a;
+      --state-success-light: #dcfce7;
+      --state-warning: #ea580c;
+      --state-warning-light: #fff7ed;
+      --state-error: #dc2626;
+      --state-error-light: #fef2f2;
+      --state-info: #2563eb;
+      --state-info-light: #eff6ff;
+      --background: #ffffff;
+      --foreground: #171717;
+      --card: #ffffff;
+      --card-foreground: #171717;
+      --popover: #ffffff;
+      --popover-foreground: #171717;
+      --primary: #16a34a;
+      --primary-foreground: #ffffff;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --input: #e5e5e5;
+      --ring: #16a34a;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .dark {
+      --background: #0a0a0a;
+      --foreground: #fafafa;
+      --card: #141414;
+      --card-foreground: #fafafa;
+      --popover: #141414;
+      --popover-foreground: #fafafa;
+      --primary: #22c55e;
+      --primary-foreground: #052e16;
+      --muted: #262626;
+      --muted-foreground: #a3a3a3;
+      --border: #262626;
+      --input: #262626;
+      --ring: #22c55e;
+      --color-primary-50: #052e16;
+      --color-primary-100: #052e16;
+      --color-primary-200: #14532d;
+      --color-primary-300: #166534;
+      --color-primary-400: #15803d;
+      --color-primary-500: #16a34a;
+      --color-primary-600: #22c55e;
+      --color-primary-700: #4ade80;
+      --color-primary-800: #86efac;
+      --color-primary-900: #bbf7d0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .font-heading { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; }
+
+    body { background: var(--background); color: var(--foreground); font-family: var(--font-body); }
+
+    /* Sidebar */
+    .sidebar { width: 240px; min-height: 100vh; border-right: 1px solid var(--border); background: var(--card); position: fixed; left: 0; top: 0; z-index: 10; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--muted-foreground); font-size: 14px; font-weight: 500; border-left: 3px solid transparent; cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-item:hover { background: var(--muted); color: var(--foreground); }
+    .nav-item.active { color: var(--primary); border-left-color: var(--primary); background: var(--color-primary-50); }
+
+    /* Main */
+    .main-content { margin-left: 240px; min-height: 100vh; }
+
+    /* Top bar */
+    .top-bar { border-bottom: 1px solid var(--border); padding: 16px 32px; background: var(--card); display: flex; align-items: center; gap: 16px; }
+
+    /* Filter controls */
+    .filter-input { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; background: var(--background); color: var(--foreground); outline: none; transition: border-color 0.15s; }
+    .filter-input:focus { border-color: var(--ring); }
+
+    /* Stats cards */
+    .stat-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; background: var(--card); }
+    .stat-value { font-size: 24px; font-weight: 700; color: var(--foreground); line-height: 1.2; }
+    .stat-label { font-size: 12px; color: var(--muted-foreground); margin-top: 4px; }
+
+    /* Table */
+    .match-table { width: 100%; border-collapse: collapse; }
+    .match-table thead th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--muted); }
+    .match-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    .match-table tbody tr:hover { background: var(--muted); }
+    .match-table tbody td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
+
+    /* Action buttons */
+    .btn-sm { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; border: 1px solid var(--border); background: var(--card); color: var(--foreground); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-sm:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-primary-sm { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+    .btn-primary-sm:hover { background: var(--color-primary-700); color: var(--primary-foreground); border-color: var(--color-primary-700); }
+
+    /* League badge */
+    .league-badge { display: inline-flex; align-items: center; gap: 8px; }
+    .league-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Market column styles */
+    .prob-cell { font-size: 13px; font-weight: 500; text-align: right; }
+    .market-cell { font-size: 13px; font-weight: 500; }
+    .ou-over { color: var(--state-success); }
+    .ou-under { color: var(--muted-foreground); }
+    .oe-odd { color: var(--state-info); }
+    .oe-even { color: var(--state-warning); }
+    .corner-over { color: var(--state-success); }
+    .corner-under { color: var(--muted-foreground); }
+    .cards-over { color: var(--state-error); }
+    .cards-under { color: var(--state-success); }
+
+    /* Confidence low */
+    .confidence-dot-low { background: var(--muted-foreground); }
+    .confidence-low { color: var(--muted-foreground); }
+
+    /* Prediction badges */
+    .prediction-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
+    .prediction-home { background: var(--color-primary-50); color: var(--state-success); }
+    .prediction-away { background: var(--state-info-light); color: var(--state-info); }
+    .prediction-draw { background: var(--state-warning-light); color: var(--state-warning); }
+    .prediction-pending { background: var(--muted); color: var(--muted-foreground); }
+
+    /* Confidence badges */
+    .confidence-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; }
+    .confidence-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .confidence-dot-high { background: var(--state-success); }
+    .confidence-dot-medium { background: var(--state-warning); }
+    .confidence-dot-pending { background: var(--muted-foreground); }
+    .confidence-high { color: var(--state-success); }
+    .confidence-medium { color: var(--state-warning); }
+    .confidence-pending { color: var(--muted-foreground); }
+
+    /* Insight cards */
+    .insight-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; background: var(--card); }
+    /* ===== 本周末预测验证（weekend-verification）页面级补充样式 ===== */
+    .content-wrap { padding: 24px 32px; }
+
+    /* 区块与标题 */
+    .section-block { margin-bottom: 24px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .section-title { font-size: 16px; font-weight: 600; color: var(--foreground); margin: 0; }
+    .section-sub { font-size: 12px; color: var(--muted-foreground); margin: 4px 0 0; line-height: 1.5; }
+    .section-note { font-size: 12px; color: var(--muted-foreground); }
+
+    /* 验证总览 KPI 网格 */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .stat-row { display: flex; align-items: center; gap: 6px; }
+    .stat-value--text { font-size: 20px; color: var(--muted-foreground); }
+    .stat-meta { font-size: 11px; color: var(--muted-foreground); margin-top: 6px; line-height: 1.5; }
+
+    /* 表格容器与密度 */
+    .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--card); }
+    .table--market { min-width: 800px; }
+    .table--league { min-width: 680px; }
+    .table--verify { min-width: 1090px; }
+    .table--pending { min-width: 760px; }
+    .table--market thead th, .table--market tbody td,
+    .table--league thead th, .table--league tbody td,
+    .table--pending thead th, .table--pending tbody td { padding: 12px 16px; }
+    .table--verify thead th, .table--verify tbody td { padding: 10px 12px; }
+    .table--verify tbody td { font-size: 13px; }
+    .cell-center { text-align: center; }
+    .cell-mono { font-family: var(--font-mono); font-size: 13px; }
+    .cell-note { font-size: 13px; color: var(--foreground); }
+    .delta { display: block; font-size: 12px; margin-top: 2px; }
+    .delta-flat { color: var(--muted-foreground); }
+    .delta-up { color: var(--state-success); font-weight: 600; }
+    .rate-flat { font-weight: 600; color: var(--foreground); }
+    .rate-strong { font-weight: 600; color: var(--state-success); }
+    .rate-pending { color: var(--muted-foreground); }
+
+    /* 对阵与联赛单元格：CJK 队名不逐字断行 */
+    .league-name { font-weight: 500; white-space: nowrap; word-break: keep-all; }
+    .fixture { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+    .fixture .team { white-space: nowrap; word-break: keep-all; }
+    .fixture .team-home { font-weight: 500; }
+    .fixture .team-away { font-weight: 600; }
+    .fixture .vs { color: var(--muted-foreground); font-size: 12px; font-weight: 500; }
+    .result-cell { font-weight: 500; }
+    .notes-cell { font-size: 13px; color: var(--muted-foreground); line-height: 1.6; word-break: keep-all; }
+    .metric-hits { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--foreground); }
+    .metric-rate { font-family: var(--font-mono); font-size: 12px; color: var(--muted-foreground); margin-left: 4px; }
+
+    /* 命中标记 */
+    .hit { font-size: 13px; font-weight: 700; }
+    .hit-yes { color: var(--state-success); }
+    .hit-no { color: var(--state-error); }
+
+    /* 偏差结论卡 */
+    .conclusion-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .conclusion-card { border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: var(--radius-md); background: var(--muted); padding: 14px 18px; transition: border-color 0.15s ease, background-color 0.15s ease; }
+    .conclusion-card:hover { border-top-color: var(--color-primary-300); border-right-color: var(--color-primary-300); border-bottom-color: var(--color-primary-300); background: var(--card); }
+    .conclusion-title { font-size: 13px; font-weight: 600; color: var(--foreground); margin: 0; }
+    .conclusion-text { font-size: 13px; color: var(--muted-foreground); line-height: 1.65; margin: 6px 0 0; }
+
+    /* 页脚 */
+    .page-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--border); padding: 16px 32px; font-size: 12px; color: var(--muted-foreground); }
+
+    /* 用具体属性替代继承规则中的 transition: all */
+    .nav-item { transition: background-color 0.15s ease, color 0.15s ease, border-left-color 0.15s ease; }
+    .btn-sm { transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease; }
+
+    @media (max-width: 960px) {
+      .top-bar { flex-wrap: wrap; padding: 12px 20px; }
+      .content-wrap { padding: 16px 20px; }
+      .page-footer { padding: 16px 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .conclusion-card, .nav-item, .btn-sm, .match-table tbody tr { transition: none; }
+    }
+  </style>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

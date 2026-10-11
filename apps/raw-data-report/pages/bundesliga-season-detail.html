@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德甲分赛季明细</title>
+    <style id="theme-vars">
+/* ==========================================================================
+   五大联赛原始数据分析报告 · 设计令牌
+   品牌前缀: rpt   |   单一品牌色相: 深青绿（球场语义）
+   ========================================================================== */
+
+:root {
+  /* ---- 品牌语义色（浅色模式）---- */
+  --rpt-background: #F5F7F6;
+  --rpt-foreground: #0F1A17;
+  --rpt-card: #FFFFFF;
+  --rpt-card-foreground: #0F1A17;
+  --rpt-popover: #FFFFFF;
+  --rpt-popover-foreground: #0F1A17;
+  --rpt-primary: #0E7C66;
+  --rpt-primary-foreground: #FFFFFF;
+  --rpt-muted: #EBF0EE;
+  --rpt-muted-foreground: #5B6B66;
+  --rpt-border: #DEE5E2;
+  --rpt-input: #DEE5E2;
+  --rpt-ring: #0E7C66;
+
+  /* ---- 表面层级（浅色模式）---- */
+  --rpt-surface: #FFFFFF;
+  --rpt-surface-2: #EDF2F0;
+  --rpt-ink-2: #4C5B56;
+  --rpt-ink-3: #87948F;
+  --rpt-line: #E4EAE7;
+
+  /* ---- 状态色（仅用于真实状态）---- */
+  --rpt-state-success: #157347;
+  --rpt-state-warning: #A9690A;
+  --rpt-state-error: #B2352B;
+  --rpt-state-info: #1E6BA8;
+
+  /* ---- 数据可视化（单一品牌色相派生 + 中性）---- */
+  --rpt-chart-1: #0E7C66;
+  --rpt-chart-2: #479582;
+  --rpt-chart-3: #7FB5A6;
+  --rpt-chart-4: #B4D2C9;
+  --rpt-chart-5: #7C8B86;
+
+  /* ---- 圆角 ---- */
+  --rpt-radius-sm: 4px;
+  --rpt-radius-md: 8px;
+  --rpt-radius-lg: 16px;
+
+  /* ---- 阴影（静态表面极轻）---- */
+  --rpt-shadow-1: 0 1px 2px rgba(15, 26, 23, 0.04), 0 1px 1px rgba(15, 26, 23, 0.03);
+
+  /* ---- 字体 ---- */
+  --rpt-font-sans: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --rpt-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--rpt-background);
+    --color-foreground: var(--rpt-foreground);
+    --color-card: var(--rpt-card);
+    --color-card-foreground: var(--rpt-card-foreground);
+    --color-popover: var(--rpt-popover);
+    --color-popover-foreground: var(--rpt-popover-foreground);
+    --color-primary: var(--rpt-primary);
+    --color-primary-foreground: var(--rpt-primary-foreground);
+    --color-muted: var(--rpt-muted);
+    --color-muted-foreground: var(--rpt-muted-foreground);
+    --color-border: var(--rpt-border);
+    --color-input: var(--rpt-input);
+    --color-ring: var(--rpt-ring);
+    --color-chart-1: var(--rpt-chart-1);
+    --color-chart-2: var(--rpt-chart-2);
+    --color-chart-3: var(--rpt-chart-3);
+    --color-chart-4: var(--rpt-chart-4);
+    --color-chart-5: var(--rpt-chart-5);
+    --radius-sm: var(--rpt-radius-sm);
+    --radius-md: var(--rpt-radius-md);
+    --radius-lg: var(--rpt-radius-lg);
+  }
+  @layer base {
+    body { background: var(--rpt-background); color: var(--rpt-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--rpt-background); }
+      .text-background { color: var(--rpt-background); }
+      .border-background { border-color: var(--rpt-background); }
+      .ring-background { --tw-ring-color: var(--rpt-background); }
+      .bg-foreground { background-color: var(--rpt-foreground); }
+      .text-foreground { color: var(--rpt-foreground); }
+      .border-foreground { border-color: var(--rpt-foreground); }
+      .ring-foreground { --tw-ring-color: var(--rpt-foreground); }
+      .bg-card { background-color: var(--rpt-card); }
+      .text-card { color: var(--rpt-card); }
+      .border-card { border-color: var(--rpt-card); }
+      .ring-card { --tw-ring-color: var(--rpt-card); }
+      .bg-card-foreground { background-color: var(--rpt-card-foreground); }
+      .text-card-foreground { color: var(--rpt-card-foreground); }
+      .border-card-foreground { border-color: var(--rpt-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--rpt-card-foreground); }
+      .bg-popover { background-color: var(--rpt-popover); }
+      .text-popover { color: var(--rpt-popover); }
+      .border-popover { border-color: var(--rpt-popover); }
+      .ring-popover { --tw-ring-color: var(--rpt-popover); }
+      .bg-popover-foreground { background-color: var(--rpt-popover-foreground); }
+      .text-popover-foreground { color: var(--rpt-popover-foreground); }
+      .border-popover-foreground { border-color: var(--rpt-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--rpt-popover-foreground); }
+      .bg-primary { background-color: var(--rpt-primary); }
+      .text-primary { color: var(--rpt-primary); }
+      .border-primary { border-color: var(--rpt-primary); }
+      .ring-primary { --tw-ring-color: var(--rpt-primary); }
+      .bg-primary-foreground { background-color: var(--rpt-primary-foreground); }
+      .text-primary-foreground { color: var(--rpt-primary-foreground); }
+      .border-primary-foreground { border-color: var(--rpt-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--rpt-primary-foreground); }
+      .bg-muted { background-color: var(--rpt-muted); }
+      .text-muted { color: var(--rpt-muted); }
+      .border-muted { border-color: var(--rpt-muted); }
+      .ring-muted { --tw-ring-color: var(--rpt-muted); }
+      .bg-muted-foreground { background-color: var(--rpt-muted-foreground); }
+      .text-muted-foreground { color: var(--rpt-muted-foreground); }
+      .border-muted-foreground { border-color: var(--rpt-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--rpt-muted-foreground); }
+      .bg-border { background-color: var(--rpt-border); }
+      .text-border { color: var(--rpt-border); }
+      .border-border { border-color: var(--rpt-border); }
+      .ring-border { --tw-ring-color: var(--rpt-border); }
+      .bg-input { background-color: var(--rpt-input); }
+      .text-input { color: var(--rpt-input); }
+      .border-input { border-color: var(--rpt-input); }
+      .ring-input { --tw-ring-color: var(--rpt-input); }
+      .bg-ring { background-color: var(--rpt-ring); }
+      .text-ring { color: var(--rpt-ring); }
+      .border-ring { border-color: var(--rpt-ring); }
+      .ring-ring { --tw-ring-color: var(--rpt-ring); }
+      .bg-chart-1 { background-color: var(--rpt-chart-1); }
+      .text-chart-1 { color: var(--rpt-chart-1); }
+      .border-chart-1 { border-color: var(--rpt-chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--rpt-chart-1); }
+      .bg-chart-2 { background-color: var(--rpt-chart-2); }
+      .text-chart-2 { color: var(--rpt-chart-2); }
+      .border-chart-2 { border-color: var(--rpt-chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--rpt-chart-2); }
+      .bg-chart-3 { background-color: var(--rpt-chart-3); }
+      .text-chart-3 { color: var(--rpt-chart-3); }
+      .border-chart-3 { border-color: var(--rpt-chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--rpt-chart-3); }
+      .bg-chart-4 { background-color: var(--rpt-chart-4); }
+      .text-chart-4 { color: var(--rpt-chart-4); }
+      .border-chart-4 { border-color: var(--rpt-chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--rpt-chart-4); }
+      .bg-chart-5 { background-color: var(--rpt-chart-5); }
+      .text-chart-5 { color: var(--rpt-chart-5); }
+      .border-chart-5 { border-color: var(--rpt-chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--rpt-chart-5); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <div class="rpt-frame">
+
+        <!-- 1 · 页头 + 指标带 -->
+        <section id="d1-overview" class="rpt-sec rpt-sec--lead">
+          <header>
+            <h1 class="rpt-h1">德甲分赛季明细</h1>
+            <p class="rpt-body rpt-mt-6" style="max-width:76ch">数据来源 football-data.co.uk，德甲 D1 联赛 10 个赛季全部已完赛比赛，2016-08-26 至 2026-05-16，合计 3,060 场；德甲 18 支球队、单赛季 306 场，是五大联赛中场均进球最高的联赛。</p>
+          </header>
+
+          <div class="rpt-kpi-band rpt-mt-10">
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">总场次</div>
+              <div class="rpt-kpi-value"><span data-countup="3060" data-decimals="0">3,060</span></div>
+              <div class="rpt-kpi-note">10 个赛季 · 每季 306 场</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">场均进球</div>
+              <div class="rpt-kpi-value"><span data-countup="3.10" data-decimals="2">3.10</span></div>
+              <div class="rpt-kpi-note">主队 1.72 / 客队 1.37</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">主胜率</div>
+              <div class="rpt-kpi-value"><span data-countup="44.2" data-decimals="1">44.2</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">平 24.8% / 客胜 30.9%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">大 2.5 球率</div>
+              <div class="rpt-kpi-value"><span data-countup="59.8" data-decimals="1">59.8</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">五大联赛均值 53.1%</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">双方进球率</div>
+              <div class="rpt-kpi-value"><span data-countup="58.8" data-decimals="1">58.8</span><span class="rpt-kpi-unit">%</span></div>
+              <div class="rpt-kpi-note">两队各自至少打进 1 球</div>
+            </div>
+            <div class="rpt-kpi">
+              <div class="rpt-kpi-label">场均射门</div>
+              <div class="rpt-kpi-value"><span data-countup="25.9" data-decimals="1">25.9</span></div>
+              <div class="rpt-kpi-note">射正 9.4 · 射正率 36.4%</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2 · 分赛季明细主表 -->
+        <section id="d1-season-table" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">分赛季明细</h2>
+            <p class="rpt-meta">10 个赛季 · 每季固定 306 场</p>
+          </div>
+          <div class="rpt-grid rpt-grid--chart-wide rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-d1-goals" role="img" aria-label="德甲分赛季场均进球折线图：2016/17 至 2025/26 十个赛季的场均进球在 2.79 到 3.24 之间，最低为 17/18 赛季的 2.79，最高为 25/26 赛季的 3.24"></canvas>
+            </div>
+            <div class="rpt-tablewrap">
+              <table class="rpt-tbl">
+                <caption class="rpt-sr">德甲各赛季场次、进球、赛果结构、射门与列数明细</caption>
+                <thead>
+                  <tr>
+                    <th>赛季</th>
+                    <th class="rpt-num">场次</th>
+                    <th class="rpt-num">总进球</th>
+                    <th class="rpt-num">场均进球</th>
+                    <th class="rpt-num">主胜%</th>
+                    <th class="rpt-num">平%</th>
+                    <th class="rpt-num">客胜%</th>
+                    <th class="rpt-num">大2.5球%</th>
+                    <th class="rpt-num">双方进球%</th>
+                    <th class="rpt-num">零封%</th>
+                    <th class="rpt-num">场均射门</th>
+                    <th class="rpt-num">场均射正</th>
+                    <th class="rpt-num">列数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">16/17</th><td class="rpt-num">306</td><td class="rpt-num">877</td><td class="rpt-num">2.87</td><td class="rpt-num">49.0</td><td class="rpt-num">24.2</td><td class="rpt-num">26.8</td><td class="rpt-num">54.9</td><td class="rpt-num">54.9</td><td class="rpt-num">45.1</td><td class="rpt-num">24.9</td><td class="rpt-num">8.8</td><td class="rpt-num">65</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">17/18</th><td class="rpt-num">306</td><td class="rpt-num">855</td><td class="rpt-num">2.79</td><td class="rpt-num">45.4</td><td class="rpt-num">27.1</td><td class="rpt-num">27.5</td><td class="rpt-num">52.0</td><td class="rpt-num">54.9</td><td class="rpt-num">45.1</td><td class="rpt-num">25.2</td><td class="rpt-num">9.0</td><td class="rpt-num">65</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">18/19</th><td class="rpt-num">306</td><td class="rpt-num">973</td><td class="rpt-num">3.18</td><td class="rpt-num">45.1</td><td class="rpt-num">23.9</td><td class="rpt-num">31.0</td><td class="rpt-num">62.4</td><td class="rpt-num">59.5</td><td class="rpt-num">40.5</td><td class="rpt-num">26.8</td><td class="rpt-num">9.7</td><td class="rpt-num">62</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">19/20</th><td class="rpt-num">306</td><td class="rpt-num">982</td><td class="rpt-num">3.21</td><td class="rpt-num">40.2</td><td class="rpt-num">22.2</td><td class="rpt-num">37.6</td><td class="rpt-num">65.0</td><td class="rpt-num">58.2</td><td class="rpt-num">41.8</td><td class="rpt-num">26.5</td><td class="rpt-num">9.6</td><td class="rpt-num">106</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">20/21</th><td class="rpt-num">306</td><td class="rpt-num">928</td><td class="rpt-num">3.03</td><td class="rpt-num">42.2</td><td class="rpt-num">26.5</td><td class="rpt-num">31.4</td><td class="rpt-num">58.8</td><td class="rpt-num">60.1</td><td class="rpt-num">39.9</td><td class="rpt-num">24.7</td><td class="rpt-num">9.3</td><td class="rpt-num">106</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">21/22</th><td class="rpt-num">306</td><td class="rpt-num">954</td><td class="rpt-num">3.12</td><td class="rpt-num">46.7</td><td class="rpt-num">23.9</td><td class="rpt-num">29.4</td><td class="rpt-num">58.5</td><td class="rpt-num">60.8</td><td class="rpt-num">39.2</td><td class="rpt-num">25.7</td><td class="rpt-num">9.5</td><td class="rpt-num">106</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">22/23</th><td class="rpt-num">306</td><td class="rpt-num">971</td><td class="rpt-num">3.17</td><td class="rpt-num">47.4</td><td class="rpt-num">24.5</td><td class="rpt-num">28.1</td><td class="rpt-num">60.5</td><td class="rpt-num">59.2</td><td class="rpt-num">40.8</td><td class="rpt-num">25.3</td><td class="rpt-num">9.6</td><td class="rpt-num">106</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">23/24</th><td class="rpt-num">306</td><td class="rpt-num">985</td><td class="rpt-num">3.22</td><td class="rpt-num">43.8</td><td class="rpt-num">26.5</td><td class="rpt-num">29.7</td><td class="rpt-num">62.4</td><td class="rpt-num">61.8</td><td class="rpt-num">38.2</td><td class="rpt-num">27.2</td><td class="rpt-num">9.9</td><td class="rpt-num">106</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">24/25</th><td class="rpt-num">306</td><td class="rpt-num">959</td><td class="rpt-num">3.13</td><td class="rpt-num">38.6</td><td class="rpt-num">25.2</td><td class="rpt-num">36.3</td><td class="rpt-num">59.8</td><td class="rpt-num">56.9</td><td class="rpt-num">43.1</td><td class="rpt-num">25.8</td><td class="rpt-num">9.2</td><td class="rpt-num">120</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">25/26</th><td class="rpt-num">306</td><td class="rpt-num">990</td><td class="rpt-num">3.24</td><td class="rpt-num">43.8</td><td class="rpt-num">24.5</td><td class="rpt-num">31.7</td><td class="rpt-num">63.7</td><td class="rpt-num">61.8</td><td class="rpt-num">38.2</td><td class="rpt-num">26.5</td><td class="rpt-num">9.5</td><td class="rpt-num">132</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr class="rpt-total"><th scope="row" class="rpt-rowhead">合计</th><td class="rpt-num">3,060</td><td class="rpt-num">9,474</td><td class="rpt-num">3.10</td><td class="rpt-num">44.2</td><td class="rpt-num">24.8</td><td class="rpt-num">30.9</td><td class="rpt-num">59.8</td><td class="rpt-num">58.8</td><td class="rpt-num">41.3</td><td class="rpt-num">25.9</td><td class="rpt-num">9.4</td><td class="rpt-num">62 → 132</td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">赛季场次固定 306 场；场均进球区间 2.79–3.24，最低 17/18、最高 25/26；列数从 65 演进到 132。</p>
+        </section>
+
+        <!-- 3 · 进球与比分特征 -->
+        <section id="d1-goal-pattern" class="rpt-sec">
+          <h2 class="rpt-h2">进球特征</h2>
+          <div class="rpt-grid rpt-grid--halves rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-d1-scores" role="img" aria-label="德甲最常见比分频次 Top 10 横向条形图：1-1 出现 368 场居首，其后依次为 2-1 的 264 场、1-0 的 202 场与 2-0 的 199 场"></canvas>
+            </div>
+            <div>
+              <div class="rpt-tablewrap">
+                <table class="rpt-tbl">
+                  <caption class="rpt-sr">德甲比分频次 Top 12</caption>
+                  <thead>
+                    <tr><th>比分</th><th class="rpt-num">场次</th><th class="rpt-num">占比</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">1-1</th><td class="rpt-num">368</td><td class="rpt-num">12.03%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">2-1</th><td class="rpt-num">264</td><td class="rpt-num">8.63%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">1-0</th><td class="rpt-num">202</td><td class="rpt-num">6.60%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">2-0</th><td class="rpt-num">199</td><td class="rpt-num">6.50%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">1-2</th><td class="rpt-num">190</td><td class="rpt-num">6.21%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">2-2</th><td class="rpt-num">172</td><td class="rpt-num">5.62%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">3-1</th><td class="rpt-num">165</td><td class="rpt-num">5.39%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">0-0</th><td class="rpt-num">165</td><td class="rpt-num">5.39%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">0-1</th><td class="rpt-num">162</td><td class="rpt-num">5.29%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">0-2</th><td class="rpt-num">134</td><td class="rpt-num">4.38%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">3-0</th><td class="rpt-num">126</td><td class="rpt-num">4.12%</td></tr>
+                    <tr><th scope="row" class="rpt-rowhead rpt-mono">1-3</th><td class="rpt-num">115</td><td class="rpt-num">3.76%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="rpt-h3 rpt-mt-12">总进球分布</h3>
+          <div class="rpt-rows rpt-mt-6">
+            <div class="rpt-row"><span class="rpt-row-label">0 球</span><span class="rpt-row-value">165 场 · 5.39%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">1 球</span><span class="rpt-row-value">364 场 · 11.90%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">2 球</span><span class="rpt-row-value">701 场 · 22.91%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">3 球</span><span class="rpt-row-value">662 场 · 21.63%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">4 球</span><span class="rpt-row-value">567 场 · 18.53%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">5 球</span><span class="rpt-row-value">304 场 · 9.93%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">6 球</span><span class="rpt-row-value">186 场 · 6.08%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">7 球</span><span class="rpt-row-value">79 场 · 2.58%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">8 球</span><span class="rpt-row-value">24 场 · 0.78%</span></div>
+          </div>
+
+          <h3 class="rpt-h3 rpt-mt-12">极端值分布</h3>
+          <div class="rpt-rows rpt-mt-6">
+            <div class="rpt-row"><span class="rpt-row-label">总进球 ≥ 6</span><span class="rpt-row-value">297 场 · 9.71%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">总进球 ≥ 7</span><span class="rpt-row-value">111 场 · 3.63%</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">单场最大总进球</span><span class="rpt-row-value">10 球</span></div>
+            <div class="rpt-row"><span class="rpt-row-label">0-0 占比</span><span class="rpt-row-value">5.39%</span></div>
+          </div>
+        </section>
+
+        <!-- 4 · 主客场与胜负格局 -->
+        <section id="d1-home-away" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">主客格局</h2>
+            <p class="rpt-meta">主胜 / 平 / 客胜百分比 · 主客队场均进球</p>
+          </div>
+          <div class="rpt-grid rpt-grid--halves rpt-mt-8">
+            <div class="rpt-chart-wrap">
+              <canvas id="chart-d1-homeaway" role="img" aria-label="德甲分赛季主胜、平局与客胜占比三系列折线图：主胜占比从 16/17 的 49.0% 降至 24/25 的 38.6%，客胜占比同期从 26.8% 升至 36.3%"></canvas>
+            </div>
+            <div class="rpt-tablewrap">
+              <table class="rpt-tbl">
+                <caption class="rpt-sr">德甲各赛季主胜、平、客胜占比与主客队场均进球</caption>
+                <thead>
+                  <tr><th>赛季</th><th class="rpt-num">主胜%</th><th class="rpt-num">平%</th><th class="rpt-num">客胜%</th><th class="rpt-num">主队场均进球</th><th class="rpt-num">客队场均进球</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">16/17</th><td class="rpt-num">49.0</td><td class="rpt-num">24.2</td><td class="rpt-num">26.8</td><td class="rpt-num">1.66</td><td class="rpt-num">1.21</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">17/18</th><td class="rpt-num">45.4</td><td class="rpt-num">27.1</td><td class="rpt-num">27.5</td><td class="rpt-num">1.60</td><td class="rpt-num">1.19</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">18/19</th><td class="rpt-num">45.1</td><td class="rpt-num">23.9</td><td class="rpt-num">31.0</td><td class="rpt-num">1.79</td><td class="rpt-num">1.39</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">19/20</th><td class="rpt-num">40.2</td><td class="rpt-num">22.2</td><td class="rpt-num">37.6</td><td class="rpt-num">1.66</td><td class="rpt-num">1.55</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">20/21</th><td class="rpt-num">42.2</td><td class="rpt-num">26.5</td><td class="rpt-num">31.4</td><td class="rpt-num">1.68</td><td class="rpt-num">1.36</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">21/22</th><td class="rpt-num">46.7</td><td class="rpt-num">23.9</td><td class="rpt-num">29.4</td><td class="rpt-num">1.76</td><td class="rpt-num">1.36</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">22/23</th><td class="rpt-num">47.4</td><td class="rpt-num">24.5</td><td class="rpt-num">28.1</td><td class="rpt-num">1.86</td><td class="rpt-num">1.32</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">23/24</th><td class="rpt-num">43.8</td><td class="rpt-num">26.5</td><td class="rpt-num">29.7</td><td class="rpt-num">1.81</td><td class="rpt-num">1.41</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">24/25</th><td class="rpt-num">38.6</td><td class="rpt-num">25.2</td><td class="rpt-num">36.3</td><td class="rpt-num">1.63</td><td class="rpt-num">1.50</td></tr>
+                  <tr><th scope="row" class="rpt-rowhead rpt-mono">25/26</th><td class="rpt-num">43.8</td><td class="rpt-num">24.5</td><td class="rpt-num">31.7</td><td class="rpt-num">1.78</td><td class="rpt-num">1.46</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">主场优势最强 16/17（主胜 49.0%，客胜 26.8%）；最弱 24/25（主胜 38.6%，客胜 36.3%，两者仅差 2.3 个百分点）；19/20 客胜率 37.6% 为十年最高。</p>
+
+          <h3 class="rpt-h3 rpt-mt-12">半场转化</h3>
+          <dl class="rpt-dl rpt-mt-6">
+            <div class="rpt-dl-row"><dt>半场主队领先</dt><dd><span class="rpt-mono">1,090</span> 场 · 最终主胜 <span class="rpt-mono">78.4%</span> / 平 <span class="rpt-mono">15.0%</span> / 客胜 <span class="rpt-mono">6.5%</span></dd></div>
+            <div class="rpt-dl-row"><dt>半场平局</dt><dd><span class="rpt-mono">1,150</span> 场 · 最终仍平 <span class="rpt-mono">39.0%</span></dd></div>
+            <div class="rpt-dl-row"><dt>半场客队领先</dt><dd><span class="rpt-mono">819</span> 场 · 最终客胜 <span class="rpt-mono">71.2%</span></dd></div>
+            <div class="rpt-dl-row"><dt>半场领先被逆转</dt><dd>比例 <span class="rpt-mono">5.2%</span></dd></div>
+          </dl>
+        </section>
+
+        <!-- 5 · 五大联赛定位对比 -->
+        <section id="d1-league-context" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">联赛定位</h2>
+            <p class="rpt-meta">按场均进球降序 · 五大联赛</p>
+          </div>
+          <div class="rpt-chart-wrap rpt-mt-8">
+            <canvas id="chart-d1-league" role="img" aria-label="五大联赛场均进球横向条形图：德甲 3.10 居首，其后为英超 2.83、意甲 2.74、法甲 2.73、西甲 2.62"></canvas>
+          </div>
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">五大联赛进球、赛果与射门指标对比</caption>
+              <thead>
+                <tr>
+                  <th>联赛</th>
+                  <th class="rpt-num">场次</th>
+                  <th class="rpt-num">场均进球</th>
+                  <th class="rpt-num">主胜%</th>
+                  <th class="rpt-num">平%</th>
+                  <th class="rpt-num">客胜%</th>
+                  <th class="rpt-num">大2.5球%</th>
+                  <th class="rpt-num">双方进球%</th>
+                  <th class="rpt-num">场均射门</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-lead">德甲</th><td class="rpt-num">3,060</td><td class="rpt-num rpt-lead">3.10</td><td class="rpt-num">44.2</td><td class="rpt-num">24.8</td><td class="rpt-num">30.9</td><td class="rpt-num">59.8</td><td class="rpt-num">58.8</td><td class="rpt-num">25.9</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">英超</th><td class="rpt-num">3,800</td><td class="rpt-num">2.83</td><td class="rpt-num">44.6</td><td class="rpt-num">23.2</td><td class="rpt-num">32.1</td><td class="rpt-num">54.4</td><td class="rpt-num">52.8</td><td class="rpt-num">25.3</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">意甲</th><td class="rpt-num">3,800</td><td class="rpt-num">2.74</td><td class="rpt-num">41.9</td><td class="rpt-num">25.5</td><td class="rpt-num">32.5</td><td class="rpt-num">52.6</td><td class="rpt-num">53.9</td><td class="rpt-num">24.1</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">法甲</th><td class="rpt-num">3,477</td><td class="rpt-num">2.73</td><td class="rpt-num">43.9</td><td class="rpt-num">25.2</td><td class="rpt-num">30.8</td><td class="rpt-num">51.8</td><td class="rpt-num">52.4</td><td class="rpt-num">24.5</td></tr>
+                <tr><th scope="row" class="rpt-rowhead">西甲</th><td class="rpt-num">3,800</td><td class="rpt-num">2.62</td><td class="rpt-num">45.5</td><td class="rpt-num">26.2</td><td class="rpt-num">28.3</td><td class="rpt-num">48.0</td><td class="rpt-num">51.5</td><td class="rpt-num">23.8</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">德甲场均进球 3.10 位列五大联赛第 1，比最低的西甲（2.62）高 0.48 球；大 2.5 球率 59.8% 同样第 1；但主胜率 44.2% 仅排第 4，说明德甲的高进球并不来自更强的主场优势，而是双边进攻效率更高。</p>
+        </section>
+
+        <!-- 6 · 德甲赔率数据覆盖 -->
+        <section id="d1-odds-coverage" class="rpt-sec">
+          <div class="rpt-flex-between">
+            <h2 class="rpt-h2">赔率覆盖</h2>
+            <p class="rpt-meta">按赛季 · 覆盖率</p>
+          </div>
+          <div class="rpt-tablewrap rpt-mt-8">
+            <table class="rpt-tbl">
+              <caption class="rpt-sr">德甲各赛季赔率字段覆盖率</caption>
+              <thead>
+                <tr>
+                  <th>赛季</th>
+                  <th class="rpt-num">Bet365 胜平负</th>
+                  <th class="rpt-num">Pinnacle 胜平负</th>
+                  <th class="rpt-num">最佳赔率 Max</th>
+                  <th class="rpt-num">平均赔率 Avg</th>
+                  <th class="rpt-num">Bet365 收盘</th>
+                  <th class="rpt-num">Bet365 大小球</th>
+                  <th class="rpt-num">Pinnacle 大小球</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">16/17</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">17/18</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">18/19</th><td class="rpt-num">100.0%</td><td class="rpt-num">99.7%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td><td class="rpt-num rpt-zero">0.0%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">19/20</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">20/21</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">98.4%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">21/22</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">98.4%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">22/23</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">95.4%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">23/24</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">95.4%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">24/25</th><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">97.1%</td></tr>
+                <tr><th scope="row" class="rpt-rowhead rpt-mono">25/26</th><td class="rpt-num">100.0%</td><td class="rpt-num" style="color: var(--rpt-state-warning)">49.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num">100.0%</td><td class="rpt-num" style="color: var(--rpt-state-warning)">46.4%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="rpt-note-text rpt-mt-6">16/17–18/19 三个赛季没有 Max/Avg/收盘/大小球赔率，19/20 起完整；25/26 赛季 Pinnacle 覆盖明显下降（胜平负 49.0%、大小球 46.4%），Bet365 与 Max/Avg 仍为 100%。</p>
+        </section>
+
+        <!-- 7 · 数据口径与备注 -->
+        <section id="d1-data-notes" class="rpt-sec">
+          <h2 class="rpt-h2">数据口径</h2>
+          <ol class="rpt-issues rpt-mt-8">
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">01</div>
+              <div>
+                <h3 class="rpt-h3">联赛结构</h3>
+                <p class="rpt-issue-body">德甲 18 支球队，单赛季 306 场，10 个赛季合计 3,060 场，明显少于其余四大联赛的 3,477–3,800 场；样本日期范围 <span class="rpt-mono">2016-08-26</span> 至 <span class="rpt-mono">2026-05-16</span>。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">02</div>
+              <div>
+                <h3 class="rpt-h3">字段演进</h3>
+                <p class="rpt-issue-body">列数从 16/17、17/18 的 <span class="rpt-mono">65</span> 列收缩到 18/19 的 <span class="rpt-mono">62</span> 列，19/20 起跳升到 <span class="rpt-mono">106</span> 列，24/25 为 <span class="rpt-mono">120</span> 列，25/26 达 <span class="rpt-mono">132</span> 列；早期赛季缺少收盘赔率、大小球与部分博彩公司字段。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">03</div>
+              <div>
+                <h3 class="rpt-h3">BOM 双重编码</h3>
+                <p class="rpt-issue-body">24/25 与 25/26 赛季文件的 CSV 首列被二次编码为 <code class="rpt-code-inline">ï»¿Div</code>，直接读取会导致 <code class="rpt-code-inline">Div</code> 列识别失败，需在读取时清理列名前缀。</p>
+              </div>
+            </li>
+            <li class="rpt-issue">
+              <div class="rpt-issue-idx">04</div>
+              <div>
+                <h3 class="rpt-h3">日期格式</h3>
+                <p class="rpt-issue-body">日期格式不统一：16/17 赛季使用两位年份格式（如 <code class="rpt-code-inline">26/08/16</code>），其余赛季为四位年份（如 <code class="rpt-code-inline">18/08/2017</code>），混合解析时需按赛季分别处理。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="rpt-note rpt-mt-12 rpt-pt-8">
+            <div class="rpt-note-title">统计口径</div>
+            <p>场均进球、大球率、双方进球率均由全场比分 FTHG/FTAG 直接计算；射正率 = 射正数 / 射门数；零封率 = 任一方进球为 0 的场次占比；所有指标基于已完赛比赛，不含进行中或延期场次。</p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="rpt-foot">
+      <div class="rpt-frame">
+        <div class="rpt-grid rpt-grid--footer">
+          <div>
+            <div class="rpt-foot-title">德甲分赛季明细</div>
+            <p class="rpt-note-text rpt-mt-4">数据来源 football-data.co.uk 公开的分赛季 CSV 文件，聚焦德甲 D1 联赛 2016/17 – 2025/26 共 10 个赛季、3,060 场已完赛比赛。</p>
+          </div>
+          <div>
+            <div class="rpt-foot-label">数据范围</div>
+            <ul class="rpt-foot-list">
+              <li>联赛代码：D1（德甲）</li>
+              <li>样本赛季：2016/17–2025/26</li>
+              <li>比赛日期：2016-08-26 – 2026-05-16</li>
+            </ul>
+          </div>
+          <div>
+            <div class="rpt-foot-label">报告说明</div>
+            <ul class="rpt-foot-list">
+              <li>德甲每季 18 队、固定 306 场</li>
+              <li>单季列数由 62 列演进至 132 列</li>
+              <li>统计口径仅含联赛常规赛，不含杯赛与欧战</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rpt-rule rpt-mt-10 rpt-pt-6 rpt-foot-bottom">
+          <p class="rpt-meta">本页由德甲分赛季 CSV 数据整理生成，用于数据分析与研究用途，不构成任何投注建议。</p>
+          <p class="rpt-meta rpt-mono">3,060 场 · 德甲 D1 · 10 赛季</p>
+        </div>
+      </div>
+    </footer>
+
+    <style id="critical-layout">
+/* ==========================================================================
+   页面关键布局：静态 CSS，不依赖运行时 Tailwind 编译
+   ========================================================================== */
+html, body { background: var(--rpt-background); color: var(--rpt-foreground); }
+body { font-family: var(--rpt-font-sans); }
+
+/* 根框架 */
+.rpt-frame { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
+
+/* 分区节奏：细线分隔 + 大间距 */
+.rpt-sec { border-top: 1px solid var(--rpt-line); padding-top: 4rem; padding-bottom: 4rem; }
+.rpt-sec--lead { border-top: 0; padding-top: 5rem; padding-bottom: 4rem; }
+.rpt-rule { border-top: 1px solid var(--rpt-line); }
+
+/* 栅格：桌面双列，窄屏单列 */
+.rpt-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 768px) {
+  .rpt-grid--footer { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); }
+  .rpt-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .rpt-grid--halves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rpt-grid--narrow-left { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); }
+  .rpt-grid--wide-left { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .rpt-grid--chart-wide { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+}
+
+/* 排版 */
+.rpt-h1 { font-size: 30px; font-weight: 600; line-height: 1.24; letter-spacing: -0.01em; color: var(--rpt-foreground); text-wrap: balance; overflow-wrap: break-word; word-break: normal; }
+.rpt-h2 { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+.rpt-h3 { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--rpt-foreground); word-break: keep-all; text-wrap: balance; }
+@media (min-width: 768px) {
+  .rpt-h1 { font-size: 44px; }
+  .rpt-h2 { font-size: 26px; }
+}
+.rpt-body { font-size: 15px; line-height: 1.85; color: var(--rpt-ink-2); }
+.rpt-body + .rpt-body { margin-top: 1rem; }
+.rpt-meta { font-size: 12.5px; line-height: 1.7; color: var(--rpt-ink-3); }
+.rpt-note-text { font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-mono { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-lead { font-weight: 600; color: var(--rpt-primary); }
+.text-ink-2 { color: var(--rpt-ink-2); }
+.text-ink-3 { color: var(--rpt-ink-3); }
+
+/* 间距工具 */
+.rpt-mt-4 { margin-top: 1rem; }
+.rpt-mt-6 { margin-top: 1.5rem; }
+.rpt-mt-8 { margin-top: 2rem; }
+.rpt-mt-10 { margin-top: 2.5rem; }
+.rpt-mt-12 { margin-top: 3rem; }
+.rpt-pt-6 { padding-top: 1.5rem; }
+.rpt-pt-8 { padding-top: 2rem; }
+
+/* 微型布局工具 */
+.rpt-flex-between { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-flex-center { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.rpt-flex-baseline { display: inline-flex; align-items: baseline; gap: 14px; flex: none; }
+.rpt-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* 指标带 */
+.rpt-kpi-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--rpt-line); border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-md); overflow: hidden; }
+.rpt-kpi { background: var(--rpt-card); padding: 22px 20px; }
+.rpt-kpi-label { font-size: 12px; color: var(--rpt-ink-3); }
+.rpt-kpi-value { margin-top: 10px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 32px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-kpi-unit { font-size: 18px; color: var(--rpt-ink-3); margin-left: 2px; }
+.rpt-kpi-note { margin-top: 10px; font-size: 12px; line-height: 1.6; color: var(--rpt-ink-3); }
+
+/* 图表容器：固定响应式高度，绝不塌陷 */
+.rpt-chart-wrap { position: relative; width: 100%; height: 280px; }
+.rpt-chart-wrap > canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+
+/* 数据表 */
+.rpt-tablewrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rpt-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.rpt-tbl thead th { background: var(--rpt-surface-2); color: var(--rpt-ink-2); font-size: 12.5px; font-weight: 500; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); white-space: nowrap; }
+.rpt-tbl tbody th, .rpt-tbl tbody td { padding: 11px 14px; border-bottom: 1px solid var(--rpt-line); color: var(--rpt-foreground); }
+.rpt-tbl tbody tr { transition: background-color 0.15s ease; }
+.rpt-tbl tbody tr:hover { background: var(--rpt-surface-2); }
+.rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 11px 14px; background: var(--rpt-surface-2); border-top: 1px solid var(--rpt-border); color: var(--rpt-foreground); }
+.rpt-tbl thead th.rpt-num,
+.rpt-tbl tbody td.rpt-num,
+.rpt-tbl tbody th.rpt-num,
+.rpt-tbl tfoot th.rpt-num,
+.rpt-tbl tfoot td.rpt-num { text-align: right; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; }
+.rpt-rowhead { font-weight: 500; text-align: left; white-space: nowrap; color: var(--rpt-foreground); }
+.rpt-total th, .rpt-total td { font-weight: 600; }
+.rpt-zero { color: var(--rpt-ink-3); }
+
+/* 定义列表 */
+.rpt-dl { border-top: 1px solid var(--rpt-line); margin: 0; }
+.rpt-dl-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-dl-row dt { font-size: 12.5px; color: var(--rpt-ink-3); flex: none; }
+.rpt-dl-row dd { margin: 0; font-size: 13.5px; color: var(--rpt-foreground); text-align: right; }
+
+/* 赛果分布行 */
+.rpt-split { border-top: 1px solid var(--rpt-line); }
+.rpt-split-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-dot { display: inline-block; width: 10px; height: 10px; border-radius: 9999px; flex: none; }
+.rpt-split-label { font-size: 15px; color: var(--rpt-foreground); }
+.rpt-split-value { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-split-pct { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 13px; color: var(--rpt-ink-3); width: 56px; text-align: right; }
+
+/* 统计块 */
+.rpt-metric { padding: 18px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-metric:first-child { border-top: 1px solid var(--rpt-line); }
+.rpt-metric-label { font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-metric-value { margin-top: 8px; font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 34px; line-height: 1; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-metric-sub { margin-top: 8px; font-size: 12.5px; color: var(--rpt-ink-3); }
+.rpt-rows { border-top: 1px solid var(--rpt-line); }
+.rpt-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-row-label { font-size: 14px; color: var(--rpt-ink-2); }
+.rpt-row-value { font-family: var(--rpt-font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; color: var(--rpt-foreground); }
+
+/* 字段名标签 */
+.rpt-codes { display: flex; flex-wrap: wrap; gap: 8px; }
+.rpt-code { display: inline-flex; align-items: center; justify-content: center; font-family: var(--rpt-font-mono); font-size: 12px; line-height: 1; padding: 6px 9px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-ink-2); white-space: nowrap; }
+.rpt-code-inline { display: inline-block; font-family: var(--rpt-font-mono); font-size: 12.5px; line-height: 1.5; padding: 1px 6px; border: 1px solid var(--rpt-line); border-radius: var(--rpt-radius-sm); background: var(--rpt-surface-2); color: var(--rpt-foreground); }
+
+/* 数据质量问题列表 */
+.rpt-issues { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rpt-line); }
+.rpt-issue { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--rpt-line); }
+.rpt-issue-idx { font-family: var(--rpt-font-mono); font-size: 13px; color: var(--rpt-ink-3); padding-top: 2px; }
+.rpt-issue-body { margin-top: 6px; font-size: 14px; line-height: 1.8; color: var(--rpt-ink-2); }
+
+/* 说明块 */
+.rpt-note { padding-top: 16px; border-top: 1px solid var(--rpt-line); }
+.rpt-note-title { font-size: 14px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-note p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.8; color: var(--rpt-ink-2); }
+.rpt-vig { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rpt-line); font-size: 14px; color: var(--rpt-foreground); }
+
+/* 页脚 */
+.rpt-foot { border-top: 1px solid var(--rpt-line); padding-top: 3.5rem; padding-bottom: 3.5rem; background: var(--rpt-background); }
+.rpt-foot-title { font-size: 15px; font-weight: 600; color: var(--rpt-foreground); }
+.rpt-foot-label { font-size: 13px; font-weight: 500; color: var(--rpt-foreground); }
+.rpt-foot-list { list-style: none; margin: 12px 0 0; padding: 0; font-size: 13px; line-height: 1.9; color: var(--rpt-ink-2); }
+.rpt-foot-bottom { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.rpt-foot-bottom p { margin: 0; }
+
+@media (max-width: 1024px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+}
+@media (max-width: 640px) {
+  .rpt-frame { padding-left: 24px; padding-right: 24px; }
+  .rpt-sec { padding-top: 3rem; padding-bottom: 3rem; }
+  .rpt-sec--lead { padding-top: 3.5rem; padding-bottom: 3rem; }
+  .rpt-kpi-band { grid-template-columns: 1fr; }
+  .rpt-grid { gap: 2rem; }
+  .rpt-grid--footer, .rpt-grid--two, .rpt-grid--halves, .rpt-grid--narrow-left, .rpt-grid--wide-left, .rpt-grid--chart-wide { grid-template-columns: 1fr; }
+  .rpt-chart-wrap { height: 240px; }
+  .rpt-kpi-value { font-size: 28px; }
+  .rpt-metric-value { font-size: 30px; }
+  .rpt-issue { grid-template-columns: 1fr; gap: 6px; }
+  .rpt-dl-row { flex-direction: column; gap: 4px; }
+  .rpt-dl-row dd { text-align: left; }
+  .rpt-tbl { font-size: 12.5px; min-width: 520px; }
+  .rpt-tbl thead th, .rpt-tbl tbody th, .rpt-tbl tbody td, .rpt-tbl tfoot th, .rpt-tbl tfoot td { padding: 9px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rpt-tbl tbody tr { transition: none; }
+}
+    </style>
+
+    <script>
+(function () {
+  var root = document.documentElement;
+  var cs = getComputedStyle(root);
+  var tok = function (name) { return (cs.getPropertyValue(name) || '').trim(); };
+
+  var c1 = tok('--rpt-chart-1'), c2 = tok('--rpt-chart-2'), c3 = tok('--rpt-chart-3');
+  var lineColor = tok('--rpt-line') || tok('--rpt-border');
+  var cardColor = tok('--rpt-card');
+  var ink2 = tok('--rpt-ink-2'), ink3 = tok('--rpt-ink-3');
+  var fontSans = tok('--rpt-font-sans');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* KPI 数字滚动（尊重 prefers-reduced-motion，无 JS 时保留静态终值） */
+  var counters = document.querySelectorAll('[data-countup]');
+  Array.prototype.forEach.call(counters, function (el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var render = function (v) {
+      return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    };
+    if (isNaN(target)) { return; }
+    if (reduce) { el.textContent = render(target); return; }
+    var duration = 900, start = null;
+    var step = function (ts) {
+      if (start === null) { start = ts; }
+      var p = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = render(target * eased);
+      if (p < 1) { requestAnimationFrame(step); }
+    };
+    requestAnimationFrame(step);
+  });
+
+  if (!window.Chart) { return; }
+  Chart.defaults.font.family = fontSans;
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = ink2;
+
+  var seasons = ['16/17', '17/18', '18/19', '19/20', '20/21', '21/22', '22/23', '23/24', '24/25', '25/26'];
+
+  var axisBase = {
+    x: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink3 } },
+    y: { grid: { color: lineColor, drawTicks: false }, border: { color: lineColor }, ticks: { color: ink3 } }
+  };
+
+  /* 1 · 分赛季场均进球折线 */
+  var goalsEl = document.getElementById('chart-d1-goals');
+  if (goalsEl) {
+    new Chart(goalsEl.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: seasons,
+        datasets: [{
+          label: '场均进球',
+          data: [2.87, 2.79, 3.18, 3.21, 3.03, 3.12, 3.17, 3.22, 3.13, 3.24],
+          borderColor: c1,
+          backgroundColor: c1,
+          pointBackgroundColor: c1,
+          pointBorderColor: cardColor,
+          pointBorderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          borderWidth: 2,
+          tension: 0.25,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function (ctx) { return '场均进球 ' + ctx.parsed.y.toFixed(2); } } }
+        },
+        scales: {
+          x: axisBase.x,
+          y: {
+            suggestedMin: 2.7,
+            suggestedMax: 3.3,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(2); } }
+          }
+        }
+      }
+    });
+  }
+
+  /* 2 · 比分频次 Top 10 横向条形 */
+  var scoresEl = document.getElementById('chart-d1-scores');
+  if (scoresEl) {
+    new Chart(scoresEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['1-1', '2-1', '1-0', '2-0', '1-2', '2-2', '3-1', '0-0', '0-1', '0-2'],
+        datasets: [{
+          label: '场次',
+          data: [368, 264, 202, 199, 190, 172, 165, 165, 162, 134],
+          backgroundColor: c1,
+          hoverBackgroundColor: c3,
+          borderRadius: 2,
+          barThickness: 14
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.parsed.x.toLocaleString('en-US') + ' 场'; } } }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3 }
+          },
+          y: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } }
+        }
+      }
+    });
+  }
+
+  /* 3 · 分赛季主胜 / 平 / 客胜三系列折线 */
+  var haEl = document.getElementById('chart-d1-homeaway');
+  if (haEl) {
+    new Chart(haEl.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: seasons,
+        datasets: [
+          {
+            label: '主胜%',
+            data: [49.0, 45.4, 45.1, 40.2, 42.2, 46.7, 47.4, 43.8, 38.6, 43.8],
+            borderColor: c1, backgroundColor: c1, pointBackgroundColor: c1,
+            pointBorderColor: cardColor, pointBorderWidth: 2, pointRadius: 3, pointHoverRadius: 5,
+            borderWidth: 2, tension: 0.25, fill: false
+          },
+          {
+            label: '平%',
+            data: [24.2, 27.1, 23.9, 22.2, 26.5, 23.9, 24.5, 26.5, 25.2, 24.5],
+            borderColor: c2, backgroundColor: c2, pointBackgroundColor: c2,
+            pointBorderColor: cardColor, pointBorderWidth: 2, pointRadius: 3, pointHoverRadius: 5,
+            borderWidth: 2, tension: 0.25, fill: false
+          },
+          {
+            label: '客胜%',
+            data: [26.8, 27.5, 31.0, 37.6, 31.4, 29.4, 28.1, 29.7, 36.3, 31.7],
+            borderColor: c3, backgroundColor: c3, pointBackgroundColor: c3,
+            pointBorderColor: cardColor, pointBorderWidth: 2, pointRadius: 3, pointHoverRadius: 5,
+            borderWidth: 2, tension: 0.25, fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: ink2, boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle' }
+          },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ' ' + ctx.parsed.y.toFixed(1) + '%'; } } }
+        },
+        scales: {
+          x: axisBase.x,
+          y: {
+            suggestedMin: 20,
+            suggestedMax: 50,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(0) + '%'; } }
+          }
+        }
+      }
+    });
+  }
+
+  /* 4 · 五大联赛场均进球横向条形 */
+  var leagueEl = document.getElementById('chart-d1-league');
+  if (leagueEl) {
+    new Chart(leagueEl.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['德甲', '英超', '意甲', '法甲', '西甲'],
+        datasets: [{
+          label: '场均进球',
+          data: [3.10, 2.83, 2.74, 2.73, 2.62],
+          backgroundColor: [c1, c3, c3, c3, c3],
+          hoverBackgroundColor: c1,
+          borderRadius: 2,
+          barThickness: 20
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduce ? false : { duration: 600 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function (ctx) { return '场均进球 ' + ctx.parsed.x.toFixed(2); } } }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            suggestedMax: 3.4,
+            grid: { color: lineColor, drawTicks: false },
+            border: { color: lineColor },
+            ticks: { color: ink3, callback: function (v) { return Number(v).toFixed(1); } }
+          },
+          y: { grid: { display: false }, border: { color: lineColor }, ticks: { color: ink2 } }
+        }
+      }
+    });
+  }
+})();
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
