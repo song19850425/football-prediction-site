@@ -1,0 +1,42 @@
+name: Update history data
+
+# 每周一 04:17 UTC 自动重建历史数据；也可在 Actions 页面手动触发。
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-history
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild data/history.json
+        run: python scripts/build_history.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain -- data/history.json)" ]; then
+            git add data/history.json
+            git commit -m "chore(data): weekly history refresh"
+            git push
+            echo "已推送更新"
+          else
+            echo "数据无变化，跳过提交"
+          fi
