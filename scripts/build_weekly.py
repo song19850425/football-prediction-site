@@ -47,6 +47,10 @@ API_BASE = 'https://api.football-data.org/v4'
 UA = 'Mozilla/5.0 (compatible; football-prediction-site weekly builder)'
 DAYS_AHEAD = 7
 MAX_GOALS = 8
+# Dixon-Coles 低比分修正参数 ρ（scripts/backtest_betting.py 前向回测网格搜索最优，log-loss 最低）
+DC_RHO = -0.05
+# 说明：回测显示本模型相对博彩市场的互补信息≈0（对数损失最优解即"直接用市场概率"），
+# 故不与市场赔率做概率混合，保留模型自身的独立输出（页面已另有"市场概率"单独展示）。
 
 
 def fetch(url, timeout=60):
@@ -214,6 +218,19 @@ def poisson(k, lam):
     return math.exp(-lam) * lam ** k / math.factorial(k)
 
 
+def dc_tau(x, y, lam_h, lam_a, rho):
+    """Dixon-Coles 低比分依赖修正因子 τ(x,y)，仅影响 0-0/1-0/0-1/1-1。"""
+    if x == 0 and y == 0:
+        return 1.0 - lam_h * lam_a * rho
+    if x == 0 and y == 1:
+        return 1.0 + lam_h * rho
+    if x == 1 and y == 0:
+        return 1.0 + lam_a * rho
+    if x == 1 and y == 1:
+        return 1.0 - rho
+    return 1.0
+
+
 def predict(base_h, base_a, home, away):
     atk_h = home.get('atk', 1.0)
     def_h = home.get('def', 1.0)
@@ -227,6 +244,8 @@ def predict(base_h, base_a, home, away):
     for i in range(MAX_GOALS + 1):
         for j in range(MAX_GOALS + 1):
             p = ph[i] * pa[j]
+            if i <= 1 and j <= 1:
+                p *= dc_tau(i, j, lam_h, lam_a, DC_RHO)  # Dixon-Coles 修正
             if i > j:
                 pH += p
             elif i == j:
@@ -238,8 +257,9 @@ def predict(base_h, base_a, home, away):
             if i > 0 and j > 0:
                 btts += p
     s = pH + pD + pA
+    pH, pD, pA = pH / s, pD / s, pA / s
     return {
-        'pH': round(pH / s, 4), 'pD': round(pD / s, 4), 'pA': round(pA / s, 4),
+        'pH': round(pH, 4), 'pD': round(pD, 4), 'pA': round(pA, 4),
         'pOver': round(p_over / s, 4), 'btts': round(btts / s, 4),
         'lamH': round(lam_h, 2), 'lamA': round(lam_a, 2),
     }
@@ -371,13 +391,15 @@ def main():
         for r in rows:
             st = strengths.get(r['code']) or {'table': {}, 'base': DEFAULT_BASE[r['code']]}
             base_h, base_a = st['base']
-            p = predict(base_h, base_a, st['table'].get(r['home'], {}), st['table'].get(r['away'], {}))
             oh, od, oa = r['oh'], r['od'], r['oa']
+            mkt = implied(oh, od, oa)
+            p = predict(base_h, base_a, st['table'].get(r['home'], {}),
+                        st['table'].get(r['away'], {}))
             items.append({
                 'code': r['code'], 'league': r['league'], 'utc': r['utc'],
                 'home': r['home'], 'away': r['away'],
                 'odds': {'h': oh, 'd': od, 'a': oa} if (oh and od and oa) else None,
-                'mkt': implied(oh, od, oa),
+                'mkt': mkt,
                 'p': p,
             })
     else:
