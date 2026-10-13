@@ -1,0 +1,46 @@
+name: Update weekly predictions
+
+# 每天 05:23 UTC 预生成未来一周预测静态数据；也可在 Actions 页面手动触发。
+# 免费源 fixtures.csv 无数据时，自动回退到 football-data.org API。
+# API Key 仅存在于仓库 Secrets，绝不写入前端/公开文件。
+on:
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-weekly
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild data/weekly.json
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+        run: python scripts/build_weekly.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain -- data/weekly.json)" ]; then
+            git add data/weekly.json
+            git commit -m "chore(data): daily weekly-prediction refresh"
+            git push
+            echo "已推送更新"
+          else
+            echo "数据无变化，跳过提交"
+          fi

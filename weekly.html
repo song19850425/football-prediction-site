@@ -87,14 +87,14 @@
     <h1 data-i18n="weekly.h1">未来一周比赛预测</h1>
     <p class="lead" data-i18n="weekly.lead">自动抓取英超、西甲、意甲、德甲、法甲未来一周的赛程，结合各队本赛季实力指标（攻防强度）与联赛主客场进球基准，用泊松模型给出胜平负概率、大小球与双方进球预测。</p>
     <div class="hero-actions">
-      <button class="btn primary sm" id="reload" data-i18n="weekly.reload">↻ 重新预测</button>
+      <button class="btn primary sm" id="reload" data-i18n="weekly.reload">↻ 刷新数据</button>
       <a class="btn ghost sm" href="history.html" data-i18n="weekly.viewHistory">查看历史数据</a>
     </div>
   </section>
 
   <div id="progress" class="prog">
     <div class="spinner" style="width:34px;height:34px;margin:0 auto 16px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite"></div>
-    <div id="prog-text" data-i18n="weekly.progConnect">正在连接数据源…</div>
+    <div id="prog-text" data-i18n="weekly.progConnect">正在加载预测数据…</div>
     <div class="barwrap"><div class="barfill" id="prog-fill"></div></div>
   </div>
 
@@ -112,30 +112,18 @@
 
 <footer>
   <div class="wrap">
-    <span data-i18n="weekly.footer1">数据来源：football-data.org · 模型：泊松攻防强度 · 仅供研究展示，不构成投注建议</span>
+    <span data-i18n="weekly.footer1">数据来源：football-data.co.uk / football-data.org · 模型：泊松攻防强度 · 仅供研究展示，不构成投注建议</span>
     <span id="counter-slot"></span>
   </div>
 </footer>
 
 <script src="assets/counter.js"></script>
 <script src="assets/i18n.js"></script>
-<script src="dashboards/prediction-dashboard-deploy/js/config.js" onerror="window.__noCfg=1"></script>
 <script>
-const API = 'https://api.football-data.org/v4';
-const KEY = (window.__noCfg ? 'b9bf4e1ea8594605ae422ce46c9b511e'
-  : (typeof CONFIG !== 'undefined' && CONFIG.FOOTBALL_API_KEY) || 'b9bf4e1ea8594605ae422ce46c9b511e');
-const CACHE_KEY = 'fp_weekly_cache_v1';
-const RUNS_KEY = 'fp_weekly_runs_v1';
-
-/* 联赛：API code、显示名、历史基准(hg=场均主队进球, ag=场均客队进球) */
-const LEAGUES = [
-  { code: 'PL',  name: '英超', key: 'E0',  hg: 1.555, ag: 1.280 },
-  { code: 'PD',  name: '西甲', key: 'SP1', hg: 1.486, ag: 1.133 },
-  { code: 'SA',  name: '意甲', key: 'I1',  hg: 1.481, ag: 1.262 },
-  { code: 'BL1', name: '德甲', key: 'D1',  hg: 1.722, ag: 1.374 },
-  { code: 'FL1', name: '法甲', key: 'F1',  hg: 1.513, ag: 1.215 }
-];
-const LEAGUE_BY_CODE = Object.fromEntries(LEAGUES.map(l => [l.code, l]));
+/* 本页只读取 CI 预生成的静态数据 data/weekly.json，
+   不携带任何 API Key，也不在浏览器端调用第三方接口。 */
+const DATA_URL = 'data/weekly.json';
+const LEAGUE_ORDER = ['E0', 'SP1', 'I1', 'D1', 'F1'];
 
 const state = { league: '', data: null };
 
@@ -143,14 +131,6 @@ function T(k, vars) { return I18N.fmt(I18N.t(k), vars); }
 function lgName(n) { const m = I18N.leagues[I18N.current()] || {}; return m[n] || n; }
 const TIME_LOCALE = { zh: 'zh-CN', en: 'en-US', ja: 'ja-JP', ko: 'ko-KR' };
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function hdrs() { return { 'X-Auth-Token': KEY }; }
-
-function isoDay(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  return d.toISOString().slice(0, 10);
-}
 function fmtDayLabel(iso) {
   const lang = I18N.current();
   const d = new Date(iso + 'T12:00:00');
@@ -165,121 +145,17 @@ function fmtTime(utc) {
   const d = new Date(utc);
   return d.toLocaleString(TIME_LOCALE[I18N.current()] || 'zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
-
-/* ---------- 泊松模型 ---------- */
-function poisson(k, lam) {
-  let p = Math.exp(-lam);
-  for (let i = 1; i <= k; i++) p *= lam / i;
-  return p;
-}
-function predict(lg, home, away) {
-  const atkH = home.atk, defH = home.def, atkA = away.atk, defA = away.def;
-  const lamH = Math.max(0.15, lg.hg * atkH * defA);
-  const lamA = Math.max(0.15, lg.ag * atkA * defH);
-  const MAX = 8;
-  let pH = 0, pD = 0, pA = 0, pOver = 0, btts = 0;
-  const ph = [], pa = [];
-  for (let i = 0; i <= MAX; i++) { ph[i] = poisson(i, lamH); pa[i] = poisson(i, lamA); }
-  for (let i = 0; i <= MAX; i++) {
-    for (let j = 0; j <= MAX; j++) {
-      const p = ph[i] * pa[j];
-      if (i > j) pH += p; else if (i === j) pD += p; else pA += p;
-      if (i + j > 2.5) pOver += p;
-      if (i > 0 && j > 0) btts += p;
-    }
-  }
-  const s = pH + pD + pA;
-  pH /= s; pD /= s; pA /= s;
-  return { pH, pD, pA, pOver, btts, lamH, lamA };
-}
-
-/* ---------- 数据抓取 ---------- */
-async function apiGet(path, timeoutMs) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs || 15000);
-  try {
-    const r = await fetch(API + path, { headers: hdrs(), signal: ctrl.signal });
-    if (r.status === 429) { const e = new Error('RATE_LIMIT'); e.code = 'RATE_LIMIT'; throw e; }
-    if (!r.ok) { const e = new Error('HTTP ' + r.status); e.code = 'HTTP'; throw e; }
-    return await r.json();
-  } catch (err) {
-    if (err.name === 'AbortError') { const e = new Error('TIMEOUT'); e.code = 'NET'; throw e; }
-    if (!err.code) err.code = 'NET';
-    throw err;
-  } finally { clearTimeout(t); }
-}
-function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-function norm(s) {
-  return String(s).toLowerCase()
-    .replace(/\b(fc|cf|ac|afc|sc|sv|vfl|vfb|tsg|bsc|rcd|ud|sd|rc|ssc|ss|as|us|sl|cd|ca|club)\b/g, '')
-    .replace(/[^a-z0-9]/g, '');
-}
-
-/* 赛程：优先单次多联赛请求，失败则逐联赛回退（遇网络中断立即放弃，快速失败） */
-async function getFixtures(progress) {
-  const from = isoDay(0), to = isoDay(7);
-  const codes = LEAGUES.map(l => l.code).join(',');
-  progress(T('weekly.progFixtures'), 0.15);
-  try {
-    const j = await apiGet(`/matches?dateFrom=${from}&dateTo=${to}&competitions=${codes}`);
-    return { from, to, matches: j.matches || [] };
-  } catch (e) {
-    if (e.code === 'RATE_LIMIT') throw e;
-    const all = [];
-    for (let i = 0; i < LEAGUES.length; i++) {
-      progress(T('weekly.progFallback', { i: i + 1, n: LEAGUES.length }), 0.15 + 0.08 * i);
-      try {
-        const j = await apiGet(`/competitions/${LEAGUES[i].code}/matches?dateFrom=${from}&dateTo=${to}`);
-        all.push.apply(all, j.matches || []);
-      } catch (err) {
-        if (err.code === 'NET') { const e2 = new Error('NET'); e2.code = 'NET'; throw e2; }
-        if (err.code === 'RATE_LIMIT') throw err;
-      }
-      await sleep(6500);
-    }
-    if (!all.length) { const e2 = new Error('EMPTY'); e2.code = 'NET'; throw e2; }
-    return { from, to, matches: all };
-  }
-}
-
-/* 积分榜：仅请求有赛程的联赛，串行间隔以遵守免费版限流；网络中断即停止 */
-async function getStandings(codes, progress) {
-  const map = {};
-  for (let i = 0; i < codes.length; i++) {
-    const lg = LEAGUE_BY_CODE[codes[i]];
-    progress(T('weekly.progStandings', { name: lgName(lg.name), i: i + 1, n: codes.length }), 0.55 + 0.4 * (i / codes.length));
-    try {
-      const j = await apiGet(`/competitions/${lg.code}/standings`);
-      const table = (j.standings || []).find(s => s.type === 'TOTAL');
-      const rows = table ? table.table : [];
-      const gfs = rows.map(r => r.goalsFor / Math.max(1, r.playedGames));
-      const gas = rows.map(r => r.goalsAgainst / Math.max(1, r.playedGames));
-      const avgGF = gfs.length ? gfs.reduce((a, b) => a + b, 0) / gfs.length : 1.35;
-      const avgGA = gas.length ? gas.reduce((a, b) => a + b, 0) / gas.length : 1.35;
-      map[lg.code] = {};
-      rows.forEach(r => {
-        const gpm = r.goalsFor / Math.max(1, r.playedGames);
-        const capm = r.goalsAgainst / Math.max(1, r.playedGames);
-        map[lg.code][norm(r.team.name)] = {
-          atk: clamp(gpm / avgGF, 0.5, 1.7),
-          def: clamp(capm / avgGA, 0.5, 1.7),
-          name: r.team.name
-        };
-      });
-    } catch (e) {
-      map[lg.code] = null; // 该联赛积分榜失败，预测回退到联赛均值
-      if (e.code === 'NET') { for (let k = i + 1; k < codes.length; k++) map[codes[k]] = null; break; }
-    }
-    if (i < codes.length - 1) await sleep(6500); // 免费版：约 10 次/分钟
-  }
-  return map;
+function fmtGenerated(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleString(TIME_LOCALE[I18N.current()] || 'zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
 /* ---------- 渲染 ---------- */
 function render() {
   const D = state.data;
   if (!D) return;
-  let list = D.items.filter(it => !state.league || it.code === state.league);
+  const list = D.items.filter(it => !state.league || it.code === state.league);
   list.sort((a, b) => a.utc.localeCompare(b.utc));
 
   const root = document.getElementById('result');
@@ -305,7 +181,10 @@ function renderMatch(it) {
   const hPct = Math.round(p.pH * 100), dPct = Math.round(p.pD * 100), aPct = 100 - hPct - dPct;
   const best = Math.max(p.pH, p.pD, p.pA);
   const bestLabel = p.pH === best ? I18N.t('prob.H') : (p.pD === best ? I18N.t('prob.D') : I18N.t('prob.A'));
-  const bestClass = p.pH === best ? 'h' : (p.pD === best ? 'd' : 'a');
+  const mk = it.mkt;
+  const mktPick = mk
+    ? `<span class="pick">${I18N.t('weekly.market')} <b>${Math.round(mk.h * 100)}/${Math.round(mk.d * 100)}/${Math.round(mk.a * 100)}</b></span>`
+    : '';
   return `
     <div class="match">
       <div class="m-top">
@@ -328,14 +207,19 @@ function renderMatch(it) {
         <span class="pick">${I18N.t('pick.over')} <b>${Math.round(p.pOver * 100)}%</b></span>
         <span class="pick">${I18N.t('pick.btts')} <b>${Math.round(p.btts * 100)}%</b></span>
         <span class="pick">${I18N.t('pick.score')} <b>${p.lamH.toFixed(1)}-${p.lamA.toFixed(1)}</b></span>
+        ${mktPick}
       </div>
     </div>`;
 }
 
 function buildControls() {
   const el = document.getElementById('f-league');
-  const present = new Set((state.data.items || []).map(i => i.code));
-  const chips = [{ k: '', t: I18N.t('weekly.controlsAll') }].concat(LEAGUES.filter(l => present.has(l.code)).map(l => ({ k: l.code, t: lgName(l.name) })));
+  const present = new Map();
+  (state.data.items || []).forEach(it => { if (!present.has(it.code)) present.set(it.code, it.league); });
+  const codes = LEAGUE_ORDER.filter(c => present.has(c))
+    .concat([...present.keys()].filter(c => LEAGUE_ORDER.indexOf(c) < 0));
+  const chips = [{ k: '', t: I18N.t('weekly.controlsAll') }]
+    .concat(codes.map(c => ({ k: c, t: lgName(present.get(c)) })));
   el.innerHTML = chips.map(c => `<span class="chip${c.k === state.league ? ' on' : ''}" data-k="${c.k}">${c.t}</span>`).join('');
   el.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
     el.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
@@ -345,8 +229,9 @@ function buildControls() {
   }));
   const n = state.data.items.length;
   const lgCount = present.size;
-  document.getElementById('meta').textContent =
-    T('weekly.metaFmt', { from: state.data.from, to: state.data.to, n: n, lg: lgCount });
+  let meta = T('weekly.metaFmt', { from: state.data.from, to: state.data.to, n: n, lg: lgCount });
+  if (state.data.generatedAt) meta += ' · ' + T('weekly.generatedAt', { t: fmtGenerated(state.data.generatedAt) });
+  document.getElementById('meta').textContent = meta;
   document.getElementById('controls').style.display = 'block';
 }
 
@@ -362,81 +247,31 @@ function prog(text, ratio) {
   document.getElementById('prog-fill').style.width = Math.round((ratio || 0) * 100) + '%';
 }
 
-async function run(force) {
+async function run() {
   document.getElementById('progress').style.display = 'block';
   document.getElementById('controls').style.display = 'none';
   document.getElementById('notice').style.display = 'none';
   document.getElementById('result').innerHTML = '';
-  prog(T('weekly.progInit'), 0.02);
-
-  // 缓存：30 分钟内复用，避免频繁触发限流
-  if (!force) {
-    try {
-      const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-      if (c && Date.now() - c.ts < 30 * 60 * 1000) {
-        state.data = c.data;
-        finish();
-        return;
-      }
-    } catch (e) {}
-  }
+  prog(T('weekly.progConnect'), 0.4);
 
   try {
-    const fx = await getFixtures(prog);
-
-    const upcoming = fx.matches.filter(m =>
-      ['SCHEDULED', 'TIMED', 'POSTPONED'].includes(m.status) &&
-      m.competition && LEAGUE_BY_CODE[m.competition.code]);
-    const present = [];
-    upcoming.forEach(m => { const c = m.competition.code; if (present.indexOf(c) < 0) present.push(c); });
-
-    let standings = {};
-    if (present.length) standings = await getStandings(present, prog);
-
-    prog(T('weekly.progCalc'), 0.98);
-
-    const items = upcoming.map(m => {
-      const code = m.competition.code;
-      const lg = LEAGUE_BY_CODE[code];
-      const tbl = standings[code];
-      const nh = norm(m.homeTeam.name), na = norm(m.awayTeam.name);
-      const H = (tbl && (tbl[nh] || findByAlias(tbl, nh))) || { atk: 1, def: 1 };
-      const A = (tbl && (tbl[na] || findByAlias(tbl, na))) || { atk: 1, def: 1 };
-      return {
-        code, league: lg.name, utc: m.utcDate,
-        home: m.homeTeam.shortName || m.homeTeam.name,
-        away: m.awayTeam.shortName || m.awayTeam.name,
-        p: predict(lg, H, A)
-      };
-    });
-    state.data = { from: fx.from, to: fx.to, items, ts: Date.now() };
-
-    // 记录运行日志（本地）
-    try {
-      const runs = JSON.parse(localStorage.getItem(RUNS_KEY) || '[]');
-      runs.unshift({ ts: Date.now(), n: items.length });
-      localStorage.setItem(RUNS_KEY, JSON.stringify(runs.slice(0, 20)));
-    } catch (e) {}
-
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: state.data })); } catch (e) {}
+    const r = await fetch(DATA_URL + '?cb=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    if (!j || !Array.isArray(j.items) || !j.items.length) throw new Error('EMPTY');
+    state.data = {
+      from: j.from, to: j.to, items: j.items,
+      generatedAt: j.generatedAt, source: j.source
+    };
+    prog(T('weekly.progCalc'), 0.95);
     finish();
   } catch (err) {
     document.getElementById('progress').style.display = 'none';
-    const rate = err.code === 'RATE_LIMIT' || err.message === 'RATE_LIMIT';
-    const msg = rate ? I18N.t('weekly.errRate') : I18N.t('weekly.errGeneric');
-    showNotice(`${msg}<br><br>${I18N.t('weekly.errYouCan')}
+    showNotice(`${I18N.t('weekly.errGeneric')}<br><br>${I18N.t('weekly.errYouCan')}
       <a href="dashboards/prediction-dashboard-deploy/index.html">${I18N.t('notice.dashboard')}</a> ·
       <a href="apps/football-odds-mvp-desktop/pages/weekly-prediction-v2.html">${I18N.t('notice.weeklyHist')}</a> ·
       <a href="history.html">${I18N.t('notice.history')}</a>`);
   }
-}
-
-function findByAlias(tbl, key) {
-  for (const k in tbl) {
-    if (!tbl.hasOwnProperty(k)) continue;
-    if (k.includes(key) || key.includes(k)) return tbl[k];
-  }
-  return null;
 }
 
 function finish() {
@@ -445,7 +280,7 @@ function finish() {
   render();
 }
 
-document.getElementById('reload').addEventListener('click', () => run(true));
+document.getElementById('reload').addEventListener('click', () => run());
 
 /* 语言切换：重渲染受语言影响的动态区块 */
 document.addEventListener('i18n:change', () => {
@@ -456,7 +291,7 @@ document.addEventListener('i18n:change', () => {
   }
 });
 
-run(false);
+run();
 </script>
 </body>
 </html>
